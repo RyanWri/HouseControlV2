@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import dataBases.jdbc.DeviceHandler;
 import dataBases.jdbc.RelayConnectionHandler;
 
-/* Test */
 
 @Path("/device")
 public class ApiDevice {
