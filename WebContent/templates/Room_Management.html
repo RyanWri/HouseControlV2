@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html >
+  <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" href="../themes/HouseControl.css" />
+	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="../js/Room_Management.js"></script>
+    <title>House-Management(Adding rooms)</title>
+  </head>
+
+  <body>
+	
+	<div data-role="page" id="Room_Management" data-theme="d" data-add-back-btn="true">
+
+	<!-- menu panel-->
+	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
+    <!-- panel content goes here -->
+		<ol>
+			<li><a href="/Statistics.html" data-url="Statistics.html">Statistics</a></li>
+			<li><a href="/Faq.html">FAQ</a></li>
+			<li><a href="/Login.html">Logout</a></li>
+		</ol>
+	</div><!-- /panel -->
+	
+  <div data-role="header">
+    <h1>Configure Home</h1>
+	   <a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
+  </div>
+
+  <div data-role="main" class="ui-content">
+	<a href="#myPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all" >Add Room</a>
+    <div data-role="popup" id="myPopup" class="ui-content">
+
+  <div data-role="header">
+    <h1>Add Room</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    <p>room details goes here</p>
+  </div>
+	
+	</div>
+  </div>
+  
+  
+
+  <div data-role="footer">
+    <h1>HouseControl v1.1</h1>
+  </div>
+
+</div>
+	
+  </body>
+</html>

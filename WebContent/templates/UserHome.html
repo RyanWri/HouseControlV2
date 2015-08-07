@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> User Home Page </title>
+ 	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" href="../themes/HouseControl.css" />
+	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/UserHome.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+	
+	<div data-role="page" id="UserHome" data-theme="d">
+
+			<!-- menu panel-->
+	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
+    <!-- panel content goes here -->
+		<ol>
+			<li><a href="Statistics.html">Statistics</a></li>
+			<li><a href="Faq.html">FAQ</a></li>
+			<li><a href="Login.html">Logout</a></li>
+		</ol>
+	</div><!-- /panel -->	
+	
+  <div data-role="header">
+    <h1>Home Page</h1>
+	<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
+  </div>
+
+  <div data-role="main" class="ui-content">
+
+     <div data-role="content">
+	
+	<div class="ui-grid-c">
+		<!-- first row -->
+		<div class="ui-block-a">
+		<a href="#"><img src="../img/working_devices.jpg" /> </a>
+		<div class="imgCaption">Current Working Devices </div>
+		</div>
+
+		<div class="ui-block-b">
+		<a href="#"><img src="../img/room.png" /> </a>
+		<div class="imgCaption">Ran's Room </div>
+		</div>
+
+		<div class="ui-block-c">
+		<a href="#"><img src="../img/kitchen.ico" /> </a>
+		<div class="imgCaption">Kitchen </div>
+		</div>
+	</div>
+	
+	<div class="ui-grid-c">
+		<!-- second row -->
+		<div class="ui-block-a">
+		<a href="#"><img src="../img/bathroom.png" /> </a>
+		<div class="imgCaption">Bathroom </div>
+		</div>
+
+		<div class="ui-block-b">
+		<a href="#"><img src="../img/living_room.png" /> </a>
+		<div class="imgCaption">Living Room </div>
+		</div>
+	</div>
+	
+    </div><!-- /content -->
+  
+  </div>
+
+  <div data-role="footer">
+    <h2> HouseControl v1.1 </h2>
+  </div>
+
+</div>
+
+
+</body>
+</html>

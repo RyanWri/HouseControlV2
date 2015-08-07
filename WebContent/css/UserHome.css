@@ -1,0 +1,22 @@
+/*
+	Author: Ran Yamin 25/07/2015
+	Css for User Home page with all rooms in the house
+ */
+
+.ui-grid-c img {
+	width:100%;
+	height: auto;
+	margin: 10px;
+}
+
+.ui-grid-c div {
+	padding:10px;
+
+
+.imgCaption{
+	width:100%;
+	text-align:center;
+	font-size:12px;
+	margin-top:-20px;
+
+}

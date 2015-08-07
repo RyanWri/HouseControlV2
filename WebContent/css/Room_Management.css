@@ -1,0 +1,13 @@
+/*
+	Author: Ran Yamin 25/07/2015
+	Css for Room management page
+ */
+
+  body {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    /*background-color: #eee;*/
+	background-image: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg');
+  }
+ 
+ 

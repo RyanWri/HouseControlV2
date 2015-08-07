@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+	<link rel="stylesheet" href="../themes/HouseControl.css" />
+	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/Login.css"/>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	
+    <title>Login</title>
+  </head>
+  <body>
+	<div data-role="page" id="Login" data-theme="d">
+		<div data-role="header">
+			<h1>Login</h1>
+	    </div>			
+		<div id="containerLogin" class="container-fluid">
+			<form id="formUserLogin" class="navbar-form navbar-left ui-widget">
+				<label class="control-label">Server IP:</label> 
+				<input id="textBoxLoginServerIP" type="text" name="serverIP" class="form-control" placeholder="IP Address" required/><br>
+				<label class="control-label">Username:</label> 
+				<input id="textBoxLoginUsername" type="text" name="username" class="form-control" placeholder="Username" minlength="2" required/><br>
+				<label class="control-label">Password:</label> 
+				<input id="textBoxLoginPassword" type="password" name="password" class="form-control" placeholder="Password" minlength="6" required/>
+				<label class="control-label" id="labelLoginInfo" hidden="true"></label><br>
+				<button type="submit" class="btn btn-lg btn-primary btn-block" id="btnSignIn">Login</button>
+				<label class="errorMsg" id="labelLoginError"></label>
+			</form>
+		</div>
+    </div>
+	<div data-role="footer">
+		<h1>HouseControl V1.2</h1>
+	</div>
+  </body>
+  	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/additional-methods.min.js"></script>
+	<script type="text/javascript" src="../js/Login.js"></script>
+</html>
