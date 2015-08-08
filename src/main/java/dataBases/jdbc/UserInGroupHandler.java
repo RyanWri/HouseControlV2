@@ -13,7 +13,7 @@ import modelObjects.User;
 
 import org.apache.commons.dbutils.DbUtils;
 
-public class UserInGroupHandler {
+public class UserInGroupHandler{
 
 	public static final String USER_IN_GROUP_ADD_SUCCESS_MESSAGE = "User has been added to group";
 	public static final String USER_IN_GROUP_REMOVE_SUCCESS_MESSAGE = "User has been removed from group";
@@ -83,7 +83,7 @@ public class UserInGroupHandler {
 		}
 	}
 
-	public static List<User> getUsersFromDevicesGroup(int groupID) throws Exception{
+	public static List<User> getAuthorizedUsersOfDevicesGroup(int groupID) throws Exception{
 		List<User> users = new ArrayList<User>();
 		Connection conn = null;
 		Statement statement = null;
@@ -98,8 +98,6 @@ public class UserInGroupHandler {
 					+ "FROM user,user_in_group "
 					+ "WHERE user.userID = user_in_group.userID and user_in_group.groupID=" +groupID;
 			statement = conn.createStatement();
-			
-			statement = conn.createStatement();
 			resultSet = statement.executeQuery(query);
 			while(resultSet.next()){
 				users.add(UserHandler.mapRow(resultSet,true));
@@ -109,15 +107,45 @@ public class UserInGroupHandler {
 			throw new Exception("Failed to get users in group");
 		}
 		finally{
+			DbUtils.closeQuietly(resultSet);
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
 
 		return users;
 	}
-	
-//	public static List<DevicesGroup> getDevicesGroupsUserIsMemberOf(int userID){
-//		
-//	}
 
+	public static List<DevicesGroup> getDevicesGroupsUserIsMemberOf(int userID) throws Exception{
+		List<DevicesGroup> devicesGroups = new ArrayList<DevicesGroup>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		if(userID<1){
+			throw new Exception("Please provide a valid user");
+		}
+		try{
+			conn = DBConn.getConnection();
+			String query = "SELECT devices_group.* "
+					+ "FROM devices_group,user_in_group "
+					+ "WHERE user_in_group.userID =" + userID 
+					+ " and user_in_group.groupID=devices_group.groupID" ;
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devicesGroups.add(DevicesGroupHandler.mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get devices groups of a user");
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return devicesGroups;
+	}
+	
 }

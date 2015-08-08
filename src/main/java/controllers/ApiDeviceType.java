@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import dataBases.jdbc.DeviceTypeHander;
 
 @Path("/device_type")
-public class ApiDeviceType {
+public class ApiDeviceType{
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +74,4 @@ public class ApiDeviceType {
 		
 		return response;
 	}
-	
-	
 }

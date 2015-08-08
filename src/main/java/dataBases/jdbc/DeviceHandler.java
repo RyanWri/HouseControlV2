@@ -13,7 +13,7 @@ import modelObjects.DeviceType;
 
 import org.apache.commons.dbutils.DbUtils;
 
-public class DeviceHandler {
+public class DeviceHandler{
 	public static final String DEVICE_ADD_SUCCESS_MESSAGE = "Device has been added successfully";
 
 	public static void addDevice(Device device) throws Exception{
@@ -64,9 +64,9 @@ public class DeviceHandler {
 
 		try{
 			conn = DBConn.getConnection();
-			String query = "SELECT * "
-					+"FROM device "
-					+"WHERE deviceID=" +deviceID;
+			String query = "SELECT device.*,device_type.* "
+					+"FROM device,device_type "
+					+"WHERE device.deviceID=" +deviceID + " and device.typeID=device_type.typeID ";
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			resultSet = statement.executeQuery(query);
 			if(resultSet.next()){
@@ -88,25 +88,35 @@ public class DeviceHandler {
 		return device;
 	}
 	
-
-	private static Device mapRow(ResultSet resultSet) throws SQLException{		
+	protected static Device mapRow(ResultSet resultSet) throws SQLException{		
 		Device device = new Device();
 
-		device.setDeviceID(resultSet.getInt("deviceID"));
-		device.setName(resultSet.getString("name"));
-		device.setDescription(resultSet.getString("description"));
-		DeviceType deviceType = new DeviceType();
-		deviceType.setTypeID(resultSet.getInt("typeID"));
+		device.setDeviceID(resultSet.getInt("device.deviceID"));
+		device.setName(resultSet.getString("device.name"));
+		device.setDescription(resultSet.getString("device.description"));
+		DeviceType deviceType = DeviceTypeHander.mapRow(resultSet);
 		device.setDeviceType(deviceType);
-		device.setConnectionType(ConnectionType.valueOf(resultSet.getString("connectionType")));
-		device.setVoltage(resultSet.getFloat("voltage"));
-		device.setState(DeviceState.valueOf(resultSet.getString("state")));
+		device.setConnectionType(ConnectionType.valueOf(resultSet.getString("device.connectionType")));
+		device.setVoltage(resultSet.getFloat("device.voltage"));
+		device.setState(DeviceState.valueOf(resultSet.getString("device.state")));
 
 		return device;
 	}
 	
-	public void disconnectDevice(int deviceID) throws Exception{
-		Device device = getDevice(deviceID);
-	}
+//	public void disconnectDevice(int deviceID) throws Exception{
+//		Device device = getDevice(deviceID);
+//		
+//		if(device == null){
+//			throw new Exception("Device wasn't supply");
+//		}
+//		if(device.getState().equals(Device.DeviceState.Inactive)){
+//			throw new Exception("It's not possible disconnecting inactive device");
+//		}
+//		try{
+//			if(device.getConnectionType().equals(Device.ConnectionType.Relay)){
+//				
+//			}
+//		}
+//	}
 
 }

@@ -28,7 +28,7 @@ import modelObjects.User.UserType;
 
 
 @Path("/user")
-public class ApiUser {
+public class ApiUser{
 	
 	@GET
 	@Path("/authenticateuser")
@@ -91,13 +91,11 @@ public class ApiUser {
 	public Response login(@Context javax.servlet.http.HttpServletRequest req  , @FormParam("username") String username,@FormParam("password") String password) {
 		Response response = null;
 		try{
-			if(SessionHandler.isAuthUser(req) == true ) 
-			{
+			if(SessionHandler.isAuthUser(req) == true ) {
 				throw new Exception("Access Denied - You Are Already Logged In");
 			}
 			User user = UserHandler.getUserByUsername(username);
-			if(user==null)
-			{
+			if(user==null){
 				throw new Exception("Wrong UserName Or Password");
 			}
 			if(user.getPassword().equals(password)){
@@ -200,7 +198,6 @@ public class ApiUser {
 
 		return response;
 	}
-	
 
 	@DELETE
 	@Path("/delete/{userID}")

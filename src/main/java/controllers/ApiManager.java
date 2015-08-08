@@ -12,7 +12,7 @@ import utils.GenericResponse;
 import dataBases.jdbc.RelayConnectionHandler;
 
 
-//Add arduino address
+
 
 @Path("/manager")
 public class ApiManager {

@@ -13,7 +13,7 @@ import java.util.List;
 import modelObjects.User;
 import modelObjects.User.UserType;
 
-public class UserHandler {
+public class UserHandler{
 	public static final String USER_UPDATE_SUCCESS_MESSAGE = "User details has been updated";
 	public static final String USER_UPDATE_DELETE_MESSAGE = "User has been deleted";
 	public static final String USER_LOGOUT_SUCCESS_MESSAGE = "You have been logged out";
@@ -49,6 +49,9 @@ public class UserHandler {
 			resultSet = statement.getGeneratedKeys();
 			if (resultSet != null && resultSet.next()) {
 				System.out.println("User was inserted with id:" + resultSet.getInt(1));
+			}
+			else{
+				throw new SQLException();
 			}
 		}
 		catch(SQLException ex){

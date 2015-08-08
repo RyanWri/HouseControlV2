@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
 
 import modelObjects.DevicesGroup;
 
-public class DevicesGroupHandler {
+public class DevicesGroupHandler{
 	private static final int DEVICES_GROUP_ERROR_CODE = -1;
 	public static final String DEVICES_GROUP_CREATE_SUCCESS_MESSAGE = "The devices group has been created successfully";
 	public static final String DEVICES_GROUP_UPDATE_SUCCESS_MESSAGE = "The devices group has been updated";
@@ -66,7 +68,7 @@ public class DevicesGroupHandler {
 			throw new Exception("Devices group name cannot be empty");
 		}
 		try{
-			 conn = DBConn.getConnection();
+			conn = DBConn.getConnection();
 			String query = "UPDATE devices_group "
 					+  "SET name = ?, picData = ? "
 					+  "WHERE groupID =" + devicesGroup.getGroupID();
@@ -83,9 +85,9 @@ public class DevicesGroupHandler {
 			throw new Exception("Cannot update device group");
 		}
 		finally{
+			conn.setAutoCommit(true);
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
-			conn.setAutoCommit(true);
 		}
 	}
 	
@@ -113,5 +115,92 @@ public class DevicesGroupHandler {
 			DbUtils.closeQuietly(conn);
 		}
 	}
+	
+	public static DevicesGroup getDevicesGroupByID(int devicesGroupID,boolean hideAuthorizedUsers) throws Exception{
+		DevicesGroup devicesGroup = null;	
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		if(devicesGroupID<1){
+			throw new Exception("Cannot get a devices group which doesn't exist");
+		}
+		String query = "SELECT *"
+				+ " FROM devices_group"
+				+ " WHERE groupID =" + devicesGroupID;
+
+		try{
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			if(resultSet.next()){
+				devicesGroup = mapRow(resultSet);
+			}
+		}
+		catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return devicesGroup;
+	}
+
+	protected static DevicesGroup mapRow(ResultSet resultSet) throws Exception {
+		DevicesGroup devicesGroup = new DevicesGroup();
+		int groupID = resultSet.getInt("groupID");
+		devicesGroup.setGroupID(groupID);
+		devicesGroup.setGroupName(resultSet.getString("name"));
+		devicesGroup.setPicData(resultSet.getString("picData"));
+		
+		return devicesGroup;
+	}
+	
+//	protected static DevicesGroup mapRow(ResultSet resultSet,boolean hideAuthorizedUsers,boolean hideDevices) throws Exception {
+//		DevicesGroup devicesGroup = new DevicesGroup();
+//		int groupID = resultSet.getInt("groupID");
+//		devicesGroup.setGroupID(groupID);
+//		devicesGroup.setGroupName(resultSet.getString("name"));
+//		devicesGroup.setPicData(resultSet.getString("picData"));
+//		if(!hideAuthorizedUsers){
+//			List<User> users = UserInGroupHandler.getUsersAuthorizedToDevicesGroup(groupID);
+//			devicesGroup.setAuthorizedUsers(users);
+//		}
+//		if(!hideDevices){
+//			List<Device> devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(groupID);
+//			devicesGroup.setDevices(devices);
+//		}
+//		return devicesGroup;
+//	}
+	
+	public static List<DevicesGroup> getAllDevicesGroups() throws Exception{
+		List<DevicesGroup> devicesGroups = new ArrayList<DevicesGroup>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try{
+			conn = DBConn.getConnection();
+			String query = "SELECT * FROM devices_group";
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devicesGroups.add(mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get devices groups list");
+		}
+		finally{
+			DbUtils.close(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return devicesGroups;
+ 	}
 
 }

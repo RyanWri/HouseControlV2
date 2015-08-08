@@ -10,7 +10,7 @@ import modelObjects.DeviceType;
 
 import org.apache.commons.dbutils.DbUtils;
 
-public class DeviceTypeHander {
+public class DeviceTypeHander{
 	public static final String DEVICES_TYPE_CREATE_SUCCESS_MESSAGE = "The device type has been created successfully";
 	public static final String DEVICES_TYPE_UPDATE_SUCCESS_MESSAGE = "The device type has been updated";
 	public static final String DEVICES_TYPE_DELETE_SUCCESS_MESSAGE = "The device type has been deleted";
@@ -84,9 +84,9 @@ public class DeviceTypeHander {
 			throw new Exception("Cannot update device type");
 		}
 		finally{
+			conn.setAutoCommit(true);
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
-			conn.setAutoCommit(true);
 		}
 	}
 
@@ -113,6 +113,44 @@ public class DeviceTypeHander {
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
+	}
+	
+	protected static DeviceType getDeviceTypeByID(int typeID) throws SQLException{
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		DeviceType deviceType = null;
+
+		try{
+			String query = "SELECT * FROM device_type WHERE typeID=" + typeID;
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			if(resultSet.next()){
+				deviceType = mapRow(resultSet);
+			};
+		}
+		catch(SQLException ex){
+			System.out.println("SQL error while trying to get device type");
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return deviceType;
+		
+	}
+
+	protected static DeviceType mapRow(ResultSet resultSet) throws SQLException {
+		DeviceType deviceType = new DeviceType();
+		deviceType.setPicData(resultSet.getString("device_type.picData"));
+		deviceType.setName(resultSet.getString("device_type.name"));
+		deviceType.setTypeID(resultSet.getInt("device_type.typeID"));
+	
+		return deviceType;
 	}
 
 }

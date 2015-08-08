@@ -1,7 +1,11 @@
 package controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -12,20 +16,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
+
+import modelObjects.Device;
 import modelObjects.DevicesGroup;
+import modelObjects.User;
 import utils.GenericResponse;
+import dataBases.jdbc.DeviceInGroupHandler;
 import dataBases.jdbc.DevicesGroupHandler;
-//test23
+import dataBases.jdbc.UserInGroupHandler;
+
+//nlanlanltrolkatjresfssfs
 @Path("/devices_group")
-public class ApiDevicesGroup {
+public class ApiDevicesGroup{
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@Context HttpServletRequest req, String groupJson)
-	{
+	public Response create(@Context HttpServletRequest req, String groupJson){
 		Response response = null;
 		DevicesGroup devicesGroup = null;
 		Gson gson = new Gson();
+		
 		try{
 			devicesGroup = gson.fromJson(groupJson, DevicesGroup.class);
 			DevicesGroupHandler.insertNewGroup(devicesGroup.getGroupName(), devicesGroup.getPicData());
@@ -37,7 +47,7 @@ public class ApiDevicesGroup {
 			
 		return response;
 	}
-		
+	
 	@PUT
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -71,6 +81,164 @@ public class ApiDevicesGroup {
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
 		
+		return response;
+	}
+	
+	@POST
+	@Path("/add_user")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addUser(@Context HttpServletRequest req, @FormParam("userID") int userID, @FormParam("deviceGroupID") int deviceGroupID){
+		Response response = null;
+
+		try{
+			UserInGroupHandler.addUserToDeviceGroup(userID, deviceGroupID);
+			response = Response.ok(GenericResponse.ok(UserInGroupHandler.USER_IN_GROUP_ADD_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+
+	@DELETE
+	@Path("/remove_user")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response removeUser(@Context HttpServletRequest req, @FormParam("userID") int userID, @FormParam("deviceGroupID") int deviceGroupID){
+		Response response = null;
+
+		try{
+			UserInGroupHandler.removeUserFromDeviceGroup(userID, deviceGroupID);
+			response = Response.ok(GenericResponse.ok(UserInGroupHandler.USER_IN_GROUP_REMOVE_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+
+	@GET
+	@Path("/get_users/{devicesGroupID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsersInDeviceGroup(@Context HttpServletRequest req, @PathParam("devicesGroupID") int devicesGroupID) {
+		Response response = null;
+		List<User> users = null;
+		
+		try{
+			users = UserInGroupHandler.getAuthorizedUsersOfDevicesGroup(devicesGroupID);
+			response = Response.ok(GenericResponse.ok(users)).build();
+		}
+		catch (Exception e) {
+			response = Response.ok(GenericResponse.error(e.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@GET
+	@Path("/get_group/{devicesGroupID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevicesGroup(@Context HttpServletRequest req, @PathParam("devicesGroupID") int devicesGroupID) {
+		Response response = null;
+		DevicesGroup devicesGroup = null;
+		
+		try{
+			devicesGroup = DevicesGroupHandler.getDevicesGroupByID(devicesGroupID, false);
+			response = Response.ok(GenericResponse.ok(devicesGroup)).build();
+		}
+		catch (Exception e) {
+			response = Response.ok(GenericResponse.error(e.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@GET
+	@Path("/get_devices/{devicesGroupID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevicesInDeviceGroup(@Context HttpServletRequest req, @PathParam("devicesGroupID") int devicesGroupID) {
+		Response response = null;
+		List<Device> devices = null;
+		
+		try{
+			devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
+			response = Response.ok(GenericResponse.ok(devices)).build();
+		}
+		catch (Exception e) {
+			response = Response.ok(GenericResponse.error(e.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@GET
+	@Path("/user_devices_groups/{userID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevicesGroupsByUserID(@Context HttpServletRequest req, @PathParam("userID") int userID) {
+		Response response = null;
+		List<DevicesGroup> devicesGroups = null;
+		
+		try{
+			devicesGroups = UserInGroupHandler.getDevicesGroupsUserIsMemberOf(userID);
+			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
+		}
+		catch (Exception e) {
+			response = Response.ok(GenericResponse.error(e.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@POST
+	@Path("/add_device")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addDevice(@Context HttpServletRequest req, @FormParam("deviceID") int deviceID, @FormParam("deviceGroupID") int deviceGroupID){
+		Response response = null;
+
+		try{
+			DeviceInGroupHandler.addDeviceToDevicesGroup(deviceID, deviceGroupID);
+			response = Response.ok(GenericResponse.ok(DeviceInGroupHandler.DEVICE_IN_GROUP_ADD_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@DELETE
+	@Path("/remove_device")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response removeDevice(@Context HttpServletRequest req, @FormParam("deviceID") int deviceID, @FormParam("deviceGroupID") int deviceGroupID){
+		Response response = null;
+
+		try{
+			DeviceInGroupHandler.removeDeviceFromDevicesGroup(deviceID, deviceGroupID);
+			response = Response.ok(GenericResponse.ok(DeviceInGroupHandler.DEVICE_IN_GROUP_REMOVE_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllDevicesGroups(@Context HttpServletRequest req){
+		Response response = null;
+		List<DevicesGroup> devicesGroups = null;
+
+		try{
+			devicesGroups = DevicesGroupHandler.getAllDevicesGroups();
+			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
 		return response;
 	}
 }
