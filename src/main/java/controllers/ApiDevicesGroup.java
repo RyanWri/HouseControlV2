@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import modelObjects.DevicesGroup;
 import utils.GenericResponse;
 import dataBases.jdbc.DevicesGroupHandler;
-//test
+//test23
 @Path("/devices_group")
 public class ApiDevicesGroup {
 	@POST
