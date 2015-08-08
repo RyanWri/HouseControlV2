@@ -13,7 +13,8 @@
 
 <body>
 
-	<div data-role="page" id="Room_Management" data-theme="d" data-add-back-btn="true">
+	<div data-role="page" id="Room_Management" data-theme="d"
+		data-add-back-btn="true">
 
 		<!-- menu panel-->
 		<div data-role="panel" id="menu_panel" data-position="right"
@@ -29,22 +30,24 @@
 
 		<div data-role="header">
 			<h1>Configure Home</h1>
-			<a href="#menu_panel"
-				class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
+			<a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"  data-role="button" role="button">Back</a>
+			<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
 		</div>
 
 		<div data-role="main" class="ui-content">
-			<a href="#myPopup" data-rel="popup"
+			<a href="#AddRoomPopup" data-rel="popup"
 				class="ui-btn ui-btn-inline ui-corner-all">Add Room</a>
-				
-			<div >
-			<ul id="ListAllRooms">
-				<!-- all rooms will be shown within this list -->
-			</ul>
+
+			<button onclick="ShowAllRooms()">Show All Rooms</button>
+
+			<div>
+				<ul id="ListAllRooms">
+					<!-- all rooms will be shown within this list -->
+				</ul>
 			</div>
-			
+
 			<div id="ActualRooms">
-			<!-- actual rooms with edit/remove will be here -->
+				<!-- actual rooms with edit/remove will be here -->
 			</div>
 
 		</div>
@@ -55,7 +58,7 @@
 		</div>
 
 		<!--  add room popup -->
-		<div data-role="popup" id="myPopup" class="ui-content">
+		<div data-role="popup" id="AddRoomPopup" class="ui-content">
 
 			<div data-role="header">
 				<h1>Add Room</h1>
@@ -64,10 +67,10 @@
 			<div data-role="main" class="ui-content">
 
 				<!--  form showing all rooms in a list -->
-				<form id="formShowAllRooms">
+				<form id="formAddRoom">
 					<label class="control-label">Name:</label> <input
-						id="textBoxRoomName" type="text" name="name"
-						class="form-control" placeholder="Enter a name" required /><br>
+						id="textBoxRoomName" type="text" name="name" class="form-control"
+						placeholder="Enter a name" required /><br>
 					<button type="submit" class="btn btn-lg btn-primary btn-block"
 						id="btnSignIn">Add</button>
 				</form>
@@ -81,12 +84,13 @@
 
 			<div data-role="header">
 				<h1 id="EditRoomTitle"></h1>
+				<a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"  data-role="button" role="button">Back</a>
 			</div>
 
 			<div data-role="main" class="ui-content">
-				<form method="post" action="">
+				<form id="formAddDeviceToRoom">
 					<fieldset class="ui-field-contain">
-						<label for="day">Select Device</label> <select name="type"
+						<label>Select Device</label> <select name="type"
 							id="deviceType" data-native-menu="false">
 							<option value="">Lamp</option>
 							<option value="">Tv</option>
@@ -100,40 +104,11 @@
 
 		</div>
 		<!-- edit Room popup end-->
-		
-		<div data-role="page" id="EditRoom" data-theme="c" data-add-back-btn="true">
 
-		<!-- menu panel-->
-		<div data-role="panel" id="menu_panel" data-position="right"
-			data-display="reveal">
-			<!-- panel content goes here -->
-			<ol>
-				<li><a href="Statistics.html" rel="external">Statistics</a></li>
-				<li><a href="Faq.html" rel="external">FAQ</a></li>
-				<li><a href="Login.html" rel="external">Logout</a></li>
-			</ol>
-		</div>
-		<!-- /panel -->
-
-		<div data-role="header">
-			<h1>Configure Home</h1>
-			<a href="#menu_panel"
-				class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
-		</div>
-
-		<div data-role="main" class="ui-content">
-			<a href="#EditRoomPopup" data-rel="popup"
-				class="ui-btn ui-btn-inline ui-corner-all">Edit Room</a>
-		</div>
-
-
-		<div data-role="footer">
-			<h1>HouseControl v1.1 Edit Room</h1>
-		</div>
-
-		</div>
-
-	</div> <!--  end of edit room page -->
+	</div>
+	<!-- end of page -->
+	
+	<div id="Rooms"> </div>
 
 </body>
 
