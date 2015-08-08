@@ -6,23 +6,26 @@
 	<link rel="stylesheet" href="../themes/HouseControl.css" />
 	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-    <title>Sign Up</title>
+	<link rel="stylesheet" href="../css/Sign_Up.css" />
+    <title>New User</title>
   </head>
   <body>
 	<div data-role="page" id="SignUp" data-theme="d">
+		
 		<div data-role="header">
-			<h1>Sign Up</h1>
+			<h1>New User</h1>
+			<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">Menu</a>
 	    </div>
 	<div id="containerSignup" class="container-fluid">
 			<form id="formSignup" class="navbar-form navbar-left ui-widget">
 				<label class="control-label">Username:</label> 
-				<input id="textBoxSignupUsername" type="text" name="username" class="form-control" placeholder="Username" minlength="2" required/><br>
+				<input id="textBoxSignupUsername" type="text" name="username" class="form-control" placeholder="Username" minlength="2" maxlength="10" required/><br>
 				<label class="control-label">Password:</label>
-				<input id="textBoxSignupPassword" type="password" name="password" class="form-control" placeholder="Password" minlength="6" required /><br>
+				<input id="textBoxSignupPassword" type="password" name="password" class="form-control" placeholder="Password" minlength="6" maxlength="10" required /><br>
 				<label class="control-label">First Name:</label> 
-				<input id="textBoxSignupFirstname" type="text" name="firstname" class="form-control" placeholder="First Name" minlength="2" required/><br>
+				<input id="textBoxSignupFirstname" type="text" name="firstname" class="form-control" placeholder="First Name" minlength="2" maxlength="10" required/><br>
 				<label class="control-label">Last Name:</label> 
-				<input id="textBoxSignupLastname" type="text" name="lastname" class="form-control" placeholder="Last Name" minlength="2" required/><br>
+				<input id="textBoxSignupLastname" type="text" name="lastname" class="form-control" placeholder="Last Name" minlength="2" maxlength="10" required/><br>
 				<label class="control-label">Email:</label> 
 				<input id="textBoxSignupEmail" type="email" name="email" class="form-control" placeholder="Email" required/><br>
 				<label class="control-label">Mobile:</label> 
@@ -34,13 +37,23 @@
                 </select>
                 <p>
 				<label id="labelSingupInfo" class="control-label" hidden="true"></label>
-				<button type="submit" class="btn btn-default btnBlue" id="btnSignup">Signup</button>
+				<button type="submit" class="btn btn-default btnBlue" id="btnSignup">Create User</button>
 				<label class="errorMsg" id="labelSignupError"></label>
 			</form>
 		</div>
-	<div data-role="footer">
-		<h1>HouseControl V1.1</h1>
-	</div>
+		<div data-role="footer">
+			<h1>HouseControl</h1>
+		</div>
+		<a href="#popupDialog" id="popupbutton" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+			    <div data-role="header" data-theme="a">
+			    <h1 id="popuptext"></h1>
+			    </div>
+			    <div role="main" class="ui-content">
+			        <h3 id="popupsubtext" class="ui-title"></h3>
+			    <button id="continuebutton" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-b">Continue</button> 
+			    </div>
+			</div>
 	</div>
   </body>
   	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>

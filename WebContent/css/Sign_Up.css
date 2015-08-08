@@ -1,23 +1,6 @@
-/*
-	Author: Ran Yamin 25/07/2015
-	Css for sign up  page
- */
-
-  body {
-    padding-top: 120px;
-    padding-bottom: 40px;
-    background-color: #eee;
-  
-  }
-  
-  form {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-size: cover;
-    background-position: 50% 50%;
-    background-image: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg');
-    background-repeat:repeat;
-  }
+.bold
+{
+	font-size: 250%;
+	font-weight: bold;
+	text-align: center;
+}

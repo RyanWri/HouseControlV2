@@ -1,8 +1,11 @@
+var continueFlag;
+
 $(function() 
 {
 	$(document).ready(function()
     {
-    	$("#textBoxSignupUsername").val("");
+		continueFlag = 0;
+		$("#textBoxSignupUsername").val("");
 		$("#textBoxSignupPassword").val("");
 		$("#textBoxSignupFirstname").val("");
 		$("#textBoxSignupLastname").val("");
@@ -11,6 +14,18 @@ $(function()
     	$("#choiceBox_SignupType").val("Admin");
     });
 
+	$("#continuebutton").click(function()
+	{
+		if (continueFlag === 0)
+		{
+			window.location = "#";
+		}
+		else
+		{
+			window.location = "UsersManagement.html";
+		}
+
+	});
 	
 	$("#formSignup").validate(
 	{
@@ -31,12 +46,16 @@ $(function()
 				$.mobile.loading("hide");
 				if (result.status === "error")
 				{
-
-					alert(result.data);
+					$("#popuptext").text("Failed!");
+					$("#popupsubtext").text(result.data);
+					$("#popupbutton").click();
 				}
 				else
 				{
-					alert("good");
+					continueFlag = 1;
+					$("#popuptext").text("Success!");
+					$("#popupsubtext").text("New user was created!");
+					$("#popupbutton").click();
 				}				
 
 			},
