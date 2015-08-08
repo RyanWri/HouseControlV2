@@ -25,7 +25,6 @@ import dataBases.jdbc.DeviceInGroupHandler;
 import dataBases.jdbc.DevicesGroupHandler;
 import dataBases.jdbc.UserInGroupHandler;
 
-//nlanlanltrolkatjresfssfs
 @Path("/devices_group")
 public class ApiDevicesGroup{
 	@POST
