@@ -94,3 +94,5 @@ function userDialog(username)
 	$("#popupsubtext").text(username);
 	$("#popupbutton").click();
 }
+
+//
