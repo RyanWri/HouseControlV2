@@ -20,6 +20,7 @@ $("#formAddRoom").submit( function()
 		dataType: "json",
 		success: function(result)
 		{
+			alert(result.data);
 			appendRoom(roomName);
 			$.mobile.loading("hide");
 			alert(result.status);
@@ -59,9 +60,9 @@ function ShowAllRooms()
 	  success: function(result)
 	  {
 		  alert(result);
-		  
 	  },
-		error: function(xhr, ajaxOptions, thrownError)
+	  
+	  error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
 			alert(xhr.status);
@@ -134,3 +135,10 @@ $("#formAddDeviceToRoom").submit( function()
 
 	}
 );
+
+
+function removeRoom()
+{
+	
+
+}
