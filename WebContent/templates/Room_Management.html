@@ -8,17 +8,12 @@
 <link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
 <link rel="stylesheet"
 	href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script
-	src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-<script src="../js/Room_Management.js"></script>
 <title>House-Management(Adding rooms)</title>
 </head>
 
 <body>
 
-	<div data-role="page" id="Room_Management" data-theme="d"
-		data-add-back-btn="true">
+	<div data-role="page" id="Room_Management" data-theme="d" data-add-back-btn="true">
 
 		<!-- menu panel-->
 		<div data-role="panel" id="menu_panel" data-position="right"
@@ -41,19 +36,18 @@
 		<div data-role="main" class="ui-content">
 			<a href="#myPopup" data-rel="popup"
 				class="ui-btn ui-btn-inline ui-corner-all">Add Room</a>
-
-			<!--  form showing all rooms in a list -->
-			<form id="FormShowAllRooms">
-				<label class="control-label">Name:</label> <input
-					id="textBoxRoomName" type="text" name="RoomName"
-					class="form-control" placeholder="Enter a name" required /><br>
-				<button type="submit" class="btn btn-lg btn-primary btn-block"
-					id="btnSignIn">Show All room</button>
-				<label class="errorMsg" id="labelLoginError"></label>
-			</form>
+				
+			<div >
+			<ul id="ListAllRooms">
+				<!-- all rooms will be shown within this list -->
+			</ul>
+			</div>
+			
+			<div id="ActualRooms">
+			<!-- actual rooms with edit/remove will be here -->
+			</div>
 
 		</div>
-
 
 
 		<div data-role="footer">
@@ -68,13 +62,82 @@
 			</div>
 
 			<div data-role="main" class="ui-content">
-				<p>room details goes here</p>
+
+				<!--  form showing all rooms in a list -->
+				<form id="formShowAllRooms">
+					<label class="control-label">Name:</label> <input
+						id="textBoxRoomName" type="text" name="name"
+						class="form-control" placeholder="Enter a name" required /><br>
+					<button type="submit" class="btn btn-lg btn-primary btn-block"
+						id="btnSignIn">Add</button>
+				</form>
 			</div>
 
 		</div>
 		<!-- end of add room popup -->
 
-	</div>
+		<!-- Edit Room Popup -->
+		<div data-role="popup" id="EditRoomPopup" class="ui-content">
+
+			<div data-role="header">
+				<h1 id="EditRoomTitle"></h1>
+			</div>
+
+			<div data-role="main" class="ui-content">
+				<form method="post" action="">
+					<fieldset class="ui-field-contain">
+						<label for="day">Select Device</label> <select name="type"
+							id="deviceType" data-native-menu="false">
+							<option value="">Lamp</option>
+							<option value="">Tv</option>
+							<option value="">Air Conditioner</option>
+							<option value="">Water Heater</option>
+						</select>
+					</fieldset>
+					<input type="submit" data-inline="true" value="Submit">
+				</form>
+			</div>
+
+		</div>
+		<!-- edit Room popup end-->
+		
+		<div data-role="page" id="EditRoom" data-theme="c" data-add-back-btn="true">
+
+		<!-- menu panel-->
+		<div data-role="panel" id="menu_panel" data-position="right"
+			data-display="reveal">
+			<!-- panel content goes here -->
+			<ol>
+				<li><a href="Statistics.html" rel="external">Statistics</a></li>
+				<li><a href="Faq.html" rel="external">FAQ</a></li>
+				<li><a href="Login.html" rel="external">Logout</a></li>
+			</ol>
+		</div>
+		<!-- /panel -->
+
+		<div data-role="header">
+			<h1>Configure Home</h1>
+			<a href="#menu_panel"
+				class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
+		</div>
+
+		<div data-role="main" class="ui-content">
+			<a href="#EditRoomPopup" data-rel="popup"
+				class="ui-btn ui-btn-inline ui-corner-all">Edit Room</a>
+		</div>
+
+
+		<div data-role="footer">
+			<h1>HouseControl v1.1 Edit Room</h1>
+		</div>
+
+		</div>
+
+	</div> <!--  end of edit room page -->
 
 </body>
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="../js/Room_Management.js"></script>
 </html>
