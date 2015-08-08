@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Room View extended </title>
+	    <meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<link rel="stylesheet" href="../themes/HouseControl.css" />
+		<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/UsersManagement.css">
+		<script type="text/javascript" src="../js/UserManagement.js"></script>
+	</head>
+	<body>
+		<div data-role="page" id="usersmanagment" data-theme="d">
+		<!-- start of menu panel-->
+			<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
+				<ol>
+					<li><a href="Statistics.html">Statistics</a></li>
+					<li><a href="Faq.html">FAQ</a></li>
+					<li><a href="Login.html">Logout</a></li>
+				</ol>
+			</div>
+		<!-- end of menu panel -->	
+		
+		<!-- start of header -->
+		<div data-role="header">
+				<h1>Users Management</h1>
+				<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">Menu</a>
+		</div>
+		
+		<!-- end of header -->
+	
+		 <div data-role="main" class="ui-content">
+		 	<div id="addnewuser" class="ui-btn">+ Add New User</div>
+			 <div id="userstitle" class="title">Users:</div>
+			  <ul id="listofusers" data-role="listview" data-autodividers="false" data-inset="true">
+				   <!-- <li><a href="#">Adele</a></li>
+				    <li><a href="#">Agnes</a></li>
+				    <li><a href="#">Albert</a></li>
+				    <li><a href="#">Billy</a></li>
+				    <li><a href="#">Bob</a></li>
+				    <li><a href="#">Calvin</a></li>
+				    <li><a href="#">Cameron</a></li>
+				    <li><a href="#">Chloe</a></li>
+				    <li><a href="#">Christina</a></li>
+				    <li><a href="#">Diana</a></li>
+				    <li><a href="#">Gabriel</a></li>
+				    <li><a href="#">Glen</a></li>
+				    <li><a href="#">Ralph</a></li>
+				    <li><a href="#">Valarie</a></li>-->
+			  </ul>
+		  </div>
+	
+	
+		<div data-role="footer">
+			<h1>HouseControl</h1>
+		</div>
+		</div>
+	
+	
+	
+	</body>
+</html>
