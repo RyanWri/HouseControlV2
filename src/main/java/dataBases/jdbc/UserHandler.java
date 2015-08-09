@@ -17,6 +17,7 @@ public class UserHandler{
 	public static final String USER_UPDATE_SUCCESS_MESSAGE = "User details has been updated";
 	public static final String USER_UPDATE_DELETE_MESSAGE = "User has been deleted";
 	public static final String USER_LOGOUT_SUCCESS_MESSAGE = "You have been logged out";
+	public static final String USER_CHANGE_PASSWORD_SUCCESS_MESSAGE = "User password has been updated";
 
 	public static void insertNewUser(String username,String password,String firstname,String lastname, String email,String mobile) throws Exception{
 		Connection conn = null;
@@ -140,13 +141,13 @@ public class UserHandler{
 			throw new Exception("Cannot update a user that doesn't exist");
 		}
 		try{
-			String insertSql = "UPDATE user "
+			String query = "UPDATE user "
 					+"SET firstname=? ,lastname =?,"
 					+"email = ? ,mobile = ? "
 					+"WHERE userID = " + user.getUserID();
 			conn = DBConn.getConnection();
 			conn.setAutoCommit(false);
-			statement = conn.prepareStatement(insertSql,Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			statement.clearParameters();
 			statement.setString(1, user.getFirstname());
 			statement.setString(2, user.getLastname());
@@ -169,6 +170,49 @@ public class UserHandler{
 		}
 		finally{
 			conn.setAutoCommit(true);
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+	}
+	
+	public static void changeUserPassword(int userID,String oldPassword,String newPassword) throws Exception{
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		if(oldPassword.isEmpty() || newPassword.isEmpty()){
+			throw new Exception("Please provide your old and new password");
+		}
+		if(userID<1){
+			throw new Exception("Cannot update a user that doesn't exist");
+		}
+		try{
+			User user = getUserByUserID(userID);
+			if(!user.getPassword().equals(oldPassword)){
+				throw new Exception("Your current password is wrong");
+			}
+			String query = "UPDATE user "
+					+"SET password=? "
+					+"WHERE userID = " + userID;
+			conn = DBConn.getConnection();
+			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			statement.clearParameters();
+			statement.setString(1, newPassword);
+
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded == 0){
+				throw new Exception("Failed to update user password");
+			}
+			resultSet = statement.getGeneratedKeys();
+			if (resultSet != null && resultSet.next()) {
+				System.out.println("User password has been updated");
+			}
+		}
+		catch(SQLException ex){
+			throw new Exception("A problem has occured while trying updating user password");
+		}
+		finally{
 			DbUtils.closeQuietly(resultSet);
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
@@ -222,6 +266,40 @@ public class UserHandler{
 			resultSet = statement.executeQuery(query);
 			if(resultSet.next()){
 				user = mapRow(resultSet,false);
+			}
+		}
+		catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return user;
+	}
+	
+	private static User getUserByUserID(int userID) throws Exception{
+		User user = null;
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		String query = "SELECT *"
+				+ " FROM user"
+				+ " WHERE user.userID =" + userID;
+
+		try{
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			if(resultSet.next()){
+				user = mapRow(resultSet,false);
+			}
+			else{
+				throw new Exception("The user you have provided doesn't exist");
 			}
 		}
 		catch(SQLException ex){

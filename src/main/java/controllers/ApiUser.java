@@ -16,6 +16,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONObject;
+
 import utils.GenericResponse;
 import utils.SessionHandler;
 
@@ -158,19 +160,20 @@ public class ApiUser{
 		return response;
 	}
 	
-	//implement
 	@PUT
-	@Path("/change_passsword")
+	@Path("/change_password")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response changePassword(@Context HttpServletRequest req, String userJson){
+	public Response changePassword(@Context HttpServletRequest req, String passwordJson){
 		Response response = null;
-		User user = null;
-		Gson gson = new Gson();
-		//{oldPassword: X ,newPassword: X}
+		//json structure :{userID:X ,oldPassword: X ,newPassword: X}
+		//example: {userID:4,oldPassword:"12345678",newPassword:"1234"}
 		try{
-			user = gson.fromJson(userJson, User.class);
-			UserHandler.updateUser(user);
-			response = Response.ok(GenericResponse.ok(UserHandler.USER_UPDATE_SUCCESS_MESSAGE)).build();
+			JSONObject jsonObject = new JSONObject(passwordJson);
+			int userID = jsonObject.getInt("userID");
+			String oldPassword = jsonObject.getString("oldPassword");
+			String newPassword = jsonObject.getString("newPassword");
+			UserHandler.changeUserPassword(userID, oldPassword, newPassword);
+			response = Response.ok(GenericResponse.ok(UserHandler.USER_CHANGE_PASSWORD_SUCCESS_MESSAGE)).build();
 		}
 		catch(JsonSyntaxException ex){
 			response = Response.ok(GenericResponse.error("Internal error")).build();
