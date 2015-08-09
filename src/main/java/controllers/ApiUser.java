@@ -65,7 +65,7 @@ public class ApiUser{
 	@POST
 	@Path("/register")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response insert(@Context javax.servlet.http.HttpServletRequest req  , @FormParam("username") String username,@FormParam("password") String password, @FormParam("firstname") String firstname, @FormParam("lastname") String lastname, @FormParam("type") String type,@FormParam("email") String email,@FormParam("mobile") String mobile) {
+	public Response insert(@Context javax.servlet.http.HttpServletRequest req  , @FormParam("username") String username,@FormParam("password") String password, @FormParam("firstname") String firstname, @FormParam("lastname") String lastname,@FormParam("email") String email,@FormParam("mobile") String mobile) {
 		// String hashedPassword = PasswordHash.hash(password);
 
 		Response response = null;
@@ -76,7 +76,7 @@ public class ApiUser{
 //			if(SessionHandler.getType(req) != UserType.Admin){
 //				throw new Exception("Access Denied - Only an admin can create user");
 //			}
-			UserHandler.insertNewUser(username.toLowerCase() , password, firstname , lastname, UserType.valueOf(type),email,mobile);   
+			UserHandler.insertNewUser(username.toLowerCase() , password, firstname , lastname,email,mobile);   
 			response = Response.ok(GenericResponse.ok("user has been created successfully")).build();
 		} 
 		catch (Exception e) {
@@ -135,7 +135,6 @@ public class ApiUser{
 		return response;
 	}
 
-
 	@PUT
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -144,6 +143,30 @@ public class ApiUser{
 		User user = null;
 		Gson gson = new Gson();
 
+		try{
+			user = gson.fromJson(userJson, User.class);
+			UserHandler.updateUser(user);
+			response = Response.ok(GenericResponse.ok(UserHandler.USER_UPDATE_SUCCESS_MESSAGE)).build();
+		}
+		catch(JsonSyntaxException ex){
+			response = Response.ok(GenericResponse.error("Internal error")).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	//implement
+	@PUT
+	@Path("/change_passsword")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changePassword(@Context HttpServletRequest req, String userJson){
+		Response response = null;
+		User user = null;
+		Gson gson = new Gson();
+		//{oldPassword: X ,newPassword: X}
 		try{
 			user = gson.fromJson(userJson, User.class);
 			UserHandler.updateUser(user);
@@ -214,5 +237,7 @@ public class ApiUser{
 
 		return response;
 	}
+	
+	
 
 }

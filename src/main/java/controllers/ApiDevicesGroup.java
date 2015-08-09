@@ -26,7 +26,7 @@ import dataBases.jdbc.DevicesGroupHandler;
 import dataBases.jdbc.UserInGroupHandler;
 
 @Path("/devices_group")
-public class ApiDevicesGroup{
+public class ApiDevicesGroup {
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -223,8 +223,8 @@ public class ApiDevicesGroup{
 		}
 
 		return response;
-	}
-	
+	} 
+	 
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)

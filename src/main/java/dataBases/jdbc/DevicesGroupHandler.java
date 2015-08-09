@@ -12,7 +12,7 @@ import org.apache.commons.dbutils.DbUtils;
 
 import modelObjects.DevicesGroup;
 
-public class DevicesGroupHandler{
+public class DevicesGroupHandler {
 	private static final int DEVICES_GROUP_ERROR_CODE = -1;
 	public static final String DEVICES_GROUP_CREATE_SUCCESS_MESSAGE = "The devices group has been created successfully";
 	public static final String DEVICES_GROUP_UPDATE_SUCCESS_MESSAGE = "The devices group has been updated";

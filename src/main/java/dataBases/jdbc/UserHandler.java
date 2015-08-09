@@ -18,7 +18,7 @@ public class UserHandler{
 	public static final String USER_UPDATE_DELETE_MESSAGE = "User has been deleted";
 	public static final String USER_LOGOUT_SUCCESS_MESSAGE = "You have been logged out";
 
-	public static void insertNewUser(String username,String password,String firstname,String lastname,UserType type, String email,String mobile) throws Exception{
+	public static void insertNewUser(String username,String password,String firstname,String lastname, String email,String mobile) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -29,7 +29,7 @@ public class UserHandler{
 		if(isUsernameAlreadyInUse(username)){
 			throw new Exception("Username already in use");
 		}
-		if(password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || type.toString().isEmpty()){
+		if(password.isEmpty() || firstname.isEmpty() || lastname.isEmpty()){
 			throw new Exception("You have to fill all fields");
 		}
 		try{
@@ -42,7 +42,7 @@ public class UserHandler{
 			statement.setString(3, password);
 			statement.setString(4, firstname);
 			statement.setString(5, lastname);
-			statement.setString(6, type.toString());
+			statement.setString(6, User.UserType.Regular.toString());
 			statement.setString(7, email);
 			statement.setString(8, mobile);
 			statement.executeUpdate();
@@ -142,7 +142,7 @@ public class UserHandler{
 		try{
 			String insertSql = "UPDATE user "
 					+"SET firstname=? ,lastname =?,"
-					+"type = ?, email = ? ,mobile = ? "
+					+"email = ? ,mobile = ? "
 					+"WHERE userID = " + user.getUserID();
 			conn = DBConn.getConnection();
 			conn.setAutoCommit(false);
@@ -150,9 +150,8 @@ public class UserHandler{
 			statement.clearParameters();
 			statement.setString(1, user.getFirstname());
 			statement.setString(2, user.getLastname());
-			statement.setString(3, user.getType().toString());
-			statement.setString(4, user.getEmail());
-			statement.setString(5, user.getMobile());
+			statement.setString(3, user.getEmail());
+			statement.setString(4, user.getMobile());
 
 			int isSucceeded = statement.executeUpdate();
 			if(isSucceeded == 0){
