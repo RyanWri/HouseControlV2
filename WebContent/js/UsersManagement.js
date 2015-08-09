@@ -17,6 +17,7 @@ $(function()
 					{
 						if (i === 0)
 						{
+							
 							$("#listofusers").append('<li class="ui-first-child"><a id="'+listOfUsers[i].username+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="userDialog('+"'"+listOfUsers[i].username+"'"+')">'+listOfUsers[i].username+'</a></li>');
 						}
 						else if (i === (listOfUsers.length - 1))
@@ -32,10 +33,11 @@ $(function()
 			},
 			error: function()
 			{
-				alert("error!");
+				alert("error!");						
 			}
     	});
     });
+    
     
     $("#addnewuser").click(function()
     {
@@ -43,9 +45,7 @@ $(function()
     });  
     
 	$("#deleteuserbutton").click(function()
-	{
-	//	window.location = "#";
-		//$("#popupbuttonconformdelete").click();
+	{	
 		var url1 = '/HouseControl/api/user/' + userName;
 		$.ajax({
 			type: 'GET',
