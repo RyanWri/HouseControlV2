@@ -145,7 +145,10 @@ public class DevicesGroupHandler {
 			String query = "DELETE FROM devices_group "
 					+  "WHERE groupID =" + devicesGroupID;
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-			statement.executeUpdate();
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded < 1){
+				throw new Exception("Cannot delete device group");
+			}
 			System.out.println("Devices group has been deleted");
 		}
 		catch(SQLException ex){
