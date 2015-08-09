@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" href="../themes/HouseControl.css" />
+	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<link rel="stylesheet" href="../css/UpdateUser.css" />
+    <title>Update User</title>
+  </head>
+  <body>
+	<div data-role="page" id="UpdateUser" data-theme="d">
+		
+		<div data-role="header">
+			<h1>Edit User</h1>
+			<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">Menu</a>
+	    </div>
+	<div id="titleUsername" class="title"></div>
+	<div id="containerUpdateUser" class="container-fluid">
+			<form id="formUpdateUser" class="navbar-form navbar-left ui-widget">
+				<label class="control-label">First Name:</label> 
+				<input id="textBoxFirstname" type="text" name="firstname" class="form-control" placeholder="First Name" minlength="2" maxlength="10" required/><br>
+				<label class="control-label">Last Name:</label> 
+				<input id="textBoxLastname" type="text" name="lastname" class="form-control" placeholder="Last Name" minlength="2" maxlength="10" required/><br>
+				<label class="control-label">Email:</label> 
+				<input id="textBoxEmail" type="email" name="email" class="form-control" placeholder="Email" required/><br>
+				<label class="control-label">Mobile:</label> 
+				<input id="textBoxMobile" type="tel" name="mobile" class="form-control" placeholder="Mobile" required/><br>
+                <p>
+				<label id="labelUpdateUserInfo" class="control-label" hidden="true"></label>
+				<button type="submit" class="btn btn-default btnBlue" id="btnUpdateUser">Update</button>
+				<label class="errorMsg" id="labelUpdateUserError"></label>
+			</form>
+		</div>
+		<div data-role="footer">
+			<h1>HouseControl</h1>
+		</div>
+			<a href="#popupErrorDialog" id="popupError" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupErrorDialog" data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:300px; min-width:300px;">
+			    <div data-role="header" data-theme="a">
+			   	 <h1 id="popupConformtext">Error!</h1>
+			    </div>
+			    <div role="main" class="ui-content">
+			       <h3 id="popupErrorsubtext" class="ui-title center"></h3>
+			    <button id="buttoncontinue" type="button" class="ui-btn ui-btn-icon-right">Continue</button>
+			    </div>
+			
+	</div>
+  </body>
+  	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/additional-methods.min.js"></script>
+	<script type="text/javascript" src="../js/UpdateUser.js"></script>
+</html>
+<!--  -->
