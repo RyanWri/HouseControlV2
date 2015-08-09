@@ -39,7 +39,7 @@
 				class="ui-btn ui-btn-inline ui-corner-all">Add Room</a>
 
 			<button onclick="ShowAllRooms()">Show All Rooms</button>
-			
+			<button onclick="getDevicesInRoom(1)"> get devices in room </button>
 
 			<div>
 				<ul id="ListAllRooms">
@@ -80,38 +80,8 @@
 		</div>
 		<!-- end of add room popup -->
 
-		<!-- Edit Room Popup -->
-		<div data-role="popup" id="EditRoomPopup" class="ui-content">
-
-			<div data-role="header">
-				<h1 id="EditRoomTitle"></h1>
-				<a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"  data-role="button" role="button">Back</a>
-			</div>
-
-			<div data-role="main" class="ui-content">
-				<form id="formAddDeviceToRoom">
-					<fieldset class="ui-field-contain">
-						<label>Select Device</label> <select name="type"
-							id="deviceType" data-native-menu="false">
-							<option value="">Lamp</option>
-							<option value="">Tv</option>
-							<option value="">Air Conditioner</option>
-							<option value="">Water Heater</option>
-						</select>
-					</fieldset>
-					<input type="submit" data-inline="true" value="Submit">
-				</form>
-			</div>
-			
-			<button onclick="removeRoom()">remove room</button>
-
-		</div>
-		<!-- edit Room popup end-->
-
 	</div>
 	<!-- end of page -->
-	
-	<div id="Rooms"> </div>
 
 </body>
 

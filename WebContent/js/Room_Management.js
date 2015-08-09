@@ -6,6 +6,7 @@
  */
 
 
+// when add room form is submit -> create room on server and display the room for user with GUI
 $("#formAddRoom").submit( function()
 		{
 	var parameters = {};
@@ -20,10 +21,9 @@ $("#formAddRoom").submit( function()
 		dataType: "json",
 		success: function(result)
 		{
-			alert(result.data);
-			appendRoom(roomName);
+			alert(result.data.groupID);
+			appendRoom(result.data.groupID, roomName);
 			$.mobile.loading("hide");
-			alert(result.status);
 			
 		},
 		error: function(xhr, ajaxOptions, thrownError)
@@ -39,71 +39,33 @@ $("#formAddRoom").submit( function()
 		}
 );
 
-// adding room to html within id="ActualRooms" 
-function appendRoom(roomName)
+
+// adding room to html with id="groupID"  
+function appendRoom(groupID,roomName)
 {
-	var addRoomText = "<a id=\"" + roomName +"\" href=\"#EditRoomPopup\" data-rel=\"popup\" class=\"ui-btn ui-btn-inline ui-corner-all\">";
-	addRoomText += roomName + "</a>";
-	$("#ActualRooms").append(addRoomText);
-	$("#EditRoomTitle").append(roomName);
-	create_page(roomName);
+	createPagePopup(groupID,roomName);
+	var addRoomText = '<a href="#'+groupID+'" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all">';
+	addRoomText += roomName + "</a><br>";
+	$('#ActualRooms').append(addRoomText);
 }
 
-
-function ShowAllRooms()
-{
-	$.ajax({
-	  type: 'GET',
-	  url: '/HouseControl/api/devices_group/all',
-	  contentType: "application/json",
-	  dataType: 'json',
-	  success: function(result)
-	  {
-		  alert(result);
-	  },
-	  
-	  error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
-		}
-		
-	});
-	
-	var appendText = "<li><h3>roomName</h3></li>";
-	$("#ListAllRooms").append( appendText);
-}
-
-function create_page(page_id) {
+//create dialog with id="groupId" and title="roomName"
+function createPagePopup(groupID, roomName) {
 
     //set whatever content you want to put into the new page
-    var content = '<div data-role="header">';
-    content += '<h1 id="EditRoomTitle"></h1> <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"  data-role="button" role="button">Back</a>';
-    content += '</div><div data-role="main" class="ui-content"><form id="formAddDeviceToRoom"> <fieldset class="ui-field-contain">';
-    content +='<label>Select Device</label> <select name="type" id="deviceType" data-native-menu="false"><option value="">Lamp</option>';
-    content += '<option value="">Tv</option><option value="">Air Conditioner</option><option value="">Water Heater</option>';
-	content +=	'</select></fieldset><input type="submit" data-inline="true" value="Submit"></form></div>';
-
-    //append the new page onto the end of the body
-    $('#Rooms').append('<div data-role="page" id="' + page_id + '">'+ content + '</div>');
-
-    //initialize the new page 
-    $.mobile.initializePage();
-
-    //navigate to the new page
-    $.mobile.changePage("#"+page_id, "pop", false, true);
-
-    //add a link on the home screen to navaigate to the new page (just so nav isn't broken if user goes from new page to home screen)
-    $('#Room_Management div[data-role="main"]').append('<br><br><a href="#' + page_id + '" data-ajax="false">go to ' + page_id + ' page</a>');
-
-    //refresh the home screen so new link is given proper css
-    //$('#Room_Management div[data-role="content"]').page();
+	var content = '<div data-role="popup" id="'+groupID +'" class="ui-content">';
+	content += '<div data-role="header"><h1>'+ roomName +'</h1><a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"  data-role="button" role="button">Back</a>';
+	content += '</div><div data-role="main" class="ui-content">	<form id="formAddDeviceToRoom">';
+    content += '<fieldset class="ui-field-contain"><label>Select Device</label> <select name="type"id="deviceType" data-native-menu="false">';
+    content += '<option value="">Lamp</option><option value="">Tv</option><option value="">Air Conditioner</option><option value="">Water Heater</option>';
+	content += '</select></fieldset><input type="submit" data-inline="true" value="Submit"></form>';
+	content += '</div><button onclick="removeRoom('+groupID+')">remove room</button></div>';
+	$('#Room_Management').append(content);
 }
 
 
 
-//add device to room
+//when you add device to room -> get DeviceID -> connect DeviceID with GroupID
 $("#formAddDeviceToRoom").submit( function()
 	{
 	var parameters = {};
@@ -136,9 +98,117 @@ $("#formAddDeviceToRoom").submit( function()
 	}
 );
 
-
-function removeRoom()
+//Remove room from gui and from Server according to groupID
+function removeRoom(groupID)
 {
-	
+	alert("in function");
+	$.ajax({
+	  type: 'DELETE',
+	  url: '/HouseControl/api/devices_group/delete/'+groupID,
+	  contentType: "application/json",
+	  dataType: 'json',
+	  success: function(result)
+	  {
+		  alert(this);
+	  },
+	  
+	  error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+		
+	});
 
+}
+
+
+//List All Rooms
+function ShowAllRooms()
+{
+	alert("in function");
+	$.ajax({
+	  type: 'GET',
+	  url: '/HouseControl/api/devices_group/all',
+	  contentType: "application/json",
+	  dataType: 'json',
+	  success: function(result)
+	  {
+		  for (var i=0; i<result.data.length; i++){
+	      	  var appendText = "<li>"+ result.data[i].name +"</li>"; //add 
+	      	  $("#ListAllRooms").append( appendText);
+		  }
+
+	  },
+	  
+	  error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+		
+	});
+}
+
+
+
+//Get devices in room by groupID
+function getDevicesInRoom(groupID)
+{
+	alert("in function getDevicesInRoom");
+	$.ajax({
+	  type: 'GET',
+	  url: '/HouseControl/api/devices_group/get_devices/'+groupID,
+	  contentType: "application/json",
+	  dataType: 'json',
+	  success: function(result)
+	  {
+		  for (var i=0; i<result.data.length; i++){
+	      	  //var appendText = "<li>"+ result.data[i].name +"</li>"; //add 
+	      	  alert(result.data[i].name );
+		  }
+
+	  },
+	  
+	  error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+		
+	});
+
+}
+
+//remove device with DeviceId from room="groupID"
+function removeDeviceFromRoom(DeviceID, groupID)
+{
+	var parameters = {};
+	parameters.deviceID = deviceID;
+	parameters.groupID = groupID;
+	var parametersStringified = JSON.stringify(parameters);
+	alert("in function removeDeviceFromRoom");
+	$.ajax({
+	  type: 'DELETE',
+	  url: '/HouseControl/api/devices_group/remove_device/',
+	  data: parametersStringified,
+	  dataType: 'json',
+	  success: function(result)
+	  {
+		  alert (result.status);
+
+	  },
+	  
+	  error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+		
+	});
+	
 }
