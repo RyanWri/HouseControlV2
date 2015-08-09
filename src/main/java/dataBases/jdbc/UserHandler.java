@@ -190,8 +190,12 @@ public class UserHandler{
 			String query = "DELETE FROM user "
 					+  "WHERE userID =" + userID;
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-			statement.executeUpdate();
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded < 1){
+				throw new Exception("Deleting the user has been failed");
+			}
 			System.out.println("User has been deleted");
+			
 		}
 		catch(SQLException ex){
 			throw new Exception("Cannot delete user");
