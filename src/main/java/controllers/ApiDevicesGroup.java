@@ -32,13 +32,15 @@ public class ApiDevicesGroup{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(@Context HttpServletRequest req, String groupJson){
 		Response response = null;
+		DevicesGroup parsedDevicesGroup = null;
 		DevicesGroup devicesGroup = null;
 		Gson gson = new Gson();
 		
 		try{
-			devicesGroup = gson.fromJson(groupJson, DevicesGroup.class);
-			DevicesGroupHandler.insertNewGroup(devicesGroup.getGroupName(), devicesGroup.getPicData());
-			response = Response.ok(GenericResponse.ok(DevicesGroupHandler.DEVICES_GROUP_CREATE_SUCCESS_MESSAGE)).build();
+			parsedDevicesGroup = gson.fromJson(groupJson, DevicesGroup.class);
+			devicesGroup = DevicesGroupHandler.insertNewGroup(parsedDevicesGroup.getGroupName(), parsedDevicesGroup.getPicData());
+			 //response = Response.ok(GenericResponse.ok(DevicesGroupHandler.DEVICES_GROUP_CREATE_SUCCESS_MESSAGE)).build();
+			response = Response.ok(GenericResponse.ok(devicesGroup)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
