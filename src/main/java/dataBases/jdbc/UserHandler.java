@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelObjects.User;
-import modelObjects.User.UserType;
+
 
 public class UserHandler{
 	public static final String USER_UPDATE_SUCCESS_MESSAGE = "User details has been updated";
@@ -192,7 +192,7 @@ public class UserHandler{
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			int isSucceeded = statement.executeUpdate();
 			if(isSucceeded < 1){
-				throw new Exception("Deleting the user has been failed");
+				throw new Exception("Can't delete a user which doesn't exist");
 			}
 			System.out.println("User has been deleted");
 			
