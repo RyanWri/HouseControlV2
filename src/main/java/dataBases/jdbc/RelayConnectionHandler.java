@@ -8,7 +8,8 @@ import java.sql.Statement;
 
 import modelObjects.Device;
 import modelObjects.RelayConnection;
-
+import modelObjects.RelayConnection.PortState;
+import utils.PiGpio;
 import org.apache.commons.dbutils.DbUtils;
 
 public class RelayConnectionHandler{
@@ -148,6 +149,88 @@ public class RelayConnectionHandler{
 			}
 			else{
 				throw new Exception("A problem has occured while trying to connect a device to the relay");
+			}
+		}
+		catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+	}
+
+	public static RelayConnection[] initRpiPinsFromDB() throws Exception{
+		RelayConnection[] relayConnection = new RelayConnection[PiGpio.NUMBER_OF_PINS_IN_RPI];
+		RelayConnection tempRelayConnection;
+		Device tempDevice;
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try{
+			for (int i=0; i<PiGpio.NUMBER_OF_PINS_IN_RPI; i++){
+				tempDevice = new Device();
+				tempRelayConnection = new RelayConnection();
+				tempDevice.setDeviceID(0);
+				tempRelayConnection.setDevice(tempDevice);
+				tempRelayConnection.setRelayPort(i);
+				tempRelayConnection.setPinNumber(i);
+				tempRelayConnection.setState(PortState.Disabled);
+				relayConnection[i] = tempRelayConnection;
+			}
+			conn = DBConn.getConnection();
+			String query = "SELECT * "
+					+  "FROM relay_connection ";
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			if (resultSet!= null ){
+				while (resultSet.next()){
+					RelayConnection mappedRelayConnection = mapRow(resultSet);
+					if (mappedRelayConnection.getDevice().getDeviceID() > 0 && mappedRelayConnection.getState() != PortState.Disabled)
+					{
+						relayConnection[mappedRelayConnection.getPinNumber()].setDevice(mappedRelayConnection.getDevice());
+						relayConnection[mappedRelayConnection.getPinNumber()].setPinNumber(mappedRelayConnection.getPinNumber());
+						relayConnection[mappedRelayConnection.getPinNumber()].setRelayPort(mappedRelayConnection.getRelayPort());
+						relayConnection[mappedRelayConnection.getPinNumber()].setState(mappedRelayConnection.getState());
+					}
+				}
+			}
+			else{
+				throw new Exception("Couldn't initialize RPi pins from DB!");
+			}
+		}
+		catch(Exception ex){
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		return relayConnection;
+	}
+	
+	public static void setDeviceOnOrOffInTheDB(int deviceID, int relayPort, PortState state) throws Exception{
+		Connection conn = null;
+		PreparedStatement statement = null;
+		
+		try{
+			if(relayPort < 0 || deviceID < 0){
+				throw new Exception("A problem has occured while trying to destroy");		
+			}
+			conn = DBConn.getConnection();
+			String insertSql = "UPDATE relay_connection "
+					+"Set portState = ? "
+					+"WHERE relayPort=" + relayPort + " AND deviceID="+deviceID;
+			statement = conn.prepareStatement(insertSql,Statement.RETURN_GENERATED_KEYS);
+			statement.setString(1, state.toString());
+			int isSucceeded = statement.executeUpdate();
+			if (isSucceeded > 0) {
+				System.out.println("The device " + deviceID + " has been toggled to " + state +" state!");
+			}
+			else{
+				throw new Exception("A problem has occured while trying to toggle the device state in the DB");
 			}
 		}
 		catch(SQLException ex){
