@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
 	<link rel="stylesheet" type="text/css" href="../css/Login.css"/>
-	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	
     <title>Login</title>
@@ -19,8 +18,6 @@
 	    </div>			
 		<div id="containerLogin" class="container-fluid">
 			<form id="formUserLogin" class="navbar-form navbar-left ui-widget">
-				<label class="control-label">Server IP:</label> 
-				<input id="textBoxLoginServerIP" type="text" name="serverIP" class="form-control" placeholder="IP Address" required/><br>
 				<label class="control-label">Username:</label> 
 				<input id="textBoxLoginUsername" type="text" name="username" class="form-control" placeholder="Username" minlength="2" required/><br>
 				<label class="control-label">Password:</label> 
@@ -30,9 +27,19 @@
 				<label class="errorMsg" id="labelLoginError"></label>
 			</form>
 		</div>
-    </div>
 	<div data-role="footer">
-		<h1>HouseControl V1.2</h1>
+		<h1>House Control</h1>
+	</div>
+	<a href="#popupDialog" id="popupbutton" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:400px;">
+			    <div data-role="header" data-theme="a">
+			    <h1 id="popuptext">Error!</h1>
+			    </div>
+			    <div role="main" class="ui-content">
+			        <h3 id="popupsubtext" class="ui-title"></h3>
+			    	<button id="continuebutton" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-b">Continue</button> 
+			    </div>
+			</div>
 	</div>
   </body>
   	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
