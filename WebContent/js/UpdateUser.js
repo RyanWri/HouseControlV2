@@ -1,6 +1,7 @@
 // take care when user enters here from the address bar.
-
+var userid;
 var userName;
+var flag = 0;
 
 $(function() 
 {
@@ -14,8 +15,70 @@ $(function()
     
     $("#buttoncontinue").click(function()
     {
-    	window.location = "UsersManagement.html";
+    	if (flag === 0)
+    	{
+    		window.location = "UsersManagement.html";
+    	}
+    	else
+    	{
+    		window.location = "#";
+    	}
+    	
     });
+    
+	$("#formUpdateUser").validate(
+	{
+		errorPlacement: function(error, element) 
+		{
+			error.insertAfter(element);
+		},
+			submitHandler: function(form) 
+			{
+				var parameters = {};    
+	            parameters.userID = userID;
+				parameters.firstname = $("#textBoxFirstname").val();
+	            parameters.lastname = $("#textBoxLastname").val();
+	            parameters.email = $("#textBoxEmail").val();
+	            parameters.mobile = $("#textBoxMobile").val();
+	            var parametersStringified = JSON.stringify(parameters);
+
+	            $.ajax(
+	            { 
+	                type: "PUT",
+	            	url: "/HouseControl/api/user/update",
+	                data: parametersStringified,
+	                dataType: 'json'
+	            }).done(function(result)
+	            { 
+	            	if (result.status === "ok")
+	            	{
+	        			flag = 0;
+	            		$.mobile.loading("hide");
+	            		$("#popupMessagesubtext").text("Succeed to update user details");
+	        			$("#popupMessagetext").text("Success!");
+	        			$("#popupMessage").click();
+	            	}
+	            	else
+	            	{
+	            		flag = 1;
+	            		$.mobile.loading("hide");
+	            		$("#popupMessagesubtext").text(result.data);
+	        			$("#popupMessagetext").text("Error!");
+	        			$("#popupMessage").click();
+	            	}
+	            	
+
+	            }).fail(function()
+	            {
+            		flag = 0;
+            		$.mobile.loading("hide");
+            		$("#popupMessagesubtext").text("Connection Error!");
+        			$("#popupMessagetext").text("Error!");
+        			$("#popupMessage").click();	                  
+	            });
+				
+			} 
+	});
 });
     
    
@@ -31,21 +94,24 @@ function loadUserInformation()
 			$("#textBoxFirstname").val(result.data.firstname);
 			$("#textBoxLastname").val(result.data.lastname);
 			$("#textBoxEmail").val(result.data.email);
-			$("#textBoxMobile").val(result.data.mobile);			
+			$("#textBoxMobile").val(result.data.mobile);
+			userID = result.data.userID;
 		},
 		error: function()
 		{
 			$.mobile.loading("hide");
-			$("#popupErrorsubtext").text("Connection error");
-			$("#popupError").click();
+			$("#popupMessagetext").text("Error!");
+			$("#popupMessagesubtext").text("Connection error");
+			$("#popupMessage").click();
 		},
 		statusCode: 
 		{
 			500: function()
 			{
 				$.mobile.loading("hide");
-				$("#popupErrorsubtext").text("User name is not valid");
-				$("#popupError").click();
+				$("#popupMessagetext").text("Error!");
+				$("#popupMessagesubtext").text("User name is not valid");
+				$("#popupMessage").click();
 			}
 		}
 
