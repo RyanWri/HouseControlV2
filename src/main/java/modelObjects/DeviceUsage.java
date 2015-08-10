@@ -27,8 +27,8 @@ public class DeviceUsage {
 		return turnOffTime;
 	}
 	
-	public void setTurnOffTime(Timestamp turnOfTime) {
-		this.turnOffTime = turnOfTime;
+	public void setTurnOffTime(Timestamp turnOffTime) {
+		this.turnOffTime = turnOffTime;
 	}
 	
 	
