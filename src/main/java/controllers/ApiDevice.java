@@ -29,7 +29,7 @@ public class ApiDevice{
 		Response response = null;
 		Device device = null;
 		Gson gson = new Gson();
-		
+
 		try{
 			device = gson.fromJson(deviceJson, Device.class);
 			DeviceHandler.addDevice(device);
@@ -38,10 +38,10 @@ public class ApiDevice{
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
-			
+
 		return response;
 	}
-	
+
 	@POST
 	@Path("/connect_device_to_relay/{relayPort}/{deviceID}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -49,73 +49,107 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-			
+
 			RelayConnectionHandler.connectDeviceToRelay(relayPort,deviceID);
 			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
-		
+
 		return response;
 	}
-	
+
 	@POST
 	@Path("/disconnect_device/{deviceID}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response diconnectDevice(@Context HttpServletRequest req,@PathParam("deviceID") int deviceID){
 		Response response = null;
-		
+
 		//To implement
-		
+
 		return response;
 	}
-	
-	@POST
-	@Path("/relay/{port}/{action}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response relayAction(@Context HttpServletRequest req, @PathParam("port") int port,@PathParam("action") int action){
-		Response response = null;
-		
-		try{
-		String st = PiGpio.controlGpioPin(port, action);
-		response = Response.ok(GenericResponse.ok("GREAT the channel status is: " + st)).build();
-		}
-		catch(Exception ex){
-			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
-		}
-		return response;
-	}
-	
-	@GET
-	@Path("/relay/{port}/status")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response relayStatus(@Context HttpServletRequest req, @PathParam("port")int port){
-		Response response = null;
-		
-		try{
-		String currentPinState = PiGpio.getPinState(port);
-		response = Response.ok(GenericResponse.ok("Channel "+port+" status is: " + currentPinState)).build();
-		}
-		catch(Exception ex){
-			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
-		}
-		return response;
-	}
-	
+
 	@GET
 	@Path("/get_device/{deviceID}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDevice(@Context HttpServletRequest req, @PathParam("deviceID")int deviceID){
 		Response response = null;
-		
+
 		try{
-		Device device = DeviceHandler.getDevice(deviceID);
-		response = Response.ok(GenericResponse.ok(device)).build();
+			Device device = DeviceHandler.getDevice(deviceID);
+			response = Response.ok(GenericResponse.ok(device)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
 		return response;
 	}
+
+
+	@POST
+	@Path("/relay/{port}/{action}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response relayAction(@Context HttpServletRequest req, @PathParam("port") int port,@PathParam("action") int action){
+		Response response = null;
+
+		try{
+			String st = PiGpio.controlGpioPin(port, action);
+			response = Response.ok(GenericResponse.ok("GREAT the relay port status is: " + st)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+
+	@GET
+	@Path("/relay/{port}/status")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response relayStatus(@Context HttpServletRequest req, @PathParam("port")int port){
+		Response response = null;
+
+		try{
+			String currentPinState = PiGpio.getPinState(port);
+			response = Response.ok(GenericResponse.ok("Port "+port+" status is: " + currentPinState)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+
+	@GET
+	@Path("/statistics/{timeFrame}/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response allDevicesStatistics(@Context HttpServletRequest req, @PathParam("timeFrame")String timeFrame){
+		Response response = null;
+
+		try{
+			String sumAllDevicesStatistics = PiGpio.getAllDevicesStatistics(timeFrame);
+			response = Response.ok(GenericResponse.ok("The total sum of elctricity used during the last " + timeFrame + " is: "+ sumAllDevicesStatistics + "!")).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+
+	@GET
+	@Path("/statistics/{timeFrame}/{deviceID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response DeviceStatistics(@Context HttpServletRequest req, @PathParam("timeFrame")String timeFrame, @PathParam("deviceID") int deviceID){
+		Response response = null;
+
+		try{
+			String sumAllDevicesStatistics = PiGpio.getDeviceStatistics(timeFrame, deviceID);
+			response = Response.ok(GenericResponse.ok(sumAllDevicesStatistics)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+
 }
