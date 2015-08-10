@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelObjects.Device;
 import modelObjects.Device.ConnectionType;
@@ -101,6 +103,36 @@ public class DeviceHandler{
 		device.setState(DeviceState.valueOf(resultSet.getString("device.state")));
 
 		return device;
+	}
+	
+	public static List<Device> getAllDevicesIDs() throws Exception {
+		List<Device> devices =  new ArrayList<Device>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		
+		try{
+			conn = DBConn.getConnection();
+			String query = "SELECT * "
+					+"FROM device";			
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				Device device = new Device();
+				device.setDeviceID(resultSet.getInt("deviceID"));
+				devices.add(device);
+			}
+		}
+		catch (Exception ex) {
+			throw new Exception("Failed to get all devices list");
+		}
+		finally{
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return devices;
 	}
 	
 //	public void disconnectDevice(int deviceID) throws Exception{
