@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import dataBases.jdbc.DBHandler;
+import utils.PiGpio;
 
 public class Initializer implements ServletContextListener {
 
@@ -16,12 +17,19 @@ public class Initializer implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		System.out.println("Initializer destroy");		
+		System.out.println("Initializer destroy");	
+		try{
+			PiGpio.shutDownGpio();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
 	private void setup() {
 		try{
 		DBHandler.createTables();
+		//PiGpio.initializePiGpio();//$$FOR DEBUG
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
