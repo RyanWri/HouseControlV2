@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class DeviceUsage {
 	private Device device;
 	private Timestamp turnOnTime;
-	private Timestamp turnOfTime;
+	private Timestamp turnOffTime;
 	
 	public Device getDevice() {
 		return device;
@@ -23,12 +23,12 @@ public class DeviceUsage {
 		this.turnOnTime = turnOnTime;
 	}
 	
-	public Timestamp getTurnOfTime() {
-		return turnOfTime;
+	public Timestamp getTurnOffTime() {
+		return turnOffTime;
 	}
 	
-	public void setTurnOfTime(Timestamp turnOfTime) {
-		this.turnOfTime = turnOfTime;
+	public void setTurnOffTime(Timestamp turnOfTime) {
+		this.turnOffTime = turnOfTime;
 	}
 	
 	
