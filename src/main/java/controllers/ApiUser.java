@@ -87,18 +87,50 @@ public class ApiUser{
 		return response;
 	}
 
+//	@POST
+//	@Path("/login")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response login(@Context javax.servlet.http.HttpServletRequest req  , @FormParam("username") String username,@FormParam("password") String password) {
+//		Response response = null;
+//		try{
+//			if(SessionHandler.isAuthUser(req) == true ) {
+//				throw new Exception("Access Denied - You Are Already Logged In");
+//			}
+//			User user = UserHandler.getUserByUsername(username);
+//			if(user==null){
+//				throw new Exception("Wrong UserName Or Password");
+//			}
+//			if(user.getPassword().equals(password)){
+//				user.setPassword("********");
+//				
+//				SessionHandler.authUser(user.getUserID(),user.getType(),user.getFirstname(),user.getLastname(), req);	
+//				response = Response.ok(GenericResponse.ok(user)).build();
+//			}
+//			else{
+//				response = Response.ok(GenericResponse.error(Response.Status.UNAUTHORIZED)).build();
+//			}
+//		}
+//		catch(Exception ex){
+//			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+//		}
+//
+//		return response;
+//	}
 	@POST
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@Context javax.servlet.http.HttpServletRequest req  , @FormParam("username") String username,@FormParam("password") String password) {
+	public Response login(@Context javax.servlet.http.HttpServletRequest req  , String loginJson) {
 		Response response = null;
 		try{
 			if(SessionHandler.isAuthUser(req) == true ) {
 				throw new Exception("Access Denied - You Are Already Logged In");
 			}
+			JSONObject jsonObject = new JSONObject(loginJson);
+			String username = jsonObject.getString("username");
+			String password = jsonObject.getString("password");
 			User user = UserHandler.getUserByUsername(username);
 			if(user==null){
-				throw new Exception("Wrong UserName Or Password");
+				throw new Exception("Wrong username or password");
 			}
 			if(user.getPassword().equals(password)){
 				user.setPassword("********");
@@ -107,7 +139,7 @@ public class ApiUser{
 				response = Response.ok(GenericResponse.ok(user)).build();
 			}
 			else{
-				response = Response.ok(GenericResponse.error(Response.Status.UNAUTHORIZED)).build();
+				response = Response.ok(GenericResponse.error("Wrong username or password")).build();
 			}
 		}
 		catch(Exception ex){
@@ -165,6 +197,12 @@ public class ApiUser{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response changePassword(@Context HttpServletRequest req, String passwordJson){
 		Response response = null;
+		//===============================
+		//
+		// In case admin wants to change password, he doesn't know that is the old password 
+		//
+		//===============================
+		
 		//json structure :{userID:X ,oldPassword: X ,newPassword: X}
 		//example: {userID:4,oldPassword:"12345678",newPassword:"1234"}
 		try{
@@ -172,6 +210,7 @@ public class ApiUser{
 			int userID = jsonObject.getInt("userID");
 			String oldPassword = jsonObject.getString("oldPassword");
 			String newPassword = jsonObject.getString("newPassword");
+			//UserHandler.changeUserPassword(userID, oldPassword, newPassword, SessionHandler.getType(req));
 			UserHandler.changeUserPassword(userID, oldPassword, newPassword);
 			response = Response.ok(GenericResponse.ok(UserHandler.USER_CHANGE_PASSWORD_SUCCESS_MESSAGE)).build();
 		}
