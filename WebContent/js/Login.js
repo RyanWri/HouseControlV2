@@ -4,18 +4,15 @@ $(function()
     {
     	if (!localStorage.username)
 		{
-        	$("#textBoxLoginServerIP").val("");
     		$("#textBoxLoginUsername").val("");
     		$("#textBoxLoginPassword").val("");
 		}
     	else
     	{
-    		window.location = "../index.html"
+    		window.location = "UserHome.html"
     	}
-
     });
-	
-    
+	    
     $("#formUserLogin").validate(
     		{
     			errorPlacement: function(error, element) 
@@ -35,7 +32,8 @@ $(function()
     					$.mobile.loading("hide");
     					if (result.status === "error")
     					{
-    						alert(result.data);
+    						$("#popupsubtext").text(result.data);
+    						$("#popupbutton").click();
     					}
     					else
     					{
@@ -48,33 +46,24 @@ $(function()
     						localStorage.type = result.data.type;
     						localStorage.email = result.data.email;
     						localStorage.mobile = result.data.mobile;
-    						window.location = "../index.html"	
+    						window.location = "UserHome.html"	
     					}
     				},
     				error: function()
     				{
     					$.mobile.loading("hide");
-    					alert("Connection Error");
-    				},
-    				statusCode: {
-    					400: function(){
-    						$.mobile.loading("hide");
-    						updateLabelLoginError("wrong username of password");
-    						setTimeout( $.mobile.hidePageLoadingMsg, 2000 );
-    					},
-    					401: function(){
-    						$.mobile.loading("hide");
-    						updateLabelLoginError("Unauthorized");
-    					},
-    					500: function(){
-    						$.mobile.loading("hide");
-    						updateLabelLoginError("already logged in");
-    					}
-    				}
+						$("#popupsubtext").text("Connection Error!");
+						$("#popupbutton").click();
+    				},	
     			});
 
     		}
     	});
+    
+    $("#continuebutton").click(function()
+    {
+    	window.location = "#";
+    });
 });
 
 
