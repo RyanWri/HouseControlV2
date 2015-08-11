@@ -21,12 +21,16 @@ $(function()
     		} ,
     		submitHandler: function(form) 
     		{
-    			var data1 = $('#formUserLogin').serialize();
+    			var parameters = {};
+    			parameters.username = $("#textBoxLoginUsername").val();
+    			parameters.password = $("#textBoxLoginPassword").val();
+    			var parametersStringified = JSON.stringify(parameters);
     			$.mobile.loading("show");
     			$.ajax({
     				type: 'POST',
     				url: '/HouseControl/api/user/login',
-    				data: data1,
+	                data: parametersStringified,
+	                dataType: 'json',
     				success: function(result)
     				{
     					$.mobile.loading("hide");
