@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import modelObjects.Device;
 import utils.GenericResponse;
 import utils.PiGpio;
+import utils.SessionHandler;
 
 import com.google.gson.Gson;
 
@@ -31,6 +32,7 @@ public class ApiDevice{
 		Gson gson = new Gson();
 
 		try{
+			//SessionHandler.verifyAdminRequest(req);
 			device = gson.fromJson(deviceJson, Device.class);
 			DeviceHandler.addDevice(device);
 			response = Response.ok(GenericResponse.ok(DeviceHandler.DEVICE_ADD_SUCCESS_MESSAGE)).build();
@@ -49,7 +51,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-
+			//SessionHandler.verifyAdminRequest(req);
 			RelayConnectionHandler.connectDeviceToRelay(relayPort,deviceID);
 			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE)).build();
 		}
@@ -78,6 +80,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
+//			SessionHandler.isAuthUser(req);
 			Device device = DeviceHandler.getDevice(deviceID);
 			response = Response.ok(GenericResponse.ok(device)).build();
 		}
@@ -95,6 +98,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
+//			SessionHandler.isAuthUser(req);
 			String st = PiGpio.controlGpioPin(port, action);
 			response = Response.ok(GenericResponse.ok("GREAT the relay port status is: " + st)).build();
 		}
@@ -111,6 +115,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
+//			SessionHandler.isAuthUser(req);
 			String currentPinState = PiGpio.getPinState(port);
 			response = Response.ok(GenericResponse.ok("Port "+port+" status is: " + currentPinState)).build();
 		}
@@ -127,6 +132,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
+//			SessionHandler.isAuthUser(req);
 			String sumAllDevicesStatistics = PiGpio.getAllDevicesStatistics(timeFrame);
 			response = Response.ok(GenericResponse.ok("The total sum of elctricity used during the last " + timeFrame + " is: "+ sumAllDevicesStatistics + "!")).build();
 		}
@@ -143,6 +149,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
+//			SessionHandler.isAuthUser(req);
 			String sumAllDevicesStatistics = PiGpio.getDeviceStatistics(timeFrame, deviceID);
 			response = Response.ok(GenericResponse.ok(sumAllDevicesStatistics)).build();
 		}

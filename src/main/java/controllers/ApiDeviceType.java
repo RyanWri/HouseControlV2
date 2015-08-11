@@ -28,6 +28,7 @@ public class ApiDeviceType{
 		Gson gson = new Gson();
 		
 		try{
+//			SessionHandler.isAdmin(req);
 			deviceType = gson.fromJson(deviceTypeJson, DeviceType.class);
 			DeviceTypeHander.insertNewDeviceType(deviceType.getName(), deviceType.getPicData());
 			response = Response.ok(GenericResponse.ok(DeviceTypeHander.DEVICES_TYPE_CREATE_SUCCESS_MESSAGE)).build();
@@ -48,6 +49,7 @@ public class ApiDeviceType{
 		Gson gson = new Gson();
 		
 		try{
+//			SessionHandler.isAdmin(req);
 			deviceType = gson.fromJson(deviceTypeJson, DeviceType.class);
 			DeviceTypeHander.updateDeviceType(deviceType);
 			response = Response.ok(GenericResponse.ok(DeviceTypeHander.DEVICES_TYPE_UPDATE_SUCCESS_MESSAGE)).build();
@@ -65,6 +67,7 @@ public class ApiDeviceType{
 	public Response delete(@Context HttpServletRequest req,@PathParam("deviceTypeID") int deviceTypeID){
 		Response response = null;
 		try{
+//			SessionHandler.isAdmin(req);
 			DeviceTypeHander.deleteDeviceType(deviceTypeID);
 			response = Response.ok(GenericResponse.ok(DeviceTypeHander.DEVICES_TYPE_DELETE_SUCCESS_MESSAGE)).build();
 		}

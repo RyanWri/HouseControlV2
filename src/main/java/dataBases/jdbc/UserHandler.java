@@ -2,6 +2,8 @@ package dataBases.jdbc;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import utils.SessionHandler;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelObjects.User;
+import modelObjects.User.UserType;
 
 
 public class UserHandler{
@@ -166,7 +169,8 @@ public class UserHandler{
 		}
 		catch(SQLException ex){
 			conn.rollback();
-			throw new Exception("A problem has occured while trying updating user details");
+			throw new Exception(ex);
+			//	throw new Exception("A problem has occured while trying updating user details");
 		}
 		finally{
 			conn.setAutoCommit(true);
@@ -175,7 +179,7 @@ public class UserHandler{
 			DbUtils.closeQuietly(conn);
 		}
 	}
-	
+//	public static void changeUserPassword(int userID,String oldPassword,String newPassword,UserType userTypeRequestedChangingPassword) throws Exception
 	public static void changeUserPassword(int userID,String oldPassword,String newPassword) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;

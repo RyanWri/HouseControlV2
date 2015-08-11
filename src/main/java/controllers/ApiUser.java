@@ -1,6 +1,5 @@
 package controllers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -178,7 +177,9 @@ public class ApiUser{
 		Gson gson = new Gson();
 
 		try{
+//			SessionHandler.verifyUserIsAuthenticated(req);
 			user = gson.fromJson(userJson, User.class);
+			//Check if admin or request to update his user
 			UserHandler.updateUser(user);
 			response = Response.ok(GenericResponse.ok(UserHandler.USER_UPDATE_SUCCESS_MESSAGE)).build();
 		}
@@ -206,6 +207,7 @@ public class ApiUser{
 		//json structure :{userID:X ,oldPassword: X ,newPassword: X}
 		//example: {userID:4,oldPassword:"12345678",newPassword:"1234"}
 		try{
+//			SessionHandler.verifyUserIsAuthenticated(req);
 			JSONObject jsonObject = new JSONObject(passwordJson);
 			int userID = jsonObject.getInt("userID");
 			String oldPassword = jsonObject.getString("oldPassword");
@@ -232,10 +234,11 @@ public class ApiUser{
 		User user = null;
 		Response response = null;
 		try{
+			//SessionHandler.verifyUserIsAuthenticated(req);
 			user = UserHandler.getUserByUsername(username);
 			user.setPassword("********");
 		}
-		catch (SQLException e) {
+		catch (Exception e) {
 			response = Response.ok(GenericResponse.error(e.getMessage())).build();
 		}
 		if (user == null ){
@@ -254,6 +257,7 @@ public class ApiUser{
 		List<User> users = null;
 		Response response = null;
 		try{
+			//SessionHandler.verifyAdminRequest(req);
 			users = UserHandler.getAllUsers();
 			response = Response.ok(GenericResponse.ok(users)).build();
 		}
@@ -270,6 +274,7 @@ public class ApiUser{
 	public Response delete(@Context HttpServletRequest req,@PathParam("userID") int userID){
 		Response response = null;
 		try{
+			//SessionHandler.verifyAdminRequest(req);
 			UserHandler.deleteUser(userID);
 			response = Response.ok(GenericResponse.ok(UserHandler.USER_UPDATE_DELETE_MESSAGE)).build();
 		}
