@@ -60,4 +60,16 @@ public class SessionHandler {
 		
 		return isAdmin;
 	}
+	
+	public static void verifyAdminRequest(HttpServletRequest req) throws Exception{
+		if(!isAdmin(req)){
+			throw new Exception("Only an admin user is authorized to this request");
+		}
+	}
+	
+	public static void verifyUserIsAuthenticated(HttpServletRequest req) throws Exception{
+		if(SessionHandler.isAuthUser(req) == false) {
+			throw new Exception("Access Denied - login First");
+		}
+	}
 }
