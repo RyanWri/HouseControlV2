@@ -11,6 +11,7 @@
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="../js/UserHome.js"></script>
+		<script type="text/javascript" src="../js/GlobalFunctions.js"></script>
 </head>
 <body>
 	
@@ -19,10 +20,7 @@
 			<!-- menu panel-->
 	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
     <!-- panel content goes here -->
-		<ol>
-			<li><a href="Statistics.html">Statistics</a></li>
-			<li><a href="Faq.html">FAQ</a></li>
-			<li><a href="Login.html">Logout</a></li>
+		<ol id="menuitems">
 		</ol>
 	</div><!-- /panel -->	
 	
@@ -71,7 +69,7 @@
   </div>
 
   <div data-role="footer">
-    <h2> HouseControl v1.1 </h2>
+    <h2> House Control</h2>
   </div>
   <a href="#popupMessageDialog" id="popupMessage" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
 			<div data-role="popup" id="popupMessageDialog" data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:300px; min-width:300px;">
@@ -83,7 +81,6 @@
 			    <button id="buttoncontinue" type="button" class="ui-btn ui-btn-icon-right">Continue</button>
 			    </div>
 </div>
-
-
+</div>
 </body>
 </html>

@@ -107,11 +107,12 @@ function deleteUser(ID)
 
 function errorDialog(errorText)
 {
-	$("#popupErrorsubtext").text(errorText);
+	$("#popupMessagetext").text("Error!");
+	$("#popupMessagesubtext").text(errorText);
 	setTimeout(
 			  function() 
 			  {
-				  $("#popupError").click();
+				  $("#popupMessage").click();
 			  }, delay);
 }
 
