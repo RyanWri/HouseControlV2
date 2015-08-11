@@ -32,6 +32,7 @@ function initMenu()
 		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToUsersManagement()">Users Management</a></li>');
 	}
 	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html">Statistics</a></li>');
+	$("#menuitems").append('<li><a class="ui-link" href="ChangePassword.html">Change Password</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="Faq.html">FAQ</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="Login.html">Logout</a></li>');
 }

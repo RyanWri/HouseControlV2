@@ -117,7 +117,6 @@ function errorDialog(errorText)
 }
 
 
-
 function userDialog(username, userid)
 {
 	userID = userid;

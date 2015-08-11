@@ -26,6 +26,11 @@ $(function()
     	
     });
     
+    $("#buttonresetpassword").click(function()
+    {
+    	resetUserPassword();
+    });
+    
 	$("#formUpdateUser").validate(
 	{
 		errorPlacement: function(error, element) 
@@ -91,6 +96,7 @@ function loadUserInformation()
 		success: function(result)
 		{
 			$.mobile.loading("hide");
+			$("#titleusername").text(userName);
 			$("#textBoxFirstname").val(result.data.firstname);
 			$("#textBoxLastname").val(result.data.lastname);
 			$("#textBoxEmail").val(result.data.email);
@@ -116,5 +122,10 @@ function loadUserInformation()
 		}
 
 	});
+}
+
+function resetUserPassword()
+{
+	// Should add here code for reset user password.
 }
    
