@@ -24,6 +24,34 @@ function moveToHomePage()
 	window.location = "UserHome.html";
 }
 
+function moveToChangePassword()
+{
+	window.location = "ChangePassword.html";
+}
+
+function logout()
+{
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/user/logout',
+		success: function(result)
+		{
+			if (result.status === "ok")
+			{
+				localStorage.clear();
+			}
+			window.location = "Login.html";
+
+		},
+		error: function()
+		{
+			window.location ="#";
+		},	
+	});
+
+}
+
+
 function initMenu()
 {
 	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToHomePage()">Home</a></li>');
@@ -32,9 +60,9 @@ function initMenu()
 		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToUsersManagement()">Users Management</a></li>');
 	}
 	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html">Statistics</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="ChangePassword.html">Change Password</a></li>');
+	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToChangePassword()">Change Password</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="Faq.html">FAQ</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="Login.html">Logout</a></li>');
+	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="logout()">Logout</a></li>');
 }
 
 function authenticateuser()
