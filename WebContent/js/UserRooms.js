@@ -1,33 +1,31 @@
-var userID;
 var userName;
-var delay = 300;
+var userID;
 
 $(function() 
 {
     $(document).ready(function()
-    {
-    	getListOfUsers();
+    {  	
+    	userID = localStorage.userrooms_userID;
+    	userName = localStorage.userrooms_username;
+    	//localStorage.userrooms_userID = "";
+    	//localStorage.userrooms_userName = "";
+    	$("#userstitle").text("'"+userName+ "' Accessible Rooms:");
+    	getListOfUserRooms();   
     });
     
     
-    $("#addnewuser").click(function()
+   /* $("#addnewuser").click(function()
     {
     	window.location = "Signup.html";
     });  
-    
-    $("#userroomsbutton").click(function()
-    {
-    	localStorage.userrooms_username = userName;
-    	localStorage.userrooms_userID = userID;
-    	window.location = "UserRooms.html";
-    });
-    
     
     $("#edituserbutton").click(function()
     {  	
     	localStorage.usertoedit = userName;
     	window.location = "UpdateUser.html";
-    }); 
+    });
+   
+    
     
 	$("#deleteuserbutton").click(function()
 	{	
@@ -52,35 +50,28 @@ $(function()
 	$("#buttoncontinue").click(function()
 	{
 		window.location = "#";
-	});
+	});*/
 });
 
-function getListOfUsers()
+
+function getListOfUserRooms()
 {
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/user/all',
+		url: '/HouseControl/api/devices_group/user_devices_groups/' + userID,
 		success: function(result)
 		{
 			if (result.status === "ok")
 			{
-				var listOfUsers = {};
-				listOfUsers = result.data;
-				for (var i = 0; i < listOfUsers.length; i++) 
-				{
-					if (i === 0)
-					{
-						
-						$("#listofusers").append('<li class="ui-first-child"><a id="'+listOfUsers[i].userID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="userDialog('+"'"+listOfUsers[i].username+"',"+listOfUsers[i].userID+')">'+listOfUsers[i].username+'</a></li>');
-					}
-					else if (i === (listOfUsers.length - 1))
-					{
-						$("#listofusers").append('<li class="ui-last-child"><a id="'+listOfUsers[i].userID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="userDialog('+"'"+listOfUsers[i].username+"',"+listOfUsers[i].userID+')">'+listOfUsers[i].username+'</a></li>');
-					}
-					else
-					{
-						$("#listofusers").append('<li><a id="'+listOfUsers[i].userID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="userDialog('+"'"+listOfUsers[i].username+"',"+listOfUsers[i].userID+')">'+listOfUsers[i].username+'</li>');
-					}
+				var listOfRooms = {};
+				listOfRooms = result.data;
+				for (var i = 0; i < listOfRooms.length; i++) 
+				{											
+				$("#listofusers").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
+						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r">\n\
+				        <img src="../img/'+listOfRooms[i].picData+'" class="button">\n\
+				        <h2>'+listOfRooms[i].name+'</h2>\n\
+				        </a></li></ul>');
 				}
 			}
 		},
@@ -88,11 +79,10 @@ function getListOfUsers()
 		{
 			alert("error!");						
 		}
-	});	
+	});
 }
 
-
-
+/*
 function deleteUser(ID)
 {
 	window.location = "#";
@@ -137,3 +127,4 @@ function userDialog(username, userid)
 	$("#popupsubtext").text(username);
 	$("#popupbutton").click();
 }
+*/

@@ -48,9 +48,7 @@ function logout()
 			window.location ="#";
 		},	
 	});
-
 }
-
 
 function initMenu()
 {
