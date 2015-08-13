@@ -142,9 +142,9 @@ public class DeviceHandler{
 		ResultSet resultSet = null;
 		try{
 			conn = DBConn.getConnection();
-		//	String query = "SELECT * FROM device";
 			String query = "SELECT device.*,device_type.* "
-			+"FROM device,device_type ";
+			+"FROM device,device_type "
+			+"WHERE device.typeID=device_type.typeID";
 			statement = conn.createStatement();
 			resultSet = statement.executeQuery(query);
 			while(resultSet.next()){
