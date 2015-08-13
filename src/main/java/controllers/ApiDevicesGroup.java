@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import modelObjects.Device;
 import modelObjects.DevicesGroup;
 import modelObjects.User;
+import modelObjects.User.UserType;
 import utils.GenericResponse;
 import utils.SessionHandler;
 import dataBases.jdbc.DeviceInGroupHandler;
@@ -172,8 +173,13 @@ public class ApiDevicesGroup {
 		
 		try{
 //			SessionHandler.verifyUserIsAuthenticated(req);
-			devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
-			response = Response.ok(GenericResponse.ok(devices)).build();
+//			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
+				devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
+				response = Response.ok(GenericResponse.ok(devices)).build();
+//			}
+//			else{
+//				throw new Exceptiopn("You are not allowed accessing this method");
+//			}
 		}
 		catch (Exception e) {
 			response = Response.ok(GenericResponse.error(e.getMessage())).build();

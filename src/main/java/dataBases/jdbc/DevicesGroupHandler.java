@@ -147,7 +147,7 @@ public class DevicesGroupHandler {
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			int isSucceeded = statement.executeUpdate();
 			if(isSucceeded < 1){
-				throw new Exception("Cannot delete device group");
+				throw new Exception("Cannot delete device group which doesn't exit");
 			}
 			System.out.println("Devices group has been deleted");
 		}
