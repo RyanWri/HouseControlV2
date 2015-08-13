@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import modelObjects.Device;
+import modelObjects.DevicesGroup;
 import utils.GenericResponse;
 import utils.PiGpio;
 import utils.SessionHandler;
@@ -18,6 +21,7 @@ import utils.SessionHandler;
 import com.google.gson.Gson;
 
 import dataBases.jdbc.DeviceHandler;
+import dataBases.jdbc.DevicesGroupHandler;
 import dataBases.jdbc.RelayConnectionHandler;
 
 
@@ -156,6 +160,25 @@ public class ApiDevice{
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
+		return response;
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllDevices(@Context HttpServletRequest req){
+		Response response = null;
+		List<Device> devicesGroups = null;
+
+		try{
+//			SessionHandler.isAdmin(req);
+			devicesGroups = DeviceHandler.getAllDevices();
+			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
 		return response;
 	}
 

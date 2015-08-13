@@ -134,6 +134,36 @@ public class DeviceHandler{
 		
 		return devices;
 	}
+
+	public static List<Device> getAllDevices() throws Exception {
+		List<Device> devices = new ArrayList<Device>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try{
+			conn = DBConn.getConnection();
+		//	String query = "SELECT * FROM device";
+			String query = "SELECT device.*,device_type.* "
+			+"FROM device,device_type ";
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devices.add(mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get deviceslist");
+		}
+		finally{
+			DbUtils.close(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return devices;
+	}
+	
+	
 	
 //	public void disconnectDevice(int deviceID) throws Exception{
 //		Device device = getDevice(deviceID);
