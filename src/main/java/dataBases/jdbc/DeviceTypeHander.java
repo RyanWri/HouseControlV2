@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelObjects.DeviceType;
 
@@ -115,7 +117,7 @@ public class DeviceTypeHander{
 		}
 	}
 	
-	protected static DeviceType getDeviceTypeByID(int typeID) throws SQLException{
+	public static DeviceType getDeviceTypeByID(int typeID) throws Exception{
 		Connection conn = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -128,7 +130,10 @@ public class DeviceTypeHander{
 			resultSet = statement.executeQuery(query);
 			if(resultSet.next()){
 				deviceType = mapRow(resultSet);
-			};
+			}
+			else{
+				throw new Exception("The device type you have requested doesn't exist");
+			}
 		}
 		catch(SQLException ex){
 			System.out.println("SQL error while trying to get device type");
@@ -151,6 +156,34 @@ public class DeviceTypeHander{
 		deviceType.setTypeID(resultSet.getInt("device_type.typeID"));
 	
 		return deviceType;
+	}
+	
+	public static List<DeviceType> getAllDevicesTypes() throws SQLException{
+		List<DeviceType> devicesTypes = new ArrayList<DeviceType>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try{
+			String query = "SELECT * FROM device_type" ;
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devicesTypes.add(mapRow(resultSet));
+			};
+		}
+		catch(SQLException ex){
+			System.out.println("SQL error while trying to get devices type list");
+			throw ex;
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return devicesTypes;
 	}
 
 }

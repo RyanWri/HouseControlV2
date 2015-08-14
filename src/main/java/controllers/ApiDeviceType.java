@@ -1,7 +1,10 @@
 package controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -79,4 +82,41 @@ public class ApiDeviceType{
 		
 		return response;
 	}
+	
+	@GET
+	@Path("/{deviceTypeID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDeviceTypeByID(@Context HttpServletRequest req,@PathParam("deviceTypeID") int deviceTypeID){
+		Response response = null;
+		DeviceType deviceType = null;
+		try{
+//			SessionHandler.verifyAdminRequest(req);
+			deviceType = DeviceTypeHander.getDeviceTypeByID(deviceTypeID);
+			response = Response.ok(GenericResponse.ok(deviceType)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response all(@Context HttpServletRequest req){
+		Response response = null;
+		List<DeviceType> devicesTypes = null;
+		try{
+//			SessionHandler.verifyAdminRequest(req);
+			devicesTypes = DeviceTypeHander.getAllDevicesTypes();
+			response = Response.ok(GenericResponse.ok(devicesTypes)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
 }
