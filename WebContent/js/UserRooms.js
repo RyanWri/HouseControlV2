@@ -1,5 +1,10 @@
+// add GlobalFunctions to html file
+// add popup when error occurred on ajax requests on this page.
+// disable comments on 'ready' functions.
 var userName;
 var userID;
+var tempRoomID = "";
+var listOfUserRooms = {};
 
 $(function() 
 {
@@ -9,49 +14,158 @@ $(function()
     	userName = localStorage.userrooms_username;
     	//localStorage.userrooms_userID = "";
     	//localStorage.userrooms_userName = "";
+    	$("#addButton").attr("disabled",true);
     	$("#userstitle").text("'"+userName+ "' Accessible Rooms:");
-    	getListOfUserRooms();   
+    	getListOfUserRooms();
     });
     
-    
-   /* $("#addnewuser").click(function()
+    $("#addroom").click(function()
     {
-    	window.location = "Signup.html";
+    	loadRoomsToAdd();
+    	$("#popupbutton").click();
     });  
     
-    $("#edituserbutton").click(function()
-    {  	
-    	localStorage.usertoedit = userName;
-    	window.location = "UpdateUser.html";
+    $("#cancelButton").click(function()
+    {
+    	window.location = "#";
     });
-   
     
+    $("#listOfRooms").change(function()
+    {
+    	if ($("#listOfRooms").val() === "0")
+    	{
+            $("#addButton").attr("disabled",true);
+    	}
+    	else
+    	{
+    		$("#addButton").attr("disabled",false);
+    	}
+    });
     
-	$("#deleteuserbutton").click(function()
-	{	
-		window.location = "#";
-		setTimeout(
-				  function() 
-				  {
-					  $("#popupConform").click();
-				  }, 300);
-	});
-	
-	$("#buttonyes").click(function()
-	{
-		deleteUser(userID);
-	});
-	
-	$("#buttonno").click(function()
-	{
-		window.location = "#";
-	});
-	
-	$("#buttoncontinue").click(function()
-	{
-		window.location = "#";
-	});*/
+    $("#addButton").click(function()
+    {  	
+    	addRoomToUser($("#listOfRooms").val());
+    });
+    
+    $("#noButton").click(function()
+    {
+    	window.location = "#";
+    });
+    
+    $("yesButton").click(function()
+    {
+    	removeRoomFromUser();
+    });
+    
 });
+
+function removeRoomFromUser()
+{
+	var parameters = {};
+	parameters.deviceGroupID = tempRoomID;
+	parameters.userID = userID;
+	var parametersStringified = JSON.stringify(parameters);
+	$.ajax({
+		type: 'DELETE',
+		url: '/HouseControl/api/devices_group/remove_user',
+		data: parametersStringified,
+		datatype: "json",
+		success: function(result)
+		{	
+			if (result.status === "ok")
+			{	
+				window.location ="UserRooms.html";
+			}
+			else
+			{
+				// update to popup.
+				alert(result.data);
+			}
+		},
+		error: function()
+		{
+			// update to popup.
+			alert("connection error");
+		},	
+	});
+}
+
+function addRoomToUser(roomID)
+{
+	
+	var parameters = {};
+	parameters.deviceGroupID = roomID;
+	parameters.userID = userID;
+	var parametersStringified = JSON.stringify(parameters);
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/devices_group/add_user',
+		data: parametersStringified,
+		datatype: "json",
+		success: function(result)
+		{	
+			if (result.status === "ok")
+			{	
+				window.location ="UserRooms.html";
+			}
+			else
+			{
+				// update to popup.
+				alert(result.data);
+			}
+		},
+		error: function()
+		{
+			// update to popup.
+			alert("connection error");
+		},	
+	});
+}
+
+
+function loadRoomsToAdd()
+{
+	$("#listOfRooms").empty();
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/devices_group/all',
+		success: function(result)
+		{	
+			if (result.status === "ok")
+			{
+				var flag;
+				var listOfAllRooms = result.data;
+				for (var i = 0; i < listOfAllRooms.length; i++)
+				{
+					flag = false;
+					for (var j = 0; j < listOfUserRooms.length; j++)
+					{
+						if (listOfAllRooms[i].groupID === listOfUserRooms[j].groupID)
+						{
+							flag = true;
+						}
+					}
+					
+					if (!flag)
+					{
+						$("#listOfRooms").append('<option value="'+listOfAllRooms[i].groupID+'">'+listOfAllRooms[i].name+'</option>');
+					}
+				}
+			}
+			else
+			{
+				// update to popup.
+				alert("failed in here!");
+			}
+		},
+		error: function()
+		{
+			// update to popup.
+			alert("connection error");
+		},	
+	});
+
+}
 
 
 function getListOfUserRooms()
@@ -63,14 +177,13 @@ function getListOfUserRooms()
 		{
 			if (result.status === "ok")
 			{
-				var listOfRooms = {};
-				listOfRooms = result.data;
-				for (var i = 0; i < listOfRooms.length; i++) 
+				listOfUserRooms = result.data;
+				for (var i = 0; i < listOfUserRooms.length; i++) 
 				{											
 				$("#listofusers").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r">\n\
-				        <img src="../img/'+listOfRooms[i].picData+'" class="button">\n\
-				        <h2>'+listOfRooms[i].name+'</h2>\n\
+						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfUserRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deleteRoomAcces('+listOfUserRooms[i].groupID+')">\n\
+				        <img src="../img/'+listOfUserRooms[i].picData+'" class="button">\n\
+				        <h2>'+listOfUserRooms[i].name+'</h2>\n\
 				        </a></li></ul>');
 				}
 			}
@@ -82,49 +195,9 @@ function getListOfUserRooms()
 	});
 }
 
-/*
-function deleteUser(ID)
+function deleteRoomAcces(roomID)
 {
-	window.location = "#";
-	var url1 = '/HouseControl/api/user/delete/' + ID;
-	$.ajax({
-		type: 'DELETE',
-		url: url1,
-		success: function(result)
-		{
-			if (result.status === "ok")
-			{
-				window.location = "UsersManagement.html";
-			}
-			else
-			{
-				errorDialog(result.data);
-			}
-		},
-		error: function()
-		{
-			errorDialog("Connection Error!");
-		}
-	});
+	tempRoomID = roomID;
+	$("#popupConfirm").click();
 }
 
-function errorDialog(errorText)
-{
-	$("#popupMessagetext").text("Error!");
-	$("#popupMessagesubtext").text(errorText);
-	setTimeout(
-			  function() 
-			  {
-				  $("#popupMessage").click();
-			  }, delay);
-}
-
-
-function userDialog(username, userid)
-{
-	userID = userid;
-	userName = username;
-	$("#popupsubtext").text(username);
-	$("#popupbutton").click();
-}
-*/
