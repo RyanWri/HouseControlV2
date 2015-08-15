@@ -29,6 +29,11 @@ function moveToChangePassword()
 	window.location = "ChangePassword.html";
 }
 
+function moveToRoomsManagement()
+{
+	window.location = "Room_Management.html";
+}
+
 function logout()
 {
 	$.ajax({
@@ -56,6 +61,9 @@ function initMenu()
 	if (localStorage.type === "Admin")
 	{
 		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToUsersManagement()">Users Management</a></li>');
+		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToRoomsManagement()">Rooms Management</a></li>');
+		
+		
 	}
 	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html">Statistics</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToChangePassword()">Change Password</a></li>');
