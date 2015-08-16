@@ -266,6 +266,7 @@ public class PiGpio {
 		double hours;
 		double voltage;
 		String totalConsumption;
+		
 		try{
 			if(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))
 			{
@@ -288,4 +289,3 @@ public class PiGpio {
 	}
 
 }
- 
