@@ -1,0 +1,40 @@
+/*
+	Author: Ran Yamin 25/07/2015
+	Css for Room view as single page
+ */
+
+  body {
+    padding-top: 120px;
+    padding-bottom: 40px;
+  }
+    
+select.icon-menu option {
+background-repeat:no-repeat;
+background-position:bottom left;
+padding-left:30px;
+}
+select#devices option[value="LP"] {
+background-image:url(../img/lamp.png);
+}
+select#devices option[value="TV"] {
+background-image:url(flags/india.png);
+}
+select#devices option[value="KE"] {
+background-image:url(flags/england.png);
+}
+select#devices option[value="WH"] {
+background-image:url(flags/france.png);
+}
+select#devices option[value="AC"] {
+background-image:url(flags/germany.png);
+}
+
+li {
+  list-style: none;
+  height: auto;
+  line-height: 2em;
+  margin: 0;
+  padding: 0 0.5em;
+  overflow: hidden;
+  width: auto;
+}

@@ -6,8 +6,46 @@
   body {
     padding-top: 120px;
     padding-bottom: 40px;
-    /*background-color: #eee;*/
-	background-image: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg');
   }
  
- 
+ul a{
+    list-style: none; /* This removes the default bullets */
+    padding-left: 20px; /* This provides proper indentation for your icons */
+    width: 200px;
+}
+ul { 
+    position: relative; /* Allows you to absolutely place the :before element
+    					 relative to the <li>'s bounding box. */
+    list-style: none;        
+    width: 500px;
+}
+
+#ListAllItems
+{
+	background-color: Yellow;
+	padding-left: 30px;
+}
+
+.ui-block-a a, .ui-block-b a, .ui-block-c a,.ui-block-d a{
+    border: 1px solid black;
+    height: 70px;
+    font-weight: bold;
+    text-align: center;
+    padding: 30px;
+    width: 150px;
+}
+
+#formAddDeviceToRoom select
+{
+	width:150px;
+	height:75px;
+	background-color:grey;
+}
+
+.TV
+{
+	width: 300px;
+	height: 300px;
+	background-image: url("../img/tv.png"); 
+}
+	

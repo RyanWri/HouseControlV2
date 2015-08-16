@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Room View extended</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+<link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
+<link rel="stylesheet" href="../css/nativedroid2.color.deep-orange.css" />
+<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
+</head>
+<body class="ui-mobile-viewport ui-overlay-a">
+		<!-- menu panel-->
+		<div data-role="panel" id="menu_panel" data-position="right" data-theme='b'>
+			<!-- panel content goes here -->
+			<ol>
+				<li><a href="Statistics.html" data-role='button' rel="external" data-ajax="false">Statistics</a></li>
+				<li><a href="Faq.html" data-role='button' rel="external" data-ajax="false">FAQ</a></li>
+				<li><a href="Login.html" data-role='button' rel="external" data-ajax="false">Logout</a></li>
+			</ol>
+		</div>
+		<!-- /panel -->
+
+	<div data-role="page" id="Room_View" class="ui-page ui-page-theme-a">
+		<div data-role="header" data-position='fixed' data-tap-toggle='false' class="ui-page-theme-a ui-header">
+			<h1>Room name</h1>
+			<a href="#" data-rel="back"
+				class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"
+				data-role="button" role="button">Back</a> <a href='#menu_panel'
+				data-role='button' data-icon='bars' data-iconpos='right'
+				data-inline='true'></a>
+		</div>
+
+		<div data-role="main" class="ui-content " role="main">
+
+			<div data-role="content">
+				<a href="#AddDeviceDialog" data-rel="popup" data-transition='pop' data-position-to='window'
+					data-inline='true' data-icon='external-link' data-role='button' data-transition='pop'>Add Device</a>
+			</div>
+			
+			
+			<ul data-role="listview" id="ListAllDevices">
+					<!-- all devices will be shown within this list -->
+			</ul>
+			
+			
+			
+		</div> <!-- /content -->
+		
+		<!--  add device Dialog -->
+	<div data-role="popup" id="AddDeviceDialog" data-theme="b">
+
+		<div data-role="header">
+			<h1>Add Device</h1>
+		</div>
+
+		<div data-role="content" data-theme='b'>
+			<form id="formAddDevice">
+			<ul class="fieldlist">
+			 <li>
+                <label for="deviceName">enter device Name</label>
+                <input id="deviceName" type="text" class="k-textbox" style="width: 100%;" />
+            </li>
+            <li>
+                <label for="description"> Description </label>
+                <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
+            </li>
+            <li>
+				<label for="devices">Straight Forward</label> <select name="devices" id="devices" class="icon-menu">
+					<option value="">Select a device</option>
+					<option>LAMP</option>
+					<option>TV</option>
+					<option>KETTLE</option>
+					<option>Water Heater</option>
+					<option>Air Conditioner</option> </select>
+			</li>
+			</ul>
+			<input type="submit" value="add" />
+			</form>
+
+		</div>
+
+	</div>
+	<!-- end of add device Dialog -->
+
+
+	</div>
+	<!--  end of room_view page  -->
+	
+	
+	
+
+</body>
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="../js/DeviceManagement.js"></script>
+<script src="../js/nativedroid2.js"></script>
+
+</html>
