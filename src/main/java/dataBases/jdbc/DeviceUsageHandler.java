@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import modelObjects.Device;
@@ -347,4 +348,38 @@ public class DeviceUsageHandler {
 
 		return timeFrameInMilliseconds;
 	}
+
+	public static JSONArray getDeviceStatisticsByGroupID(String timeFrame, int groupID) throws Exception {
+		JSONArray groupDevicesConsumption = new JSONArray();
+		List<Device> groupDevices = null;
+		long deviceSumWorkTime, voltageSum = 0;
+		double hours;
+				
+		try{
+			if(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))
+			{
+				groupDevices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID( groupID);
+				for (Device currentDevice : groupDevices) {
+					deviceSumWorkTime = getDeviceSumWorkTimeStatistics(currentDevice.getDeviceID(), timeFrame);
+					hours = translateConsumedTimeToHours(deviceSumWorkTime);
+					voltageSum = (long)(currentDevice.getVoltage() *((int) hours) + (currentDevice.getVoltage() * (((hours % 1d)/60d)*100d)));
+					JSONObject currentDeviceConsumption = new JSONObject();
+					currentDeviceConsumption.put("deviceName", currentDevice.getName());
+					currentDeviceConsumption.put("hours", hours);
+					currentDeviceConsumption.put("voltageSum", voltageSum);
+					groupDevicesConsumption.put(currentDeviceConsumption);
+				}
+			}
+			else{
+			throw new Exception("Please select day/week/month as a time frame!");
+			}	
+		}
+		catch(Exception ex){
+			throw new Exception("An error has occured while trying to calculate device statistics by group ID");
+		}
+		
+		
+		return groupDevicesConsumption;
+	}
+
 }
