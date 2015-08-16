@@ -17,6 +17,7 @@ public class RelayConnectionHandler{
 	public static final String RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE = "The device was connected successfully to the relay port";
 	public static final String RELAY_CONNECTION_INIT_RELAY_PORTS_SUCCESS_MESSAGE = "Relay ports were initiallized successfully";
 	public static final int PIN_NOT_CONNECTED = -1;
+	
 	public static void initRelayPorts() throws Exception{
 		Connection conn = null;
 		Statement statement = null;
@@ -241,5 +242,50 @@ public class RelayConnectionHandler{
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
+	}
+
+	public static void disconnectDeviceFromRelay(int deviceID) throws Exception {
+		int relayPort;
+		
+		try{
+			relayPort = getRelayPortOfConnectedDevicesOnRelay(deviceID);
+			updateDeviceToRelayPort(relayPort, DISCONNECTED_DEVICE);
+		}
+		catch (Exception ex) {
+			throw ex;
+		}
+	}
+
+	private static int getRelayPortOfConnectedDevicesOnRelay(int deviceID) throws Exception {
+		int relayPort = PIN_NOT_CONNECTED;
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try{
+			if( deviceID < 0){
+				throw new Exception("The device ID that you want to disconnect is incorrecet");		
+			}
+			else{
+				conn = DBConn.getConnection();
+				String query = "SELECT relay_connection.* "
+							    +"FROM relay_connection "
+								+"WHERE deviceID =" + deviceID;
+				statement = conn.createStatement();
+				resultSet = statement.executeQuery(query);
+				if(resultSet.next()){
+					relayPort= resultSet.getInt("relayPort");
+				}
+			}
+		}
+		catch (Exception ex) {
+			throw new Exception("Failed to get relay port of the selected device");
+		}
+		finally{
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return relayPort;
 	}
 }
