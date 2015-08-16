@@ -148,4 +148,34 @@ public class UserInGroupHandler{
 		return devicesGroups;
 	}
 	
+	public static boolean isUserAuthorizedGettingDevicesGroupData(int userID,int devicesGroupID) throws Exception{
+		boolean isAuthorized = false;
+		
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		if(userID<1 || devicesGroupID <1 ){
+			throw new Exception("Please provided a valid user and devices group");
+		}
+		try{
+			String query = "SELECT * FROM user_in_group where userID=" + userID + " and groupID=" + devicesGroupID;
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			if(resultSet.next()){
+				isAuthorized = true;
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to determine user access to devices group");
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return isAuthorized;	
+	}
+	
 }

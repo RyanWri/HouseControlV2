@@ -212,8 +212,31 @@ public class ApiUser{
 			int userID = jsonObject.getInt("userID");
 			String oldPassword = jsonObject.getString("oldPassword");
 			String newPassword = jsonObject.getString("newPassword");
-			//UserHandler.changeUserPassword(userID, oldPassword, newPassword, SessionHandler.getType(req));
 			UserHandler.changeUserPassword(userID, oldPassword, newPassword);
+			response = Response.ok(GenericResponse.ok(UserHandler.USER_CHANGE_PASSWORD_SUCCESS_MESSAGE)).build();
+		}
+		catch(JsonSyntaxException ex){
+			response = Response.ok(GenericResponse.error("Internal error")).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@PUT
+	@Path("/reset_password")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response resetPassword(@Context HttpServletRequest req, String passwordJson){
+		Response response = null;
+
+		//example: {userID:4}
+		try{
+//			SessionHandler.verifyAdminRequest(req);
+			JSONObject jsonObject = new JSONObject(passwordJson);
+			int userID = jsonObject.getInt("userID");
+			UserHandler.resetUserPassword(userID, UserHandler.USER_DEFAULT_RESET_PASSWORD);
 			response = Response.ok(GenericResponse.ok(UserHandler.USER_CHANGE_PASSWORD_SUCCESS_MESSAGE)).build();
 		}
 		catch(JsonSyntaxException ex){
