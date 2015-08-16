@@ -311,7 +311,7 @@ public class DeviceUsageHandler {
 			throw ex;
 		}
 		return obj;
-	}
+	} 
 
 	private static double translateConsumedTimeToHours(long deviceSumWorkTime) {
 		double minutes ;
