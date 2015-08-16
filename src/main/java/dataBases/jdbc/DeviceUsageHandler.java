@@ -16,11 +16,11 @@ import modelObjects.Device;
 import modelObjects.DeviceUsage;
 
 public class DeviceUsageHandler {
-	public static final int DAY_OFFSET = 24*60*60000 ; //HOURS*MINUTES*MILLISECONDS
-	public static final int WEEK_OFFSET = 168*60*60000;
-	public static final int MONTH_30_OFFSET = 720*60*60000;
-	public static final int HOUR_IN_MILLISECONDS = 60*60000;
-	public static final int MINUTES_IN_MILLISECONDS = 1000*60;
+	public static final long DAY_OFFSET = 24L*60*60000 ; //HOURS*MINUTES*MILLISECONDS
+	public static final long WEEK_OFFSET = 168L*60*60000;
+	public static final long MONTH_30_OFFSET = 720L*60*60000;
+	public static final long HOUR_IN_MILLISECONDS = 60L*60000;
+	public static final long MINUTES_IN_MILLISECONDS = 1000L*60;
 
 
 	public static DeviceUsage getLastDeviceUsage(int deviceID) throws Exception{
