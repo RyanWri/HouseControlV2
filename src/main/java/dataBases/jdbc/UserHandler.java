@@ -21,7 +21,8 @@ public class UserHandler{
 	public static final String USER_UPDATE_DELETE_MESSAGE = "User has been deleted";
 	public static final String USER_LOGOUT_SUCCESS_MESSAGE = "You have been logged out";
 	public static final String USER_CHANGE_PASSWORD_SUCCESS_MESSAGE = "User password has been updated";
-
+	public static final String USER_RESET_PASSWORD_SUCCESS_MESSAGE = "User password has been set to 'password'"  ;
+	public static final String USER_DEFAULT_RESET_PASSWORD = "password";
 	public static void insertNewUser(String username,String password,String firstname,String lastname, String email,String mobile) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -179,7 +180,45 @@ public class UserHandler{
 			DbUtils.closeQuietly(conn);
 		}
 	}
-//	public static void changeUserPassword(int userID,String oldPassword,String newPassword,UserType userTypeRequestedChangingPassword) throws Exception
+	public static void resetUserPassword(int userID,String newPassword) throws Exception{
+		Connection conn = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+
+		if(newPassword.isEmpty()){
+			throw new Exception("Please provide and new password");
+		}
+		if(userID<1){
+			throw new Exception("Cannot update a user that doesn't exist");
+		}
+		try{
+			String query = "UPDATE user "
+					+"SET password=? "
+					+"WHERE userID = " + userID;
+			conn = DBConn.getConnection();
+			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			statement.clearParameters();
+			statement.setString(1, newPassword);
+
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded == 0){
+				throw new Exception("Failed to reset password");
+			}
+			resultSet = statement.getGeneratedKeys();
+			if (resultSet != null && resultSet.next()) {
+				System.out.println("User password has been set to 'password'");
+			}
+		}
+		catch(SQLException ex){
+			throw new Exception("A problem has occured while trying reset user password");
+		}
+		finally{
+			DbUtils.closeQuietly(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+	}
+
 	public static void changeUserPassword(int userID,String oldPassword,String newPassword) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
