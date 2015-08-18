@@ -282,7 +282,7 @@ public class PiGpio {
 		catch(Exception ex){
 			throw ex;
 		}
-		return totalConsumption;
+		return totalConsumption; 
 	}
 
 }
