@@ -171,7 +171,7 @@ public class ApiDevice{
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
 		return response;
-	}
+	} 
 	
 	@GET
 	@Path("/statistics/group/{groupID}/{timeFrame}")
