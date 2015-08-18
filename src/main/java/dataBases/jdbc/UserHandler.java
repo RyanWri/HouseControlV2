@@ -180,6 +180,7 @@ public class UserHandler{
 			DbUtils.closeQuietly(conn);
 		}
 	}
+	
 	public static void resetUserPassword(int userID,String newPassword) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -356,6 +357,20 @@ public class UserHandler{
 		}
 
 		return user;
+	}
+	
+	protected static boolean isUserExists(int userID){
+		boolean isUserExists = false;
+		try{
+			if(getUserByUserID(userID)!=null){
+				isUserExists = true;
+			}
+		}
+		catch(Exception ex){
+			isUserExists = false;
+		}
+
+		return isUserExists;
 	}
 
 	protected static User mapRow(ResultSet rs,boolean hidePassword) throws SQLException{

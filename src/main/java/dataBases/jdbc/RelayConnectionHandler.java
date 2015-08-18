@@ -16,6 +16,7 @@ public class RelayConnectionHandler{
 	public static final int DISCONNECTED_DEVICE = -1;
 	public static final String RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE = "The device was connected successfully to the relay port";
 	public static final String RELAY_CONNECTION_INIT_RELAY_PORTS_SUCCESS_MESSAGE = "Relay ports were initiallized successfully";
+	public static final String RELAY_CONNECTION_DISCONNECT_DEVICE_FROM_RELAY_PORT_SUCCESS_MESSAGE ="The device was disconnected from relay";
 	public static final int PIN_NOT_CONNECTED = -1;
 	
 	public static void initRelayPorts() throws Exception{
