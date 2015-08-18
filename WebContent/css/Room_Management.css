@@ -26,14 +26,14 @@ ul {
 	padding-left: 30px;
 }
 
-.ui-block-a a, .ui-block-b a, .ui-block-c a,.ui-block-d a{
-    border: 1px solid black;
+/* .ui-block-a a, .ui-block-b a, .ui-block-c a,.ui-block-d a{
+    border: 1px solid black; 
     height: 70px;
     font-weight: bold;
     text-align: center;
     padding: 30px;
     width: 150px;
-}
+} */
 
 #formAddDeviceToRoom select
 {

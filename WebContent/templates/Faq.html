@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-	<link rel="stylesheet" href="../themes/HouseControl.css" />
-	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+<link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
+<link rel="stylesheet" href="../css/nativedroid2.css" />
+<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
   <title> Frequently Asked Questions</title>
 </head>
-<body>
-	<div data-role="page" id="Faq" data-theme="d" data-add-back-btn="true">
+<body class="ui-mobile-viewport ui-overlay-a">
+
 
 	<!-- menu panel-->
-	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
+	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal" data-theme="a">
     <!-- panel content goes here -->
 		<ol>
-			<li><a href="Statistics.html">Statistics</a></li>
-			<li><a href="Faq.html">FAQ</a></li>
-			<li><a href="Login.html">Logout</a></li>
-		</ol>
+				<li><a href="Statistics.html" data-role='button' rel="external" data-ajax="false">Statistics</a></li>
+				<li><a href="Faq.html" data-role='button' rel="external" data-ajax="false">FAQ</a></li>
+				<li><a href="Login.html" data-role='button' rel="external" data-ajax="false">Logout</a></li>
+			</ol>
 	</div><!-- /panel -->
 	
-	<div data-role="header">
-		<h1>Frequently Asked Questions</h1>
-		<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">menu</a>
+		<div data-role="page" id="Faq" data-theme="a" data-add-back-btn="true">
+	<div data-role="header" data-position='fixed' data-tap-toggle='false' class="ui-page-theme-a ui-header">
+		<h1 class="ui-title">Frequently Asked Questions</h1>
+		<a href="#" data-rel="back" class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all" data-role="button" role="button">Back</a> 
+		<a href='#menu_panel' data-role='button' data-icon='bars' data-iconpos='right' data-inline='true'></a>
 	</div>
 
   <div data-role="main" class="ui-content">
@@ -47,7 +49,7 @@
 </ol>
   </div>
 
-  <div data-role="footer">
+  <div data-role="footer" class="ui-footer clr-bg-lime">
     <h1>HouseControl v1.1</h1>
   </div>
 
@@ -55,4 +57,9 @@
 
 
 </body>
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="../js/nativedroid2.js"></script>
+
 </html>

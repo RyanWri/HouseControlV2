@@ -3,31 +3,34 @@
   <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-	<link rel="stylesheet" href="../themes/HouseControl.css" />
-	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
 	<link rel="stylesheet" type="text/css" href="../css/Login.css"/>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+	<link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
+	<link rel="stylesheet" href="../css/nativedroid2.css" />
+	<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
     <title>Login</title>
   </head>
-  <body>
-	<div data-role="page" id="Login" data-theme="d">
-		<div data-role="header">
-			<h1>Login</h1>
+  
+  
+  <body class="ui-mobile-viewport ui-overlay-a">
+	<div data-role="page" id="Login" class="ui-page-theme-a">
+		<div data-role="header" class="ui-page-theme-a ui-header">
+			<h1 class="ui-title">Login</h1>
 	    </div>			
-		<div id="containerLogin" class="container-fluid">
+		<div id="containerLogin" class="container-fluid ui-content">
 			<form id="formUserLogin" class="navbar-form navbar-left ui-widget">
 				<label class="control-label">Username:</label> 
-				<input id="textBoxLoginUsername" type="text" name="username" class="form-control" placeholder="Username" minlength="2" required/><br>
+				<input id="textBoxLoginUsername" type="text" name="username" class="form-control ui-input-text" placeholder="Username" minlength="2" required/><br>
 				<label class="control-label">Password:</label> 
-				<input id="textBoxLoginPassword" type="password" name="password" class="form-control" placeholder="Password" minlength="6" required/>
+				<input id="textBoxLoginPassword" type="password" name="password" class="form-control ui-input-text" placeholder="Password" minlength="6" required/>
 				<label class="control-label" id="labelLoginInfo" hidden="true"></label><br>
 				<button type="submit" class="btn btn-lg btn-primary btn-block" id="btnSignIn">Login</button>
 				<label class="errorMsg" id="labelLoginError"></label>
 			</form>
 		</div>
-	<div data-role="footer">
+	<div data-role="footer" class="ui-footer">
 		<h1>House Control</h1>
 	</div>
 	<a href="#popupDialog" id="popupbutton" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
@@ -42,10 +45,10 @@
 			</div>
 	</div>
   </body>
-  	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/Login.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="../js/Login.js"></script>
+	<script src="../js/nativedroid2.js"></script>
 </html>
