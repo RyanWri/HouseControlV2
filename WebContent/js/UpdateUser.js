@@ -59,17 +59,13 @@ $(function()
 	            	{
 	        			flag = 0;
 	            		$.mobile.loading("hide");
-	            		$("#popupMessagesubtext").text("Succeed to update user details");
-	        			$("#popupMessagetext").text("Success!");
-	        			$("#popupMessage").click();
+	        			MessagePopup("Success!", "Succeed to update user details");
 	            	}
 	            	else
 	            	{
 	            		flag = 1;
 	            		$.mobile.loading("hide");
-	            		$("#popupMessagesubtext").text(result.data);
-	        			$("#popupMessagetext").text("Error!");
-	        			$("#popupMessage").click();
+	        			MessagePopup("Error!", result.data);
 	            	}
 	            	
 
@@ -77,9 +73,7 @@ $(function()
 	            {
             		flag = 0;
             		$.mobile.loading("hide");
-            		$("#popupMessagesubtext").text("Connection Error!");
-        			$("#popupMessagetext").text("Error!");
-        			$("#popupMessage").click();	                  
+        			MessagePopup("Error!", "Connection Error!");
 	            });
 				
 			} 
@@ -106,18 +100,14 @@ function loadUserInformation()
 		error: function()
 		{
 			$.mobile.loading("hide");
-			$("#popupMessagetext").text("Error!");
-			$("#popupMessagesubtext").text("Connection error");
-			$("#popupMessage").click();
+			MessagePopup("Error!", "Connection Error");
 		},
 		statusCode: 
 		{
 			500: function()
 			{
-				$.mobile.loading("hide");
-				$("#popupMessagetext").text("Error!");
-				$("#popupMessagesubtext").text("User name is not valid");
-				$("#popupMessage").click();
+				$.mobile.loading("hide")
+				MessagePopup("Error!", "User name is not valid");;
 			}
 		}
 
@@ -126,6 +116,41 @@ function loadUserInformation()
 
 function resetUserPassword()
 {
-	// Should add here code for reset user password.
+	flag = 1;
+	var parameters = {};    
+    parameters.userID = userID;
+    var parametersStringified = JSON.stringify(parameters);
+	
+	$.mobile.loading("show");
+	$.ajax({
+		type: 'PUT',
+		url: '/HouseControl/api/user/reset_password',
+		data: parametersStringified,
+		datatype: "json",		
+		success: function(result)
+		{
+			$.mobile.loading("hide");
+			if (result.status === "ok")
+			{
+				MessagePopup("Success!", "User password was set to 'password'");
+			}
+			else
+			{
+				MessagePopup("Error!", result.data);
+			}
+		},
+		error: function()
+		{
+			$.mobile.loading("hide");
+			MessagePopup("Error!", "Connection Error");
+		},
+	});
+}
+
+function MessagePopup(messageTitle, message)
+{
+	$("#popupMessagetext").text(messageTitle);
+	$("#popupMessagesubtext").text(message);
+	$("#popupMessage").click();
 }
    

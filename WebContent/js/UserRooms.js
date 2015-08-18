@@ -1,10 +1,9 @@
-// add GlobalFunctions to html file
-// add popup when error occurred on ajax requests on this page.
 // disable comments on 'ready' functions.
 var userName;
 var userID;
 var tempRoomID = "";
 var listOfUserRooms = {};
+var delay = 300;
 
 $(function() 
 {
@@ -52,23 +51,24 @@ $(function()
     	window.location = "#";
     });
     
-    $("yesButton").click(function()
+    $("#yesButton").click(function()
     {
     	removeRoomFromUser();
     });
     
+    $("#continueButton").click(function()
+    {
+    	window.location = "UserHome.html";
+    });
 });
 
 function removeRoomFromUser()
 {
-	var parameters = {};
-	parameters.deviceGroupID = tempRoomID;
-	parameters.userID = userID;
-	var parametersStringified = JSON.stringify(parameters);
+	var formParam = "userID="+userID+"&deviceGroupID="+tempRoomID;
 	$.ajax({
 		type: 'DELETE',
 		url: '/HouseControl/api/devices_group/remove_user',
-		data: parametersStringified,
+		data: formParam,
 		datatype: "json",
 		success: function(result)
 		{	
@@ -78,29 +78,23 @@ function removeRoomFromUser()
 			}
 			else
 			{
-				// update to popup.
-				alert(result.data);
+				errorPopup(result.data);
 			}
 		},
 		error: function()
 		{
-			// update to popup.
-			alert("connection error");
+			errorPopup("Connection Error");	
 		},	
 	});
 }
 
 function addRoomToUser(roomID)
 {
-	
-	var parameters = {};
-	parameters.deviceGroupID = roomID;
-	parameters.userID = userID;
-	var parametersStringified = JSON.stringify(parameters);
+	var formParam = "userID="+userID+"&deviceGroupID="+roomID;
 	$.ajax({
 		type: 'POST',
 		url: '/HouseControl/api/devices_group/add_user',
-		data: parametersStringified,
+		data: formParam,
 		datatype: "json",
 		success: function(result)
 		{	
@@ -110,14 +104,12 @@ function addRoomToUser(roomID)
 			}
 			else
 			{
-				// update to popup.
-				alert(result.data);
+				errorPopup(result.data);
 			}
 		},
 		error: function()
 		{
-			// update to popup.
-			alert("connection error");
+			errorPopup("Connection Error");	
 		},	
 	});
 }
@@ -154,14 +146,12 @@ function loadRoomsToAdd()
 			}
 			else
 			{
-				// update to popup.
-				alert("failed in here!");
+				errorPopup(result.data);
 			}
 		},
 		error: function()
 		{
-			// update to popup.
-			alert("connection error");
+			errorPopup("Connection Error");	
 		},	
 	});
 
@@ -187,10 +177,14 @@ function getListOfUserRooms()
 				        </a></li></ul>');
 				}
 			}
+			else
+			{
+				errorPopup(result.data);
+			}
 		},
 		error: function()
 		{
-			alert("error!");						
+			errorPopup("Connection Error");					
 		}
 	});
 }
@@ -199,5 +193,17 @@ function deleteRoomAcces(roomID)
 {
 	tempRoomID = roomID;
 	$("#popupConfirm").click();
+}
+
+function errorPopup(message)
+{
+	window.location = "#";
+	setTimeout(
+			  function() 
+			  {
+					$("#popupMessagetext").text("Error!");
+					$("#popupMessagesubtext").text(message);
+					$("#popupMessage").click();
+			  }, delay);	
 }
 

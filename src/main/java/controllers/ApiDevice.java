@@ -12,6 +12,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
+
 import modelObjects.Device;
 import modelObjects.DevicesGroup;
 import utils.GenericResponse;
@@ -21,6 +23,7 @@ import utils.SessionHandler;
 import com.google.gson.Gson;
 
 import dataBases.jdbc.DeviceHandler;
+import dataBases.jdbc.DeviceUsageHandler;
 import dataBases.jdbc.DevicesGroupHandler;
 import dataBases.jdbc.RelayConnectionHandler;
 
@@ -71,8 +74,15 @@ public class ApiDevice{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response diconnectDevice(@Context HttpServletRequest req,@PathParam("deviceID") int deviceID){
 		Response response = null;
-
-		//To implement
+		try{
+			//SessionHandler.verifyAdminRequest(req);
+			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
+			//SET DEVICE TO INACTIVE
+			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
 
 		return response;
 	}
@@ -162,6 +172,24 @@ public class ApiDevice{
 		}
 		return response;
 	}
+	
+	@GET
+	@Path("/statistics/group/{groupID}/{timeFrame}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response DeviceStatistics(@Context HttpServletRequest req, @PathParam("groupID") int groupID, @PathParam("timeFrame")String timeFrame){
+		Response response = null;
+
+		try{
+//			SessionHandler.isAuthUser(req);
+			JSONArray groupDevicesConsumption = DeviceUsageHandler.getDeviceStatisticsByGroupID(timeFrame, groupID);
+			response = Response.ok(GenericResponse.ok(groupDevicesConsumption)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+	
 	
 	@GET
 	@Path("/all")

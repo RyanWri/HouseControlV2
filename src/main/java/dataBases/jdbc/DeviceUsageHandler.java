@@ -10,17 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import modelObjects.Device;
 import modelObjects.DeviceUsage;
 
 public class DeviceUsageHandler {
-	public static final int DAY_OFFSET = 24*60*60000 ; //HOURS*MINUTES*MILLISECONDS
-	public static final int WEEK_OFFSET = 168*60*60000;
-	public static final int MONTH_30_OFFSET = 720*60*60000;
-	public static final int HOUR_IN_MILLISECONDS = 60*60000;
-	public static final int MINUTES_IN_MILLISECONDS = 1000*60;
+	public static final long DAY_OFFSET = 24L*60*60000 ; //HOURS*MINUTES*MILLISECONDS
+	public static final long WEEK_OFFSET = 168L*60*60000;
+	public static final long MONTH_30_OFFSET = 720L*60*60000;
+	public static final long HOUR_IN_MILLISECONDS = 60L*60000;
+	public static final long MINUTES_IN_MILLISECONDS = 1000L*60;
 
 
 	public static DeviceUsage getLastDeviceUsage(int deviceID) throws Exception{
@@ -311,7 +312,7 @@ public class DeviceUsageHandler {
 			throw ex;
 		}
 		return obj;
-	}
+	} 
 
 	private static double translateConsumedTimeToHours(long deviceSumWorkTime) {
 		double minutes ;
@@ -347,4 +348,38 @@ public class DeviceUsageHandler {
 
 		return timeFrameInMilliseconds;
 	}
+
+	public static JSONArray getDeviceStatisticsByGroupID(String timeFrame, int groupID) throws Exception {
+		JSONArray groupDevicesConsumption = new JSONArray();
+		List<Device> groupDevices = null;
+		long deviceSumWorkTime, voltageSum = 0;
+		double hours;
+				
+		try{
+			if(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))
+			{
+				groupDevices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID( groupID);
+				for (Device currentDevice : groupDevices) {
+					deviceSumWorkTime = getDeviceSumWorkTimeStatistics(currentDevice.getDeviceID(), timeFrame);
+					hours = translateConsumedTimeToHours(deviceSumWorkTime);
+					voltageSum = (long)(currentDevice.getVoltage() *((int) hours) + (currentDevice.getVoltage() * (((hours % 1d)/60d)*100d)));
+					JSONObject currentDeviceConsumption = new JSONObject();
+					currentDeviceConsumption.put("deviceName", currentDevice.getName());
+					currentDeviceConsumption.put("hours", hours);
+					currentDeviceConsumption.put("voltageSum", voltageSum);
+					groupDevicesConsumption.put(currentDeviceConsumption);
+				}
+			}
+			else{
+			throw new Exception("Please select day/week/month as a time frame!");
+			}	
+		}
+		catch(Exception ex){
+			throw new Exception("An error has occured while trying to calculate device statistics by group ID");
+		}
+		
+		
+		return groupDevicesConsumption;
+	}
+
 }

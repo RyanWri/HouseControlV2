@@ -205,7 +205,7 @@ public class PiGpio {
 	}
 	
 	public static void initializePiGpio() throws Exception {
-		myPins = new GpioPinDigitalOutput [NUMBER_OF_PINS_IN_RPI];
+		//$$myPins = new GpioPinDigitalOutput [NUMBER_OF_PINS_IN_RPI];
 		
 		//gpio = GpioFactory.getInstance(); //$$ FOR DEBUG
 
@@ -256,7 +256,7 @@ public class PiGpio {
 		catch(Exception ex){
 			
 		}
-		return String.format("%.3f",sum);
+		return String.format("%.2f",sum);
 	}
 	
 	public static String getDeviceStatistics(String timeFrame, int deviceID) throws Exception {
@@ -266,6 +266,7 @@ public class PiGpio {
 		double hours;
 		double voltage;
 		String totalConsumption;
+		
 		try{
 			if(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))
 			{
@@ -273,7 +274,7 @@ public class PiGpio {
 				device = (Device) deviceConsumption.get("device");
 				hours = (double)deviceConsumption.get("hours");
 				voltage = (double)device.getVoltage();
-				totalConsumption = String.format("%.3f",voltage *((int) hours) + (voltage * (((hours % 1d)/60d)*100d)));
+				totalConsumption = String.format("%.2f",voltage *((int) hours) + (voltage * (((hours % 1d)/60d)*100d)));
 				
 				DeviceUsage = "In the last "+ timeFrame + " device "+deviceID +":" + device.getName() + " consumed " + totalConsumption + " volts in "+ String.format("%.2f", hours) + " hours";
 			}
