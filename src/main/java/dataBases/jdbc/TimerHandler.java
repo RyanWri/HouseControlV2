@@ -98,7 +98,7 @@ public class TimerHandler {
 		user.setUserID(resultSet.getInt("userID"));
 		timer.setUser(user);
 		timer.setTurnOnTime(resultSet.getTimestamp("turnOnTime"));
-		timer.setTurnOffTime(resultSet.getTimestamp("turnOnTime"));
+		timer.setTurnOffTime(resultSet.getTimestamp("turnOffTime"));
 		timer.setState(Timer.TimerState.valueOf(resultSet.getString("state")));
 			
 		return timer;

@@ -15,16 +15,13 @@ import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 
 import modelObjects.Device;
-import modelObjects.DevicesGroup;
 import utils.GenericResponse;
 import utils.PiGpio;
-import utils.SessionHandler;
 
 import com.google.gson.Gson;
 
 import dataBases.jdbc.DeviceHandler;
 import dataBases.jdbc.DeviceUsageHandler;
-import dataBases.jdbc.DevicesGroupHandler;
 import dataBases.jdbc.RelayConnectionHandler;
 
 
@@ -77,8 +74,8 @@ public class ApiDevice{
 		try{
 			//SessionHandler.verifyAdminRequest(req);
 			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
-			//SET DEVICE TO INACTIVE
-			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE)).build();
+			DeviceHandler.updateDeviceState(deviceID, Device.DeviceState.Inactive);
+			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_DISCONNECT_DEVICE_FROM_RELAY_PORT_SUCCESS_MESSAGE)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
@@ -174,7 +171,7 @@ public class ApiDevice{
 	}
 	
 	@GET
-	@Path("/statistics/group/{groupID}/{timeFrame}")
+	@Path("/statistics/devices_group/{groupID}/{timeFrame}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response DeviceStatistics(@Context HttpServletRequest req, @PathParam("groupID") int groupID, @PathParam("timeFrame")String timeFrame){
 		Response response = null;
@@ -202,6 +199,24 @@ public class ApiDevice{
 //			SessionHandler.isAdmin(req);
 			devicesGroups = DeviceHandler.getAllDevices();
 			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@GET
+	@Path("/user_turned_on_devices/{userID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevicesTurnOnByUserID(@Context HttpServletRequest req, @PathParam("userID") int userID){
+		Response response = null;
+		List<Device> devices = null;
+		try{
+			//SessionHandler.verifyAdminRequest(req);
+			devices = DeviceHandler.getTurnedOnDevicesByUserID(userID);
+			response = Response.ok(GenericResponse.ok(devices)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
