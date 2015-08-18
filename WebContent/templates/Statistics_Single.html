@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
 <link rel="stylesheet" href="../css/nativedroid2.css" />
 <link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 </head>
 <body class="ui-mobile-viewport ui-overlay-a">
 
@@ -34,52 +35,28 @@
     <div data-role="navbar" id="TimeFrame">
 		<div class="ui-grid-b">
 		<div class="ui-block-a">
-			<a href="#" class="ui-btn ui-corner-all ui-shadow">1D</a></div>
+			<a href="#" data-role="button" class="ui-btn ui-corner-all ui-shadow clr-btn-blue" onclick="DataForDay()">1D</a></div>
     <div class="ui-block-b">
-        <a href="#" class="ui-btn ui-corner-all ui-shadow">1W</a></div>
+        <a href="#" data-role="button" class="ui-btn ui-corner-all ui-shadow clr-btn-deep-orange" onclick="DataForWeek()">1W</a></div>
     <div class="ui-block-c">
-        <a href="#" class="ui-btn ui-corner-all ui-shadow">1M</a></div>
+        <a href="#" data-role="button" class="ui-btn ui-corner-all ui-shadow clr-btn-red" onclick="DataForMonth()">1M</a></div>
 	</div>
   </div>
-  
-   <table data-role="table" class="ui-responsive">
-      <thead>
-        <tr>
-          <th>DeviceID</th>
-          <th>Usage</th>
-          <th>Cost</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Lamp1</td>
-          <td>100W</td>
-          <td>20$</td>
-          <td>On</td>
-        </tr>
-		<tr>
-          <td>Water Heater</td>
-          <td>200W</td>
-          <td>40$</td>
-          <td>Off</td>
-        </tr>
-      </tbody>
-    </table>
+  	
+  	
+	<!--  create dynamic bar chart for the entire room devices -->
+	 <div class="ct-chart">
+	 
+	 </div>
+
   
 	</div>
 
 
   <div data-role="footer" class="ui-footer">
-    <div data-role="navbar">
-		<ul>
-			<li><img src="../img/chart.png" class="ui-btn-left"/></li>
-			<li><img src="../img/chart.png" class="ui-btn-right"/></li>
-		</ul>
-	</div>
   </div>
 
-</div>
+</div> <!-- end of page -->
 
 
 
@@ -88,5 +65,7 @@
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="../js/nativedroid2.js"></script>
+<script src="../js/Statistics_Single.js"></script>
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
 </html>
