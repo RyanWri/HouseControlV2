@@ -53,6 +53,80 @@ public class DeviceHandler{
 			DbUtils.closeQuietly(conn);
 		}
 	}
+	
+	public static void updateDeviceState(int deviceID, Device.DeviceState deviceState) throws Exception{
+		Connection conn = null;
+		PreparedStatement statement = null;
+
+
+		if(deviceID<1)		{
+			throw new Exception("Invalid device to update");
+		}
+		try{
+			conn = DBConn.getConnection();
+			String query = "UPDATE device "
+					+  "SET state = ? "
+					+  "WHERE deviceID =" + deviceID;
+			conn.setAutoCommit(false);
+			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			statement.setString(1, deviceState.toString());
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded== 0){
+				throw new Exception("Failed to update the requested device");
+			}
+			System.out.println("Device has been updated");
+			conn.commit();
+		}
+		catch(SQLException ex){
+			conn.rollback();
+			throw new Exception("Cannot update device");
+		}
+		finally{
+			conn.setAutoCommit(true);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+	}
+	
+//	public static void updateDevice(DeviceType deviceType) throws Exception{	
+//		Connection conn = null;
+//		PreparedStatement statement = null;
+//
+//		if (deviceType == null){
+//			throw new Exception("Information is missing");
+//		}
+//		if(deviceType.getTypeID()<1)		{
+//			throw new Exception("Invalid device type to update");
+//		}
+//		if(deviceType.getName().isEmpty()){
+//			throw new Exception("Devices group name cannot be empty");
+//		}
+//		try{
+//			conn = DBConn.getConnection();
+//			String query = "UPDATE device_type "
+//					+  "SET name = ?, picData = ? "
+//					+  "WHERE typeID =" + deviceType.getTypeID();
+//			conn.setAutoCommit(false);
+//			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+//			statement.setString(1, deviceType.getName());
+//			statement.setString(2, deviceType.getPicData());
+//			int isSucceeded = statement.executeUpdate();
+//			if(isSucceeded== 0){
+//				throw new Exception("Failed to update the requested devices type");
+//			}
+//			System.out.println("Device type has been updated");
+//			conn.commit();
+//		}
+//		catch(SQLException ex){
+//			conn.rollback();
+//			throw new Exception("Cannot update device type");
+//		}
+//		finally{
+//			conn.setAutoCommit(true);
+//			DbUtils.closeQuietly(statement);
+//			DbUtils.closeQuietly(conn);
+//		}
+//	}
 
 	public static Device getDevice(int deviceID) throws Exception{
 		Connection conn = null;
@@ -163,22 +237,43 @@ public class DeviceHandler{
 		return devices;
 	}
 	
+	public static List<Device> getTurnedOnDevicesByUserID(int userID) throws Exception{
+		String query = "SELECT device.*,device_type.* "
+				+"FROM device "
+				+"JOIN device_usage on device_usage.deviceID = device.deviceID "
+				+"JOIN device_in_group on device_in_group.deviceID = device.deviceID "
+				+"JOIN device_type on device_type.typeID = device.typeID "
+				+"JOIN user_in_group on user_in_group.userID =" + userID + " "
+				+"WHERE device_in_group.groupID = user_in_group.groupID "
+				+"AND device.typeID=device_type.typeID "
+				+"AND device_usage.turnOffTime IS NULL";
+				
+		List<Device> devices = new ArrayList<Device>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		if(!UserHandler.isUserExists(userID)){
+			throw new Exception("User doesn't exist");
+		}
+		try{
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devices.add(mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get deviceslist");
+		}
+		finally{
+			DbUtils.close(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return devices;
+	}
 	
-	
-//	public void disconnectDevice(int deviceID) throws Exception{
-//		Device device = getDevice(deviceID);
-//		
-//		if(device == null){
-//			throw new Exception("Device wasn't supply");
-//		}
-//		if(device.getState().equals(Device.DeviceState.Inactive)){
-//			throw new Exception("It's not possible disconnecting inactive device");
-//		}
-//		try{
-//			if(device.getConnectionType().equals(Device.ConnectionType.Relay)){
-//				
-//			}
-//		}
-//	}
-
 }
