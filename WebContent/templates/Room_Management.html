@@ -2,41 +2,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-<link rel="stylesheet" type="text/css" href="../css/Room_Management.css" />
-<link rel="stylesheet" href="../themes/HouseControl.css" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 <link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
-<link rel="stylesheet"
-	href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-<link rel="stylesheet"
-	href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-<link rel="stylesheet"
-	href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 <link rel="stylesheet" href="../vendor/waves/waves.min.css" />
 <link rel="stylesheet" href="../css/nativedroid2.css" />
 <title>House-Management(Adding rooms)</title>
 </head>
 
 <body>
-		<!-- menu panel-->
-		<div data-role="panel" id="menu_panel" data-theme='b' data-position="right">
-			<!-- panel content goes here -->
-			<ol>
-				<li><a href="Statistics.html" data-role='button' rel="external" data-ajax="false">Statistics</a></li>
-				<li><a href="Faq.html" data-role='button' rel="external" data-ajax="false">FAQ</a></li>
-				<li><a href="Login.html" data-role='button' rel="external" data-ajax="false">Logout</a></li>
-			</ol>
-		</div>
-		<!-- /panel -->
+	<!-- menu panel-->
+	<div data-role="panel" id="menu_panel" data-theme='a' class="ui-panel"
+		data-position="right">
+		<!-- panel content goes here -->
+		<ol>
+			<li><a href="Statistics.html" data-role='button' rel="external"
+				data-ajax="false">Statistics</a></li>
+			<li><a href="Faq.html" data-role='button' rel="external"
+				data-ajax="false">FAQ</a></li>
+			<li><a href="Login.html" data-role='button' rel="external"
+				data-ajax="false">Logout</a></li>
+		</ol>
+	</div>
+	<!-- /panel -->
 
-		<div data-role="page" id="Room_Management" data-theme="b" data-add-back-btn="true">
-		<div data-role="header" data-position='fixed' data-tap-toggle='false' data-theme='b'>
+	<div data-role="page" id="Room_Management" class="ui-page-theme-a"
+		data-add-back-btn="true">
+		<div data-role="header" data-position='fixed' data-tap-toggle='false'
+			data-theme='b'>
 			<h1>Configure Home</h1>
 			<a href="#" data-rel="back"
 				class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"
-				data-role="button" role="button">Back</a> 
-				<a href='#menu_panel'
+				data-role="button" role="button">Back</a> <a href='#menu_panel'
 				data-role='button' data-icon='bars' data-iconpos='right'
 				data-inline='true'></a>
 		</div>
@@ -56,7 +55,7 @@
 		</div>
 
 
-		<div data-role="footer">
+		<div data-role="footer" >
 			<h1>HouseControl v1.1</h1>
 		</div>
 
@@ -102,41 +101,39 @@
 		</div>
 		<!-- end of message popup -->
 
-			<!--  add device Dialog -->
-	<div data-role="popup" id="AddDeviceDialog" data-theme="b">
+		<!--  add device Dialog -->
+		<div data-role="popup" id="AddDeviceDialog" data-theme="b">
 
-		<div data-role="header">
-			<h1>Add Device</h1>
+			<div data-role="header">
+				<h1>Add Device</h1>
+			</div>
+
+			<div data-role="content" data-theme='b'>
+				<form id="formAddDevice">
+					<ul class="fieldlist">
+						<li><label for="deviceName">enter device Name</label> <input
+							id="deviceName" type="text" class="k-textbox"
+							style="width: 100%;" /></li>
+						<li><label for="description"> Description </label> <textarea
+								id="description" class="k-textbox" style="width: 100%;"></textarea>
+						</li>
+						<li><label for="devices">Straight Forward</label> <select
+							name="devices" id="devices" class="icon-menu">
+								<option value="">Select a device</option>
+								<option>LAMP</option>
+								<option>TV</option>
+								<option>KETTLE</option>
+								<option>Water Heater</option>
+								<option>Air Conditioner</option>
+						</select></li>
+					</ul>
+					<input type="submit" value="add" />
+				</form>
+
+			</div>
+
 		</div>
-
-		<div data-role="content" data-theme='b'>
-			<form id="formAddDevice">
-			<ul class="fieldlist">
-			 <li>
-                <label for="deviceName">enter device Name</label>
-                <input id="deviceName" type="text" class="k-textbox" style="width: 100%;" />
-            </li>
-            <li>
-                <label for="description"> Description </label>
-                <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
-            </li>
-            <li>
-				<label for="devices">Straight Forward</label> <select name="devices" id="devices" class="icon-menu">
-					<option value="">Select a device</option>
-					<option>LAMP</option>
-					<option>TV</option>
-					<option>KETTLE</option>
-					<option>Water Heater</option>
-					<option>Air Conditioner</option> </select>
-			</li>
-			</ul>
-			<input type="submit" value="add" />
-			</form>
-
-		</div>
-
-	</div>
-	<!-- end of add device Dialog -->
+		<!-- end of add device Dialog -->
 
 
 	</div>
@@ -144,6 +141,7 @@
 </body>
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script
+	src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="../js/Room_Management.js"></script>
 </html>
