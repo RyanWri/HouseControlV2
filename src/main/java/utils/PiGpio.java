@@ -260,7 +260,6 @@ public class PiGpio {
 	}
 	
 	public static String getDeviceStatistics(String timeFrame, int deviceID) throws Exception {
-		String DeviceUsage = "";
 		JSONObject deviceConsumption = new JSONObject();
 		Device device;
 		double hours;
@@ -274,9 +273,7 @@ public class PiGpio {
 				device = (Device) deviceConsumption.get("device");
 				hours = (double)deviceConsumption.get("hours");
 				voltage = (double)device.getVoltage();
-				totalConsumption = String.format("%.2f",voltage *((int) hours) + (voltage * (((hours % 1d)/60d)*100d)));
-				
-				DeviceUsage = "In the last "+ timeFrame + " device "+deviceID +":" + device.getName() + " consumed " + totalConsumption + " volts in "+ String.format("%.2f", hours) + " hours";
+				totalConsumption = String.format("%.2f",voltage *((int) hours) + (voltage * (((hours % 1d)/60d)*100d)));			
 			}
 			else{
 			throw new Exception("Please select day/week/month as a time frame!");
@@ -285,7 +282,7 @@ public class PiGpio {
 		catch(Exception ex){
 			throw ex;
 		}
-		return DeviceUsage;
+		return totalConsumption; 
 	}
 
 }

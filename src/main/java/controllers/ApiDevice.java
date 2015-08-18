@@ -168,12 +168,12 @@ public class ApiDevice{
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
 		return response;
-	}
+	} 
 	
 	@GET
 	@Path("/statistics/devices_group/{groupID}/{timeFrame}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response DeviceStatistics(@Context HttpServletRequest req, @PathParam("groupID") int groupID, @PathParam("timeFrame")String timeFrame){
+	public Response DevicesGroupStatistics(@Context HttpServletRequest req, @PathParam("groupID") int groupID, @PathParam("timeFrame")String timeFrame){
 		Response response = null;
 
 		try{
