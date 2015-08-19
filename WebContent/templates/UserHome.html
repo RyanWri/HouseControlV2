@@ -1,63 +1,90 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title> User Home Page </title>
- 	<meta charset="UTF-8">
-	<!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">-->
-	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-	<link rel="stylesheet" href="../themes/HouseControl.css" />
-	<link rel="stylesheet" href="../themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<link rel="stylesheet" type="text/css" href="../css/UserHome.css" />
+	<head>
+	    <meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
+		<link rel="stylesheet" href="../css/nativedroid2.css" />
+		<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
+		<link rel="stylesheet" type="text/css" href="../css/HouseControl.css">
+		<title>Home</title>
+	</head>
+	<body class="ui-mobile-viewport ui-overlay-a">
 	
+		<div data-role="page" id="UserHome" class="ui-page-theme-a">
+		
+		<!-- Menu Panel Start-->
+		
+			<div data-role="panel" id="menu_panel" data-position="right" data-display="overlay" data-position-fixed="true">
+				<div class="ui-panel-inner">
+					<div class="nd2-sidepanel-profile wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">
+						<!-- update link -->
+						<img class="profile-background" src="../img/MenuHeader.jpg"></img>
+						<div class="row">
+							<div class="col-xs-12 center-xs">
+								<div class="box profile-text">
+									<div id="menuUsername" class="nd2-headline newfont"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ui-collapsible-content ui-body-inherit" aria-hidden="false">
+						<ul id="menuitems" class="ui-listview" data-icon="false" data-inset="false" data-role="listview"></ul>
+					</div>
+				</div>
+			</div>
+			
+		<!-- Menu Panel End -->	
 	
-</head>
-<body>
-	
-	<div data-role="page" id="UserHome" data-theme="d">
 
-			<!-- menu panel-->
-	<div data-role="panel" id="menu_panel" data-position="right" data-display="reveal">
-    <!-- panel content goes here -->
-		<ol id="menuitems">
-		</ol>
-	</div>
-	<!-- /panel -->	
-	
-  <div data-role="header">
-    <h1>Home Page</h1>
-	<a href="#menu_panel" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">Menu</a>
-  </div>
+		<!-- Header Start -->
+			
+			<div data-role="header" class="ui-page-theme-a ui-header">
+				<h1 class="ui-title">Home</h1>
+				<a href="#" data-rel="back" class="ui-btn-left wow fadeIn ui-btn waves-effect waves-button  waves-effect waves-button" data-wow-delay="0.8s" data-role="button" role="button" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
+					<i class="zmdi zmdi-undo zmd-fw"></i>
+				</a>					
+				<a class="ui-btn-right wow fadeIn ui-btn waves-effect waves-button  waves-effect waves-button" data-wow-delay="0.8s" href="#menu_panel" data-role="button" role="button" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
+					<i class="zmdi zmdi-menu"></i>
+				</a>
+			</div>
+		
+		<!-- Header End -->
+		
+		<!-- Content Start -->
 
-  <div data-role="main" class="ui-content">
+  			<div data-role="main" class="ui-content">
+     			<div data-role="content">
+					<ul id="listOfUserRooms" data-role="listview" data-autodividers="false" data-inset="true"></ul>
+    			</div>
+ 			 </div>
+ 			 
+ 		<!-- Content End -->
+ 		
+ 		<!-- Popup Start -->
 
-     <div data-role="content">
-		<ul id="listOfUserRooms" data-role="listview" data-autodividers="false" data-inset="true">
-		 </ul>
-	
-	
-    </div><!-- /content -->
-  
-  </div>
-
-  <div data-role="footer">
-    <h2> House Control</h2>
-  </div>
-<a href="#popupMessageDialog" id="popupMessage" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
-			<div data-role="popup" id="popupMessageDialog" data-overlay-theme="b" data-theme="b" data-dismissible="true" style="max-width:300px; min-width:300px;">
-			    <div data-role="header" data-theme="a">
-			   	 <h1 id="popupMessagetext"></h1>
+			<a href="#popupMessageDialog" id="popupMessage" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupMessageDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+				<div data-role="header" data-theme="a">
+			   		<div id="popupMessagetext" class="row center-xs nd2-headline newfont"></div>
 			    </div>
 			    <div role="main" class="ui-content">
-			       <h3 id="popupMessagesubtext" class="ui-title center"></h3>
-			    <button id="continueButton" type="button" class="ui-btn ui-btn-icon-right">Continue</button>
+			    	<div id="popupMessagesubtext" class="nd2-headline row center-xs newfont"></div><br>
+			    	<button id="continueButton" type="button" class="ui-btn ui-btn-icon-right">Continue</button>
 			    </div>
 			</div>
-</div>
-</body>
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../js/UserHome.js"></script>
-	<script type="text/javascript" src="../js/GlobalFunctions.js"></script>
+			
+		<!-- Popup End -->
+		
+		</div>
+	</body>
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="../js/nativedroid2.js"></script>
+		<script type="text/javascript" src="../js/UserHome.js"></script>
+		<script type="text/javascript" src="../js/GlobalFunctions.js"></script>
 </html>

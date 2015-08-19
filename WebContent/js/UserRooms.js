@@ -1,21 +1,26 @@
-// disable comments on 'ready' functions.
 var userName;
 var userID;
 var tempRoomID = "";
 var listOfUserRooms = {};
 var delay = 300;
+var addedRoomFlag = 0;
 
 $(function() 
 {
     $(document).ready(function()
     {  	
-    	userID = localStorage.userrooms_userID;
-    	userName = localStorage.userrooms_username;
-    	//localStorage.userrooms_userID = "";
-    	//localStorage.userrooms_userName = "";
-    	$("#addButton").attr("disabled",true);
-    	$("#userstitle").text("'"+userName+ "' Accessible Rooms:");
-    	getListOfUserRooms();
+    	if (localStorage.userrooms_userID === "")
+    	{
+    		window.location = "UsersManagement.html";
+    	}
+    	else
+    	{
+        	userID = localStorage.userrooms_userID;
+        	userName = localStorage.userrooms_username;
+        	$("#addButton").attr("disabled",true);
+        	$("#userstitle").text("'"+userName+ "' Rooms:");
+        	getListOfUserRooms();
+    	}
     });
     
     $("#addroom").click(function()
@@ -127,6 +132,7 @@ function loadRoomsToAdd()
 			{
 				var flag;
 				var listOfAllRooms = result.data;
+				$("#listOfRooms").append('<option value="0" selected></option>');
 				for (var i = 0; i < listOfAllRooms.length; i++)
 				{
 					flag = false;
@@ -143,6 +149,8 @@ function loadRoomsToAdd()
 						$("#listOfRooms").append('<option value="'+listOfAllRooms[i].groupID+'">'+listOfAllRooms[i].name+'</option>');
 					}
 				}
+				$("#listOfRooms").selectmenu('refresh', true);
+				$("#addButton").attr("disabled",true);
 			}
 			else
 			{
@@ -172,7 +180,7 @@ function getListOfUserRooms()
 				{											
 				$("#listofusers").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfUserRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deleteRoomAcces('+listOfUserRooms[i].groupID+')">\n\
-				        <img src="../img/'+listOfUserRooms[i].picData+'" class="button">\n\
+				        <img src="../img/devicesGroups/'+listOfUserRooms[i].picData+'" class="button">\n\
 				        <h2>'+listOfUserRooms[i].name+'</h2>\n\
 				        </a></li></ul>');
 				}
