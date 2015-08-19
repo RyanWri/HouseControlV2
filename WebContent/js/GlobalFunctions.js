@@ -57,7 +57,19 @@ function logout()
 
 function initMenu()
 {
-	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToHomePage()">Home</a></li>');
+	$("#menuUsername").text(localStorage.username);
+	$("#menuitems").append('<li class="ui-first-child"><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="UserHome.html"> <i class="zmdi zmdi-home zmd-fw"></i> Home</a></li>');
+	if (localStorage.type === "Admin")
+	{
+		$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="UsersManagement.html"> <i class="zmdi zmdi-accounts zmd-fw"></i> Users Management</a></li>');
+		$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Room_Management.html"> <i class="zmdi zmdi-local-store zmd-fw"></i> Rooms Management</a></li>');
+	}
+	
+	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Statistics.html"> <i class="zmdi zmdi-chart-donut zmd-fw"></i> Statistics</a></li>');
+	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="ChangePassword.html"> <i class="zmdi zmdi-key zmd-fw"></i> Change Password</a></li>');
+	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Faq.html"> <i class="zmdi zmdi-help zmd-fw"></i> FAQ</a></li>');
+	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="#" onclick="logout()"> <i class="zmdi zmdi-power-off zmd-fw"></i> Logout</a></li>');
+	/*$("#menuitems").append('<div><a class="ui-link" href="#" onclick="moveToHomePage()">Home</a></div>');
 	if (localStorage.type === "Admin")
 	{
 		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToUsersManagement()">Users Management</a></li>');
@@ -65,10 +77,10 @@ function initMenu()
 		
 		
 	}
-	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html">Statistics</a></li>');
+	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html" rel="external" data-ajax="false">Statistics</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToChangePassword()">Change Password</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="Faq.html">FAQ</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="logout()">Logout</a></li>');
+	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="logout()">Logout</a></li>');*/
 }
 
 function authenticateuser()

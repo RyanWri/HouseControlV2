@@ -35,7 +35,7 @@ $(function()
 		setTimeout(
 				  function() 
 				  {
-					  $("#popupConform").click();
+					  $("#popupConfirm").click();
 				  }, 300);
 	});
 	
@@ -86,7 +86,7 @@ function getListOfUsers()
 		},
 		error: function()
 		{
-			alert("error!");						
+			errorDialog("Connection Error!");						
 		}
 	});	
 }

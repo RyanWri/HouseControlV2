@@ -1,4 +1,3 @@
-// take care when user enters here from the address bar.
 var userid;
 var userName;
 var flag = 0;
@@ -7,10 +6,18 @@ $(function()
 {
     $(document).ready(function()
     {
-    	userName = localStorage.usertoedit;
-    	localStorage.usertoedit = "";
-    	
-    	loadUserInformation();
+    	if (localStorage.usertoedit === "")
+    	{
+    		window.location = "UsersManagement.html";
+    	}
+    	else
+    	{
+        	userName = localStorage.usertoedit;
+        	localStorage.usertoedit = "";
+        	
+        	loadUserInformation();
+    	}
+
     });
     
     $("#buttoncontinue").click(function()
