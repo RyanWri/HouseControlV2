@@ -1,8 +1,9 @@
-/*
-	Author: Ran Yamin 25/07/2015
-	Css for login page
- */
+.newfont
+{
+	font-family: 'ABeeZee', sans-serif;
+}
 
+ 
   body {
     padding-top: 120px;
     padding-bottom: 40px;
