@@ -128,7 +128,7 @@ public class ApiDevice{
 		
 		try{
 //			SessionHandler.isAuthUser(req);
-			JSONObject currentPinState = PiGpio.getJsonPinState(port);
+			JSONObject currentPinState = PiGpio.getJsonPinState(port); 
 			response = Response.ok(GenericResponse.ok(currentPinState)).build();
 		} 
 		catch(Exception ex){
