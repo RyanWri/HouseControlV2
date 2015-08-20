@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import modelObjects.Device;
 import utils.GenericResponse;
@@ -217,6 +218,24 @@ public class ApiDevice{
 			//SessionHandler.verifyAdminRequest(req);
 			devices = DeviceHandler.getTurnedOnDevicesByUserID(userID);
 			response = Response.ok(GenericResponse.ok(devices)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@GET
+	@Path("/sensor/temp_humidity")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTempAndHumidityFromSensor(@Context HttpServletRequest req){
+		Response response = null;
+	    JSONObject tempAndHumidity;
+		try{
+			//SessionHandler.verifyAdminRequest(req);
+			tempAndHumidity = DeviceUsageHandler.getTempAndHumidityFromSensor();
+			response = Response.ok(GenericResponse.ok(tempAndHumidity)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
