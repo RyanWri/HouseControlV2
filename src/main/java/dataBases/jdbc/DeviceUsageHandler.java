@@ -1,5 +1,8 @@
 package dataBases.jdbc;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -144,7 +147,7 @@ public class DeviceUsageHandler {
 		}
 		catch(SQLException ex){
 			conn.rollback();
-			throw new Exception("A problem has occured while trying updating device " + deviceID +" turn off timestamp");
+			throw new Exception("An error has occurred while trying updating device " + deviceID +" turn off timestamp");
 		}
 		finally{
 			conn.setAutoCommit(true);
@@ -213,7 +216,7 @@ public class DeviceUsageHandler {
 			}		
 		}
 		catch (Exception ex) {
-			throw new Exception("An error has occured while trying to turn Off the working devices from DB");
+			throw new Exception("An error has occurred while trying to turn Off the working devices from DB");
 		}
 	}
 
@@ -235,7 +238,7 @@ public class DeviceUsageHandler {
 			}
 		}
 		catch (Exception ex) {
-			throw new Exception("An error has occured while trying to get all turned On devices from DB");
+			throw new Exception("An error has occurred while trying to get all turned On devices from DB");
 		}
 		finally{
 			DbUtils.closeQuietly(statement);
@@ -270,7 +273,7 @@ public class DeviceUsageHandler {
 			}
 		}
 		catch (Exception ex){
-			throw new Exception("An error has occured while trying to calculate device "+deviceID +" all usages");
+			throw new Exception("An error has occurred while trying to calculate device "+deviceID +" all usages");
 		}	
 		return sum;
 	}
@@ -289,7 +292,7 @@ public class DeviceUsageHandler {
 			}
 		}
 		catch (Exception ex){
-			throw new Exception("An error has occured while trying to calculate the all usages of all the devices");
+			throw new Exception("An error has occurred while trying to calculate the all usages of all the devices");
 		}
 
 		return sum;
@@ -375,11 +378,43 @@ public class DeviceUsageHandler {
 			}	
 		}
 		catch(Exception ex){
-			throw new Exception("An error has occured while trying to calculate device statistics by group ID");
+			throw new Exception("An error has occurred while trying to calculate device statistics by group ID");
 		}
 		
 		
 		return groupDevicesConsumption;
 	}
 
+
+	public static JSONObject getTempAndHumidityFromSensor() throws Exception {
+		JSONObject retVal = new JSONObject();
+		String tempAndHumidity = "";
+		String delims = "[ ]+";
+		String[] tokens;
+		double temp, humidity;
+		
+		try {
+			   ProcessBuilder pb = new ProcessBuilder("sudo", "python", "/var/lib/tomcat7/webapps/HouseControl/WEB-INF/classes/utils/TempHumidity.py", "11", "21");			   
+		       pb.redirectErrorStream(true);
+		       Process proc = pb.start();
+		       Reader reader = new InputStreamReader(proc.getInputStream());
+		       int ch;
+		       while ((ch = reader.read()) != -1) {
+		    	   tempAndHumidity += (char) ch;
+		    	   System.out.println(tempAndHumidity);
+		       }
+		       reader.close();
+            }
+        catch (IOException e) {
+        	throw new  Exception("An error has occurred while trying to collect temperature and humidity from the sensor ");
+        }
+		tokens =  tempAndHumidity.split(delims);
+		temp = Double.parseDouble(tokens[0]);
+		 System.out.println(temp);
+		humidity = Double.parseDouble(tokens[1]);
+		 System.out.println(humidity);
+		retVal.put("Temp", temp);
+		retVal.put("Humidity", humidity);
+		return retVal; 
+	}
 }
