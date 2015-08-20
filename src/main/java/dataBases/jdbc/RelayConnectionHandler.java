@@ -257,7 +257,7 @@ public class RelayConnectionHandler{
 		}
 	}
 
-	private static int getRelayPortOfConnectedDevicesOnRelay(int deviceID) throws Exception {
+	public static int getRelayPortOfConnectedDevicesOnRelay(int deviceID) throws Exception {
 		int relayPort = PIN_NOT_CONNECTED;
 		Connection conn = null;
 		Statement statement = null;
