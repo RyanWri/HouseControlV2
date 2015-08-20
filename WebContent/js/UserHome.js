@@ -4,7 +4,7 @@ $(function()
 {
     $(document).ready(function()
     {
-    	//loadTempAndHumidity();
+    	loadTempAndHumidity(); //$DEBUG
     	loadUserRooms();
     });
     
