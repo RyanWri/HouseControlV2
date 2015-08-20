@@ -26,6 +26,8 @@ $(function()
     $("#addroom").click(function()
     {
     	loadRoomsToAdd();
+    	$("#popupbutton").click();
+    	
     });  
     
     $("#cancelButton").click(function()

@@ -56,7 +56,7 @@ function loadTempAndHumidity()
 		{
 			if (result.status === "ok")
 			{
-				$("#currentTemp").text(result.data.map.Temp + " C");
+				$("#currentTemp").text(result.data.map.Temp + " c");
 				$("#currentHumidity").text(result.data.map.Humidity + " %");
 			}
 			else
