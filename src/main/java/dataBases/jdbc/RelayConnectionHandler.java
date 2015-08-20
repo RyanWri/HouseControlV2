@@ -71,7 +71,7 @@ public class RelayConnectionHandler{
 		}
 	}
 
-	private static boolean isRelayPortAvailable(int relayPort) throws Exception{
+	public static boolean isRelayPortAvailable(int relayPort) throws Exception{
 		boolean isAvailable = true;
 		Connection conn = null;
 		Statement statement = null;
