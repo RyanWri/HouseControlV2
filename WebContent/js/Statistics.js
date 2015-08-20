@@ -4,13 +4,16 @@
 	javascript for Statistics main page
 	Last Modification : --
  */
-var UserID=1;
+var UserID=1; //get it from local storage
 var groups = [];
+var voltage_series = [];
+
 
 $(document).ready(function()
 		{
 			ShowAllRooms(UserID);
 			createDynamicPieChart();
+			ShowTotalConsumption("month");
 		});
 
 //List All Rooms
@@ -32,8 +35,9 @@ function ShowAllRooms(UserID)
 					$(".ui-grid-b").append(appendText); Index++;
 					if (Index >=3) Index=0;
 					pageReadyGroup(groupID);
+					
 					groups[i] = name;
-				
+					voltage_series[i] = GetVoltageGroup(groups[i], "month"); 
 				}
 
 			},
@@ -104,7 +108,7 @@ function createDynamicPieChart()
 {		
 	var data = {
 			  labels: groups,
-			  series: [40, 40]
+			  series: voltage_series
 			};
 	
 	var options = {
@@ -130,5 +134,48 @@ function createDynamicPieChart()
 	new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
 }
 
+function GetVoltageGroup (groupID ,timeframe)
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/statistics/devices_group'+ groupID +'/' +timeframe,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			return result.data.voltage;
+		},
 
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+
+	});
+}
+
+function ShowTotalConsumption(timeframe)
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/statistics/'+ timeframe +'/all',
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			//$('#TotalConsumption').append ("Total Usage of all devices During the last month Was:"+ result.data.voltage);
+			$('#TotalConsumption').append(result.data); 
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+
+	});
+}
 

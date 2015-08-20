@@ -13,7 +13,7 @@
 </head>
 <body class="ui-mobile-viewport ui-overlay-a">
 
-	<div data-role="page" id="Room_View" class="ui-page ui-page-theme-a">
+	<div data-role="page" id="RoomView" class="ui-page ui-page-theme-a">
 		<!-- menu panel-->
 		<div data-role="panel" id="menu_panel" data-position="right" data-display="overlay" data-position-fixed="true">
 			<!-- panel content goes here -->
@@ -27,7 +27,7 @@
 
 
 		<div data-role="header" data-position='fixed' data-tap-toggle='false' class="ui-page-theme-a ui-header">
-			<h1>Room name</h1>
+			<h1 id="RoomName"></h1>
 			<a href="#" data-rel="back"
 				class="ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all"
 				data-role="button" role="button">Back</a> <a href='#menu_panel'
@@ -38,8 +38,8 @@
 		<div data-role="main" class="ui-content " role="main">
 
 			<div data-role="content">
-				<a href="#AddDeviceDialog" data-rel="popup" data-transition='pop' data-position-to='window'
-					data-inline='true' data-icon='external-link' data-role='button' data-transition='pop'>Add Device</a>
+				<a href="#CreateDeviceDialog" data-rel="popup" data-transition='pop' data-position-to='window'
+					data-inline='true' data-icon='external-link' data-role='button' data-transition='pop'>Create New Device</a>
 			</div>
 			
 			
@@ -52,14 +52,14 @@
 		</div> <!-- /content -->
 		
 		<!--  add device Dialog -->
-	<div data-role="popup" id="AddDeviceDialog" data-theme="b">
+	<div data-role="popup" id="CreateDeviceDialog" data-theme="a">
 
 		<div data-role="header">
 			<h1>Add Device</h1>
 		</div>
 
-		<div data-role="content" data-theme='b'>
-			<form id="formAddDevice">
+		<div data-role="content" data-theme='a'>
+			<form id="formCreateDevice">
 			<ul class="fieldlist">
 			 <li>
                 <label for="deviceName">enter device Name</label>
@@ -70,14 +70,18 @@
                 <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
             </li>
             <li>
-				<label for="devices">Straight Forward</label> <select name="devices" id="devices" class="icon-menu">
-					<option value="">Select a device</option>
+				<label for="devices">Choose Device type</label> <select name="devices" id="devices" class="icon-menu">
+					<option value="">Select Device Type</option>
 					<option>LAMP</option>
 					<option>TV</option>
 					<option>KETTLE</option>
 					<option>Water Heater</option>
 					<option>Air Conditioner</option> </select>
 			</li>
+			<li>
+				<input type="number" id="deviceVoltage" name="Voltage" min="15" max="50">
+			</li>
+			
 			</ul>
 			<input type="submit" value="add" />
 			</form>
@@ -86,19 +90,50 @@
 
 	</div>
 	<!-- end of add device Dialog -->
+	
+
+		
+	<div> <!-- Add existing device to Room -->
+	<form onsubmit="AddDeviceToRoom()">
+	<label for="devicesToAdd">Choose Device To Add</label> 
+	<select name="devicesToAdd" id="devicesToAdd" class="icon-menu">
+	</select>
+	<input type="submit" value="Add Device To Room">
+	</form>
+	</div> <!--end of Add existing device to Room -->
 
 
-	</div>
-	<!--  end of room_view page  -->
-	
-	
+	<!-- connect/disconnect popup -->
+		<div data-role="popup" id="connect_disconnect" data-overlay-theme="a"
+			data-theme="a" data-dismissible="true"
+			style="max-width: 300px; min-width: 300px;">
+			<div data-role="header" data-theme="a">
+				<div class="row center-xs nd2-headline newfont">Choose Method:</div>
+			</div>
+			<div role="main" class="ui-content">
+				<button id="connectDevice" type="button"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
+					<i class="zmdi zmdi-portable-wifi zmd-fw"></i> Connect Device
+				</button>
+				<button id="disconnectDevice" type="button"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
+					<i class="zmdi zmdi-gps-off zmd-fw"></i> DisConnect Device
+				</button>
+			</div>
+		</div><!-- connect/disconnect popup -->
+
+
+
+
+	</div> <!--  end of room_view page  -->
+
 	
 
 </body>
 
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-<script src="../js/DeviceManagement.js"></script>
+<script src="../js/RoomView.js"></script>
 <script src="../js/nativedroid2.js"></script>
 
 </html>

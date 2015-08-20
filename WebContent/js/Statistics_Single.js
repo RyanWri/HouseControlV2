@@ -8,10 +8,11 @@
 var devices_labels = [];
 var voltage_series = [];
 var devicesID_array = [];
+var groupID = 1; //or get it from local storage
 
 $(document).ready(function()
 		{
-			ShowAllDevices();
+			ShowAllDevicesInRoom(groupID);
 			createDynamicBarsChart();
 		});
 
@@ -44,6 +45,35 @@ function ShowAllDevices()
 
 	});
 	
+}
+
+function ShowAllDevicesInRoom(groupID)
+{
+	var deviceID, name;
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/devices_group/get_devices/' + groupID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			for (var i=0; i<result.data.length; i++){
+				deviceID = result.data[i].deviceID;  name = result.data[i].name; 
+				devicesID_array[i] = deviceID;
+				devices_labels[i] = name;
+				voltage_series[i] = result.data[i].voltage;
+			}
+
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+
+	});
 }
 
 
