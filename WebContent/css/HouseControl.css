@@ -19,3 +19,8 @@ body
 {
   font-family: 'ABeeZee', sans-serif;
 }
+
+.bold
+{
+	font-weight: bold;
+}
