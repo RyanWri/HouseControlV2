@@ -4,8 +4,8 @@
 	javascript for room view page (Manage Devices)
 	Last Modification : --
  */
-
-var groupID = 1; //or you need to get it from local storage
+a
+var groupID = localStorage.tempGroupID; //or you need to get it from local storage
 var deviceNamesArray =[];
 
 $(document).ready(function()
