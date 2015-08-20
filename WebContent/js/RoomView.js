@@ -4,12 +4,14 @@
 	javascript for room view page (Manage Devices)
 	Last Modification : --
  */
-a
-var groupID = localStorage.tempGroupID; //or you need to get it from local storage
+
+
+var groupID = localStorage.tempGroupID;//or you need to get it from local storage
 var deviceNamesArray =[];
 
 $(document).ready(function()
 			{
+				SelectMenuForDeviceType();
 				ShowRoomName(groupID);
 				ShowDevicesInGroup(groupID); //update all devices
 				CreateListOfDevicesToAdd();
@@ -85,8 +87,7 @@ function ShowRoomName(groupID)
 		var parameters = {}; //name, description, deviceType:{typeID} ,connectionType, Voltage
 		parameters.name = $('#deviceName').val();
 		parameters.description = $('#description').val();
-		var deviceType = $('#devices :selected').text();
-		var typeid= new Object(); typeid.typeID = getTypeIDByName(deviceType);
+		var typeid= new Object(); typeid.typeID = $('#devicesTypes :selected').val();;
 		parameters.deviceType = typeid;
 		parameters.connectionType = 'Relay';
 		parameters.voltage = $('#deviceVoltage').val(); 
@@ -121,21 +122,37 @@ function ShowRoomName(groupID)
 
 
 		}); });	
-	
-	
-	//get typeID by the name of the device
-	function getTypeIDByName(name) {
-		switch(name)
-		{
-		case "LAMP": return 2;
-		case "TV": return 3;
-		case "Kettle": return 4;
-		case "Water Heater": return 5;
-		case "Air Conditioner": return 6;
-		default: return 1; //undefined
-		}
-	}
 		
+function SelectMenuForDeviceType()
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/device_type/all',
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			for (var i=0; i<result.data.length; i++){
+				//adding option to add device to Room
+				var name = result.data[i].name , typeID = result.data[i].typeID;
+				//only if device is not in the room you can add him
+				var option = '<option value="'+ typeID +'">' + name +'</option>';
+				$("#devicesTypes").append(option);
+			}
+
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			alert(xhr.status);
+			alert(thrownError); 
+		}
+
+	});
+
+}
+	
 	
 function CreateListOfDevicesToAdd()
 {
