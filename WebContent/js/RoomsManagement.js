@@ -68,7 +68,6 @@ $("#formAddRoom").submit( function()
     var roomName = $('#textBoxRoomName').val();
     parameters.name = roomName;
     parameters.picData = $('#listOfRoomsTypes').val() + ".png";
-    alert(parameters.picData);
     var parametersStringified = JSON.stringify(parameters);
     $.ajax({
     	type: 'POST',

@@ -31,7 +31,7 @@ function moveToChangePassword()
 
 function moveToRoomsManagement()
 {
-	window.location = "Room_Management.html";
+	window.location = "RoomsManagement.html";
 }
 
 function logout()
