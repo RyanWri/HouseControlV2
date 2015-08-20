@@ -34,42 +34,42 @@
 			<ul data-role="listview" data-icon="false" class="ui-listview">
 				<li data-role="list-divider" role="heading"
 					class="ui-li-divider ui-bar-inherit ui-first-child">Guide</li>
-				<li class="ui-li-has-thumb"><a href="#navigation"
+				<li class="ui-li-has-thumb"><a href="#navigation" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/nav_icon.png"
 						class="ui-thumbnail ui-thumbnail-circular">
 						<h2>Navigation</h2>
 						<p>Navigation of the app, toggle between rooms devices and more</p>
 				</a></li>
-				<li class="ui-li-has-thumb"><a href="#devices"
+				<li class="ui-li-has-thumb"><a href="#devices" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/device_icon.jpg"
 						class="ui-thumbnail ui-thumbnail-circular">
 						<h2>Devices</h2>
 						<p>How to Add connect and disconnect device</p>
 				</a></li>
-				<li class="ui-li-has-thumb"><a href="#statistics"
+				<li class="ui-li-has-thumb"><a href="#statistics" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/stats_icon.jpg"
 						class="ui-thumbnail ui-thumbnail-circular">
 						<h2>Statistics</h2>
 						<p>How they work? what can i get from the charts? </p>
 				</a></li>
-				<li class="ui-li-has-thumb"><a href="#admin_rights"
+				<li class="ui-li-has-thumb"><a href="#admin_rights" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/admin_icon.jpg"
 						class="ui-thumbnail ui-thumbnail-circular">
 						<h2>Admin rights</h2>
 						<p>What are the roles of the admin? how to be in charge of the house?</p>
 				</a></li>
-				<li class="ui-li-has-thumb"><a href="#timer"
+				<li class="ui-li-has-thumb"><a href="#timer" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/timer_icon.jpg"
 						class="ui-thumbnail ui-thumbnail-circular">
 						<h2>Timer</h2>
 						<p>How to set a timer? how do i stop it?</p>
 				</a></li>
-				<li class="ui-li-has-thumb ui-last-child"><a href="#general"
+				<li class="ui-li-has-thumb ui-last-child"><a href="#general" data-rel="popup" data-position-to="window" data-transition="pop"
 					class="ui-btn waves-effect waves-button waves-effect waves-button">
 						<img src="../img/icons/document_icon.png"
 						class="ui-thumbnail ui-thumbnail-circular">
@@ -82,6 +82,83 @@
 
 		</div>
 		<!--  close main content -->
+		
+		<!-- navigation popup-->
+		<div data-role="popup" id="navigation" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of navigation popup -->
+
+
+
+		<!-- devices popup-->
+		<div data-role="popup" id="devices" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of devices popup -->
+		
+		
+			<!-- statistics popup-->
+		<div data-role="popup" id="statistics" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of statistics popup -->
+
+		<!-- Admin rights popup-->
+		<div data-role="popup" id="admin_rights" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of Admin rights popup -->
+		
+			<!-- Timer popup-->
+		<div data-role="popup" id="timer" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of Timer popup -->
+
+
+		<!-- general popup-->
+		<div data-role="popup" id="general" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+		<div data-role="header" data-theme="a">
+		   		<div id="popuptext" class="row center-xs nd2-headline newfont">Simple Navigation</div>
+		</div>
+			<div role="main" class="ui-content">
+			<ol>
+			<li> hello my friend </li>
+			</ol>
+			</div>
+		</div> <!-- end of General popup -->
+
 
 </div> <!-- close page -->
 
