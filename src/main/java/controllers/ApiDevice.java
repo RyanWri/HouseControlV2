@@ -101,6 +101,23 @@ public class ApiDevice{
 		}
 		return response;
 	}
+	
+	@GET
+	@Path("/get_relay_port/{deviceID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDeviceRelayPort(@Context HttpServletRequest req, @PathParam("deviceID")int deviceID){
+		Response response = null;
+
+		try{
+//			SessionHandler.isAuthUser(req);
+			int relayPort = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(deviceID);
+			response = Response.ok(GenericResponse.ok(relayPort)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
 
 
 	@POST
