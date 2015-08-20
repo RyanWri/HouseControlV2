@@ -7,11 +7,17 @@
 
     $(document).ready(function()
     {
-    	/*
     	CreateAnswerNavigation();
     	CreateAnswerDevices();
     	CreateAnswerStatistics();
     	CreateAnswerAdminRights();
     	CreateAnswerTimer();
-    	CreateAnswerGeneral(); */
+    	CreateAnswerGeneral();
     });  
+    
+    function CreateAnswerNavigation()
+    {
+    	$("#navigation").append('<')
+    	
+    	
+    }

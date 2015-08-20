@@ -26,7 +26,6 @@ $(function()
     $("#addroom").click(function()
     {
     	loadRoomsToAdd();
-    	$("#popupbutton").click();
     });  
     
     $("#cancelButton").click(function()
@@ -179,7 +178,7 @@ function getListOfUserRooms()
 				for (var i = 0; i < listOfUserRooms.length; i++) 
 				{											
 				$("#listofusers").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfUserRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deleteRoomAcces('+listOfUserRooms[i].groupID+')">\n\
+						<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+listOfUserRooms[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deleteRoomAccess('+listOfUserRooms[i].groupID+')">\n\
 				        <img src="../img/devicesGroups/'+listOfUserRooms[i].picData+'" class="button">\n\
 				        <h2>'+listOfUserRooms[i].name+'</h2>\n\
 				        </a></li></ul>');
@@ -197,7 +196,7 @@ function getListOfUserRooms()
 	});
 }
 
-function deleteRoomAcces(roomID)
+function deleteRoomAccess(roomID)
 {
 	tempRoomID = roomID;
 	$("#popupConfirm").click();

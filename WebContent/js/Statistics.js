@@ -138,7 +138,7 @@ function GetVoltageGroup (groupID ,timeframe)
 {
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/statistics/devices_group'+ groupID +'/' +timeframe,
+		url: '/HouseControl/statistics/devices_group/'+ groupID +'/' +timeframe,
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
