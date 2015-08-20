@@ -62,7 +62,7 @@ function initMenu()
 	if (localStorage.type === "Admin")
 	{
 		$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="UsersManagement.html"> <i class="zmdi zmdi-accounts zmd-fw"></i> Users Management</a></li>');
-		$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Room_Management.html"> <i class="zmdi zmdi-local-store zmd-fw"></i> Rooms Management</a></li>');
+		$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="RoomsManagement.html"> <i class="zmdi zmdi-local-store zmd-fw"></i> Rooms Management</a></li>');
 	}
 	
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Statistics.html"> <i class="zmdi zmdi-chart-donut zmd-fw"></i> Statistics</a></li>');
