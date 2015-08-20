@@ -125,12 +125,29 @@ public class ApiDevice{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response relayStatus(@Context HttpServletRequest req, @PathParam("port")int port){
 		Response response = null;
+		
+		try{
+//			SessionHandler.isAuthUser(req);
+			JSONObject currentPinState = PiGpio.getJsonPinState(port);
+			response = Response.ok(GenericResponse.ok(currentPinState)).build();
+		} 
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+	
+	@GET
+	@Path("/relay/{port}/inUse")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isRelayPortAvailable(@Context HttpServletRequest req, @PathParam("port")int port){
+		Response response = null;
 
 		try{
 //			SessionHandler.isAuthUser(req);
-			String currentPinState = PiGpio.getPinState(port);
-			response = Response.ok(GenericResponse.ok("Port "+port+" status is: " + currentPinState)).build();
-		}
+			boolean isAvailable = RelayConnectionHandler.isRelayPortAvailable(port);
+			response = Response.ok(GenericResponse.ok(!isAvailable)).build();
+		} 
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
 		}
