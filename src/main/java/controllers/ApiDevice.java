@@ -238,7 +238,7 @@ public class ApiDevice{
 			response = Response.ok(GenericResponse.ok(tempAndHumidity)).build();
 		}
 		catch(Exception ex){
-			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build(); 
 		}
 
 		return response;
