@@ -71,7 +71,7 @@ public class RelayConnectionHandler{
 		}
 	}
 
-	private static boolean isRelayPortAvailable(int relayPort) throws Exception{
+	public static boolean isRelayPortAvailable(int relayPort) throws Exception{
 		boolean isAvailable = true;
 		Connection conn = null;
 		Statement statement = null;
@@ -257,7 +257,7 @@ public class RelayConnectionHandler{
 		}
 	}
 
-	private static int getRelayPortOfConnectedDevicesOnRelay(int deviceID) throws Exception {
+	public static int getRelayPortOfConnectedDevicesOnRelay(int deviceID) throws Exception {
 		int relayPort = PIN_NOT_CONNECTED;
 		Connection conn = null;
 		Statement statement = null;

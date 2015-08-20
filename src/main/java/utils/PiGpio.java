@@ -91,6 +91,25 @@ public class PiGpio {
 			throw ex;
 		}
 	}
+	
+	public static JSONObject getJsonPinState(int pinNumber) throws Exception {
+		JSONObject currentJsonPinStat = new JSONObject();
+		
+		try{
+			if(myPins[pinNumber] != null){
+				PinState currentPinState = myPins[pinNumber].getState();
+				currentJsonPinStat.put("currentPinState", getPinStringState(currentPinState));
+				currentJsonPinStat.put("port", pinNumber);				
+				return currentJsonPinStat;	
+			}
+			else{
+				throw new Exception("Port is not activated!");
+			}
+		}
+		catch (Exception ex){
+			throw ex;
+		}
+	}
 
 	private static String getPinStringState(PinState currentPinState) {
 
@@ -205,7 +224,7 @@ public class PiGpio {
 	}
 	
 	public static void initializePiGpio() throws Exception {
-		//$$myPins = new GpioPinDigitalOutput [NUMBER_OF_PINS_IN_RPI];
+		//myPins = new GpioPinDigitalOutput [NUMBER_OF_PINS_IN_RPI];//$$ FOR DEBUG
 		
 		//gpio = GpioFactory.getInstance(); //$$ FOR DEBUG
 

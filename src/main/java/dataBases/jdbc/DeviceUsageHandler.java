@@ -401,20 +401,18 @@ public class DeviceUsageHandler {
 		       int ch;
 		       while ((ch = reader.read()) != -1) {
 		    	   tempAndHumidity += (char) ch;
-		    	   System.out.println(tempAndHumidity);
 		       }
 		       reader.close();
+		       tokens =  tempAndHumidity.split(delims);
+		       temp = Double.parseDouble(tokens[0]);
+		       humidity = Double.parseDouble(tokens[1]);
+		       retVal.put("Temp", temp);
+		       retVal.put("Humidity", humidity);
             }
         catch (IOException e) {
         	throw new  Exception("An error has occurred while trying to collect temperature and humidity from the sensor ");
         }
-		tokens =  tempAndHumidity.split(delims);
-		temp = Double.parseDouble(tokens[0]);
-		 System.out.println(temp);
-		humidity = Double.parseDouble(tokens[1]);
-		 System.out.println(humidity);
-		retVal.put("Temp", temp);
-		retVal.put("Humidity", humidity);
+
 		return retVal; 
 	}
 }
