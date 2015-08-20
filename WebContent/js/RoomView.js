@@ -49,7 +49,7 @@ function ShowRoomName(groupID)
 //	List All Devices
 	function ShowDevicesInGroup( groupID)
 	{
-		var deviceID, name;
+		var deviceID, name, image;
 		$.ajax({
 			type: 'GET',
 			url: '/HouseControl/api/devices_group/get_devices/' + groupID,
@@ -59,8 +59,10 @@ function ShowRoomName(groupID)
 			{
 				for (var i=0; i<result.data.length; i++){
 					deviceID = result.data[i].deviceID;  name = result.data[i].name;
-					var contentDevice='<li><a href="#connect_disconnect" class="ui-btn" data-rel="popup" onclick="addconnectionToPopup('+deviceID+ ')'; 
-					contentDevice += ' data-position-to="window" data-transition="pop" >'+name+'</a></li>';
+					image = result.data[i].deviceType.picData;
+					var contentDevice='<li><a href="#connect_disconnect" class="ui-btn" data-rel="popup" onclick="addconnectionToPopup('+deviceID+ ') data-position-to="window" data-transition="pop" >';
+					contentDevice += MakeImage(image);
+					contentDevice += name+'</a></li>';
 					$("#ListAllDevices").append(contentDevice);
 					
 					deviceNamesArray[i]= name; //create list of names all devices in the room
@@ -336,3 +338,12 @@ function addconnectionToPopup (deviceID)
 	$('#disconnectDevice').onclick= DisconnectDeviceFromRelayPort(deviceID);
 	
 }
+
+
+//add device image to links
+function MakeImage(image)
+{
+	var divImage = '<img src="../img/devicesTypes/' + image+'.png" class="ui-thumbnail ui-thumbnail-circular">'; 
+	return divImage;
+}
+
