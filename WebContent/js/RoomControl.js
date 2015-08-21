@@ -2,6 +2,7 @@ var listOfDevices;
 var globalGroupID;
 var globalAction;
 var delay = 500;
+var lock = 0;
 
 $(function() 
 {
@@ -102,17 +103,22 @@ function changeOnOff(tempGroupID, newstatus)
 {
 	if (newstatus === null)
 	{		
-		$('#'+tempGroupID).addClass("ui-disabled");
-		globalGroupID = tempGroupID;
-		if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
+		if (lock === 0)
 		{
-			globalAction = "OFF";
+			lock = 1;
+			$('#'+tempGroupID).addClass("ui-disabled");
+			globalGroupID = tempGroupID;
+			if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
+			{
+				globalAction = "OFF";
+			}
+			else
+			{
+				globalAction = "ON";
+			}
+			sendRequestToTurnOnOff();
 		}
-		else
-		{
-			globalAction = "ON";
-		}
-		sendRequestToTurnOnOff();
+		
 	}
 	else
 	{
@@ -153,7 +159,7 @@ function sendRequestToTurnOnOff()
 				setTimeout(
 						  function() 
 						  {
-							  $('#'+globalGroupID).removeClass("ui-disabled");
+							    $('#'+globalGroupID).removeClass("ui-disabled");
 								if (globalAction === "OFF")
 								{
 									$('#'+globalGroupID).removeClass("ui-flipswitch-active");
@@ -162,6 +168,7 @@ function sendRequestToTurnOnOff()
 								{
 									$('#'+globalGroupID).addClass("ui-flipswitch-active");
 								}
+								lock = 0;
 						  }, delay);	
 				
 			}
