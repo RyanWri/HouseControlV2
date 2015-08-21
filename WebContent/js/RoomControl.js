@@ -1,4 +1,6 @@
 var listOfDevices;
+var globalGroupID;
+var globalAction;
 
 $(function() 
 {
@@ -99,14 +101,16 @@ function changeOnOff(tempGroupID, newstatus)
 {
 	if (newstatus === null)
 	{		
+		globalGroupID = tempGroupID;
 		if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
 		{
-			$('#'+tempGroupID).removeClass("ui-flipswitch-active");
+			globalAction = "OFF";
 		}
 		else
 		{
-			$('#'+tempGroupID).addClass("ui-flipswitch-active");
+			globalAction = "ON";
 		}
+		sendRequestToTurnOnOff();
 	}
 	else
 	{
@@ -125,6 +129,41 @@ function changeOnOff(tempGroupID, newstatus)
 			}
 		}
 	}
+}
+
+function sendRequestToTurnOnOff()
+{
+	var actionInInt = 0;
+	
+	if (globalAction === "ON")
+	{
+		actionInInt = 1;
+	}
+	
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/device/relay/'+globalGroupID+'/'+ actionInInt,
+        dataType: 'json',
+		success: function(result)
+		{
+			if (result.status === "ok")
+			{
+				if (globalAction === "OFF")
+				{
+					$('#'+globalGroupID).removeClass("ui-flipswitch-active");
+				}
+				else
+				{
+					$('#'+globalGroupID).addClass("ui-flipswitch-active");
+				}
+			}
+		},
+		error: function()
+		{
+			errorPopup("Connection Error");
+		},		
+	});
+	
 }
 
 function errorPopup(message)
