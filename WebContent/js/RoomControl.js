@@ -6,7 +6,7 @@ $(function()
     {
     	$("#roomName").text(localStorage.roomcontrolName);
     	loadRoomDevices();
-    	loadDevicesCurrentStatus();
+    	//loadDevicesCurrentStatus();
     });
 });
 
@@ -39,7 +39,9 @@ function loadRoomDevices()
 										</a>\n\
 									</div>\n\
 								</h3>\n\
-							</li>');				
+							</li>');
+					loadDevicesCurrentStatus(listOfDevices[i].deviceID);
+					
 				}
 				
 			}
@@ -51,13 +53,13 @@ function loadRoomDevices()
 	});
 }
 
-function loadDevicesCurrentStatus()
+function loadDevicesCurrentStatus(deviceID)
 {
-	for (var i = 0; i < listOfDevices.length; i++)
-	{
+	//for (var i = 0; i < listOfDevices.length; i++)
+	//{
 		$.ajax({
 			type: 'GET',
-			url: '/HouseControl/api/device/get_relay_port/' + listOfDevices[i].deviceID,
+			url: '/HouseControl/api/device/get_relay_port/' + deviceID,
 	        dataType: 'json',
 			success: function(result)
 			{
@@ -69,7 +71,7 @@ function loadDevicesCurrentStatus()
 					}
 					else
 					{
-						getDevicesCurrentStatus(listOfDevices[i].deviceID, result.data);
+						getDevicesCurrentStatus(deviceID, result.data);
 					}
 
 				}
@@ -79,7 +81,7 @@ function loadDevicesCurrentStatus()
 				
 			},		
 		});
-	}
+	//}
 }
 
 function getDevicesCurrentStatus(tempGroupID, port)
