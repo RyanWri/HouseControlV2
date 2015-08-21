@@ -1,4 +1,4 @@
-/*
+/* 
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics Single page Room stats
@@ -33,9 +33,13 @@ function ShowAllDevicesInRoom(groupID)
 				deviceID = result.data[i].deviceID;  name = result.data[i].name;  
 				devicesID_array[i] = deviceID;
 				devices_labels[i] = name;
-				voltage_series[i] = GetVoltageDevice("day", deviceID);
+				GetVoltageDevice("month", deviceID, i);
 			}
-			createDynamicBarsChart();
+			
+			 setTimeout( function() {
+					createDynamicBarsChart();//now we have all data create the pie chart
+			 }, 100);
+
 			
 
 		},
@@ -43,8 +47,6 @@ function ShowAllDevicesInRoom(groupID)
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 
 	});
@@ -65,7 +67,7 @@ function createDynamicBarsChart()
 
 
 
-function GetVoltageDevice (timeframe , deviceID)
+function GetVoltageDevice (timeframe , deviceID, i)
 {
 	$.ajax({
 		type: 'GET',
@@ -74,14 +76,12 @@ function GetVoltageDevice (timeframe , deviceID)
 		dataType: 'json',
 		success: function(result)
 		{
-			return result.data.map.voltageSum;
+			voltage_series[i] = result.data;
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 
 	});
