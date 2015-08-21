@@ -6,7 +6,6 @@ $(function()
     {
     	$("#roomName").text(localStorage.roomcontrolName);
     	loadRoomDevices();
-    	//loadDevicesCurrentStatus();
     });
 });
 
@@ -18,13 +17,10 @@ function loadRoomDevices()
         dataType: 'json',
 		success: function(result)
 		{
-			if (result.status === "ok")
-			{
-				listOfDevices = result.data;
-				for (var i = 0; i < listOfDevices.length; i++)
-				{
-					
-					$("#listOfRoomDevices").append('\n\
+			listOfDevices = result.data;
+			for (var i = 0; i < listOfDevices.length; i++)
+			{	
+				$("#listOfRoomDevices").append('\n\
 							<li class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
 								<img src="../img/devicesTypes/'+listOfDevices[i].deviceType.picData+'.png">\n\
 								<h3>'+listOfDevices[i].name+'\n\
@@ -40,48 +36,43 @@ function loadRoomDevices()
 									</div>\n\
 								</h3>\n\
 							</li>');
-					loadDevicesCurrentStatus(listOfDevices[i].deviceID);
 					
-				}
-				
+				loadDeviceCurrentStatus(listOfDevices[i].deviceID);	
 			}
 		},
 		error: function()
 		{
-			
+			errorPopup("Connection Error");
 		},	
 	});
 }
 
-function loadDevicesCurrentStatus(deviceID)
+function loadDeviceCurrentStatus(deviceID)
 {
-	//for (var i = 0; i < listOfDevices.length; i++)
-	//{
-		$.ajax({
-			type: 'GET',
-			url: '/HouseControl/api/device/get_relay_port/' + deviceID,
-	        dataType: 'json',
-			success: function(result)
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/device/get_relay_port/' + deviceID,
+	    dataType: 'json',
+		success: function(result)
+		{
+			if (result.status === "ok")
 			{
-				if (result.status === "ok")
+				if (result.data === -1)
 				{
-					if (result.data === -1)
-					{
-						// devices is not connected to server.
-					}
-					else
-					{
-						getDevicesCurrentStatus(deviceID, result.data);
-					}
-
+					errorPopup("Device is not connected to port");	
 				}
-			},
-			error: function()
-			{
-				
-			},		
-		});
-	//}
+				else
+				{
+					getDevicesCurrentStatus(deviceID, result.data);
+				}
+
+			}
+		},
+		error: function()
+		{
+			errorPopup("Connection Error");	
+		},		
+	});
 }
 
 function getDevicesCurrentStatus(tempGroupID, port)
@@ -99,7 +90,7 @@ function getDevicesCurrentStatus(tempGroupID, port)
 		},
 		error: function()
 		{
-			
+			errorPopup("Connection Error");
 		},		
 	});
 }
@@ -134,4 +125,16 @@ function changeOnOff(tempGroupID, newstatus)
 			}
 		}
 	}
+}
+
+function errorPopup(message)
+{
+	window.location = "#";
+	setTimeout(
+			  function() 
+			  {
+					$("#popupMessagetext").text("Error!");
+					$("#popupMessagesubtext").text(message);
+					$("#popupMessage").click();
+			  }, delay);	
 }
