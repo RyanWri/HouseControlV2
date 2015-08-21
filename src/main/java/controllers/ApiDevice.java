@@ -128,7 +128,7 @@ public class ApiDevice{
 
 		try{
 //			SessionHandler.isAuthUser(req);
-			String st = PiGpio.controlGpioPin(deviceID, action);
+			String st = PiGpio.controlGpioPin(deviceID, action); 
 			response = Response.ok(GenericResponse.ok("GREAT the relay port status is: " + st)).build();
 		}
 		catch(Exception ex){
