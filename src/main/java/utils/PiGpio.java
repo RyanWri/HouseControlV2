@@ -29,8 +29,11 @@ public class PiGpio {
 	private static GpioPinDigitalOutput[] myPins;
 	private static GpioController gpio;
 
-	public static String controlGpioPin(int pinNumber , int action) throws Exception{
-		try{
+	public static String controlGpioPin(int deviceID , int action) throws Exception{
+		int pinNumber;
+		try{		
+			pinNumber = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(deviceID);
+			
 			if(pinNumber >=0 && pinNumber <NUMBER_OF_PINS_IN_RPI && action >=0 & action <=1)
 			{
 				if(myPins[pinNumber] != null && checkifActionConsistent(pinNumber ,action)){
@@ -53,6 +56,9 @@ public class PiGpio {
 				else{
 					throw new Exception("The Action is not consistent with the device current status");
 				}
+			}
+			else{
+				throw new Exception("There is no device connected to this pin in the DB!");
 			}
 			return getPinState(pinNumber);
 		}
