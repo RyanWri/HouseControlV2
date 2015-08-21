@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="../css/nativedroid2.css" />
 		<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
 		<link rel="stylesheet" type="text/css" href="../css/HouseControl.css">
-		<title>Users Control</title>
+		<title>Room Control</title>
 	</head>
 	
 	<body class="ui-mobile-viewport ui-overlay-a">
@@ -41,7 +41,7 @@
 		<!-- Header Start -->
 			
 			<div data-role="header" class="ui-page-theme-a ui-header">
-					<h1 id="roomName" class="ui-title"></h1>
+					<h1 id="roomName"></h1>
 					<a href="#" data-rel="back" class="ui-btn-left wow fadeIn ui-btn waves-effect waves-button  waves-effect waves-button" data-wow-delay="0.8s" data-role="button" role="button" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
 						<i class="zmdi zmdi-arrow-back zmd-fw"></i>
 					</a>					
@@ -55,9 +55,31 @@
 		<!-- Content Start -->
 		 
 		<div data-role="main" class="ui-content">
-		 	<div id="addnewuser" class="ui-btn ui-btn-icon-left waves-effect waves-button waves-effect waves-button ui-shadow newfont"><i class="zmdi zmdi-account-add zmd-fw"></i> New User</div><br>
-			 <div id="userstitle" class="title newfont">Users:</div>
-			 <ul id="listofusers" data-role="listview" data-autodividers="false" data-inset="true"></ul>
+	
+	<ul id="listOfRoomDevices" data-role="listview" data-split-icon="plus" data-split-theme="a" data-inset="true">
+		<li>
+			 <img src="../img/devicesGroups/Garden.png">
+			 <h3>Broken Bells            				    
+				 <div align="right">
+					<input data-role="flipswitch" name="flip-checkbox-1" id="flip-checkbox-1" type="checkbox">
+					<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button"><i class="zmdi zmdi-wrench"></i></a>
+				 </div>
+			</h3>		
+		</li>
+		
+	</ul>
+	
+
+
+<div data-role="popup" id="purchase" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+    <h3>Purchase Album?</h3>
+<p>Your download will begin immediately on your mobile device when you purchase.</p>
+    <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">Buy: $10.99</a>
+    <a href="index.html" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">Cancel</a>
+</div>
+	
+	
+	
 		</div>
   
   		<!-- Content End -->
