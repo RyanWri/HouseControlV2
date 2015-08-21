@@ -16,6 +16,7 @@ $(document).ready(function(){
 	{
 		 $('#question'+ number).click(function(){
 		        $('#answer'+number).toggle();
+		        $('#answer'+number).addClass('nd2-display-1');
 		 });
 		    
 	}
