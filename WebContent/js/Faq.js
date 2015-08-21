@@ -5,19 +5,5 @@
 	Last Modification : 
  */
 
-    $(document).ready(function()
-    {
-    	CreateAnswerNavigation();
-    	CreateAnswerDevices();
-    	CreateAnswerStatistics();
-    	CreateAnswerAdminRights();
-    	CreateAnswerTimer();
-    	CreateAnswerGeneral();
-    });  
+//at the moment no javascript is needed here
     
-    function CreateAnswerNavigation()
-    {
-    	$("#navigation").append('<')
-    	
-    	
-    }

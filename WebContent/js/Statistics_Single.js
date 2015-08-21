@@ -2,51 +2,23 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics Single page Room stats
-	Last Modification : --
+	Last Modification : 20/08/2015
  */
 
 var devices_labels = [];
 var voltage_series = [];
 var devicesID_array = [];
-var groupID = 1; //or get it from local storage
+
+var groupID = localStorage.statisticsGroupID;
+
 
 $(document).ready(function()
 		{
 			ShowAllDevicesInRoom(groupID);
-			createDynamicBarsChart();
 		});
 
-//	List All Devices
-function ShowAllDevices()
-{
-	var deviceID, name, voltage;
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/device/all',
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			for (var i=0; i<result.data.length; i++){
-				deviceID = result.data[i].deviceID;  name = result.data[i].name; 
-				devicesID_array[i] = deviceID;
-				devices_labels[i] = name;
-				voltage_series[i] = result.data[i].voltage;
-			}
 
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
-		}
-
-	});
-	
-}
-
+//showing all devices in the room
 function ShowAllDevicesInRoom(groupID)
 {
 	var deviceID, name;
@@ -58,11 +30,13 @@ function ShowAllDevicesInRoom(groupID)
 		success: function(result)
 		{
 			for (var i=0; i<result.data.length; i++){
-				deviceID = result.data[i].deviceID;  name = result.data[i].name; 
+				deviceID = result.data[i].deviceID;  name = result.data[i].name;  
 				devicesID_array[i] = deviceID;
 				devices_labels[i] = name;
-				voltage_series[i] = result.data[i].voltage;
+				voltage_series[i] = GetVoltageDevice("day", deviceID);
 			}
+			createDynamicBarsChart();
+			
 
 		},
 
@@ -95,12 +69,12 @@ function GetVoltageDevice (timeframe , deviceID)
 {
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/statistics/'+ timeframe +'/' +deviceID,
+		url: '/HouseControl/api/device/statistics/'+ timeframe +'/' +deviceID,
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
 		{
-			return result.data.voltage;
+			return result.data.map.voltageSum;
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)

@@ -6,7 +6,7 @@
  */
 
 
-var groupID = localStorage.tempGroupID;//or you need to get it from local storage
+var groupID = localStorage.tempGroupID;
 var deviceNamesArray =[];
 
 $(document).ready(function()
@@ -59,11 +59,13 @@ function ShowRoomName(groupID)
 			{
 				for (var i=0; i<result.data.length; i++){
 					deviceID = result.data[i].deviceID;  name = result.data[i].name;
-					image = result.data[i].deviceType.picData;
-					var contentDevice='<li><a href="#connect_disconnect" class="ui-btn" data-rel="popup" onclick="addconnectionToPopup('+deviceID+ ') data-position-to="window" data-transition="pop" >';
-					contentDevice += MakeImage(image);
-					contentDevice += name+'</a></li>';
-					$("#ListAllDevices").append(contentDevice);
+					picData = result.data[i].deviceType.picData;
+					
+					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
+							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#connect_disconnect" data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="addconnectionToPopup('+deviceID+')" data-position-to="window" data-transition="pop">\n\
+					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
+					        <h2>'+ name+'</h2>\n\
+					        </a></li></ul>');
 					
 					deviceNamesArray[i]= name; //create list of names all devices in the room
 				}
@@ -225,7 +227,7 @@ function AddDeviceToRoom()
 function connectDeviceToRelayPort(deviceID)
 {
 	var relayPort = FindOpenPortRelay();
-	if (relayPort <= 4)
+	if (relayPort < 4) //ports are from 0-3
 		{
 	$.ajax({
 		type: 'POST',
@@ -245,9 +247,9 @@ function connectDeviceToRelayPort(deviceID)
 			alert(thrownError); 
 		} 
 
-	}); } //we found available port
+	}); } 
 	
-	else
+	else //no Available port
 		{
 		alert("No available port on relay || All ports are taken");
 		}
@@ -283,7 +285,7 @@ function FindOpenPortRelay()
 {
 	for( var portNumber=0; portNumber<4; i++)
 		{
-			if( RunPortTest(portNumber) >=0)
+			if( RunPortTest(portNumber) >= 0)
 				return  RunPortTest(portNumber);
 		}
 	
@@ -294,15 +296,15 @@ function RunPortTest(portNumber)
 {
 	$.ajax({
 		type: 'POST',
-		url: '/HouseControl/api/device/relay/'+ portNumber +'/status/',
+		url: '/HouseControl/api/device/relay/'+ portNumber +'/inUse/',
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
 		{
-			if(result.data.portState === 'Disbled')
+			if(result.data === 'false') //port is not in used
 				return portNumber;
 			
-			else return -1;
+			else return -1; //port in used
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -338,12 +340,3 @@ function addconnectionToPopup (deviceID)
 	$('#disconnectDevice').onclick= DisconnectDeviceFromRelayPort(deviceID);
 	
 }
-
-
-//add device image to links
-function MakeImage(image)
-{
-	var divImage = '<img src="../img/devicesTypes/' + image+'.png" class="ui-thumbnail ui-thumbnail-circular">'; 
-	return divImage;
-}
-
