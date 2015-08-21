@@ -1,7 +1,7 @@
 var listOfDevices;
 var globalGroupID;
 var globalAction;
-var delay = 300;
+var delay = 150;
 var lock = 0;
 
 $(function() 
