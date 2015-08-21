@@ -121,14 +121,14 @@ public class ApiDevice{
 
 
 	@POST
-	@Path("/relay/{port}/{action}")
+	@Path("/relay/{deviceID}/{action}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response relayAction(@Context HttpServletRequest req, @PathParam("port") int port,@PathParam("action") int action){
+	public Response relayAction(@Context HttpServletRequest req, @PathParam("deviceID")int deviceID, @PathParam("action") int action){
 		Response response = null;
 
 		try{
 //			SessionHandler.isAuthUser(req);
-			String st = PiGpio.controlGpioPin(port, action);
+			String st = PiGpio.controlGpioPin(deviceID, action);
 			response = Response.ok(GenericResponse.ok("GREAT the relay port status is: " + st)).build();
 		}
 		catch(Exception ex){
