@@ -1,6 +1,7 @@
 var listOfDevices;
 var globalGroupID;
 var globalAction;
+var delay = 500;
 
 $(function() 
 {
@@ -23,7 +24,7 @@ function loadRoomDevices()
 			for (var i = 0; i < listOfDevices.length; i++)
 			{	
 				$("#listOfRoomDevices").append('\n\
-							<li class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
+							<li id="li-'+listOfDevices[i].deviceID+'" class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
 								<img src="../img/devicesTypes/'+listOfDevices[i].deviceType.picData+'.png">\n\
 								<h3>'+listOfDevices[i].name+'\n\
 									<div align="right">\n\
@@ -101,6 +102,7 @@ function changeOnOff(tempGroupID, newstatus)
 {
 	if (newstatus === null)
 	{		
+		$('#'+tempGroupID).addClass("ui-disabled");
 		globalGroupID = tempGroupID;
 		if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
 		{
@@ -148,14 +150,20 @@ function sendRequestToTurnOnOff()
 		{
 			if (result.status === "ok")
 			{
-				if (globalAction === "OFF")
-				{
-					$('#'+globalGroupID).removeClass("ui-flipswitch-active");
-				}
-				else
-				{
-					$('#'+globalGroupID).addClass("ui-flipswitch-active");
-				}
+				setTimeout(
+						  function() 
+						  {
+							  $('#'+globalGroupID).removeClass("ui-disabled");
+								if (globalAction === "OFF")
+								{
+									$('#'+globalGroupID).removeClass("ui-flipswitch-active");
+								}
+								else
+								{
+									$('#'+globalGroupID).addClass("ui-flipswitch-active");
+								}
+						  }, delay);	
+				
 			}
 		},
 		error: function()
