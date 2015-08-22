@@ -34,7 +34,7 @@ function ShowAllRooms(UserID)
 					
 					$("#ListAllRooms").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendGroupID('+groupID+')">\n\
-					        <img src="../img/devicesGroups/'+picData +'.png" class="button">\n\
+					        <img src="../img/devicesGroups/'+picData +'" class="button">\n\
 					        <h2>'+ name+'</h2>\n\
 					        </a></li></ul>');
 					SetStatsPerRoom(groupID, i);
@@ -43,7 +43,7 @@ function ShowAllRooms(UserID)
 				 setTimeout( function() {
 						createDynamicPieChart();//now we have all data create the pie chart
 						ShowTotalConsumption("month");
-				 },100);
+				 },200);
 				
 			},
 
@@ -62,31 +62,18 @@ function ShowAllRooms(UserID)
 //Create dynamic pie chart
 function createDynamicPieChart()
 {	
-
 	var data = {
 			  labels: groups,
 			  series: voltage_series
 			};
 	
-	var sum = function(a, b) { return a + b };
-	
 	var options = {
 			  labelInterpolationFnc: function(value) {
-				  return Math.round(value / data.series.reduce(sum) * 100) + '%';
+			    return value[0]
 			  }
-	
 			};
 	
-	var responsiveOptions = [
-	                          ['screen and (min-width: 340px)', {
-		                           chartPadding: 30,
-		                           labelOffset: 100,
-		                           labelDirection: 'explode',
-		                           labelInterpolationFnc: function(value) {
-		                             return value;
-		                           }
-		                         }],
-	                         
+	var responsiveOptions = [         
 	                         ['screen and (min-width: 640px)', {
 	                           chartPadding: 30,
 	                           labelOffset: 100,

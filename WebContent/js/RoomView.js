@@ -103,7 +103,7 @@ function ShowRoomName(groupID)
 			{
 				if (result.status === "ok")
             	{
-					location.reload();
+					window.location = "RoomView.html";
             		$.mobile.loading("hide");
             	}
             	else
