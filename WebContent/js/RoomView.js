@@ -34,8 +34,6 @@ function ShowRoomName(groupID)
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError);
 			return "Error getting name";
 		}
 
@@ -75,8 +73,6 @@ function ShowRoomName(groupID)
 			error: function(xhr, ajaxOptions, thrownError)
 			{
 				$.mobile.loading("hide");
-				alert(xhr.status);
-				alert(thrownError); 
 			}
 
 		});
@@ -97,7 +93,6 @@ function ShowRoomName(groupID)
 		parameters.voltage = $('#deviceVoltage').val(); 
 		var parametersStringified = JSON.stringify(parameters);
 		
-		alert(parametersStringified);
 		$.ajax({
 			type: 'POST',
 			url: '/HouseControl/api/device/create',
@@ -108,20 +103,17 @@ function ShowRoomName(groupID)
 			{
 				if (result.status === "ok")
             	{
-					alert("device was created");
 					location.reload();
             		$.mobile.loading("hide");
             	}
             	else
             	{
             		$.mobile.loading("hide");
-            		alert("error");
             	}
 			},
 			error: function(xhr, ajaxOptions, thrownError)
 			{
-				alert(xhr.status);
-				alert(thrownError); 
+				$.mobile.loading("hide");
 			}
 
 
@@ -149,8 +141,6 @@ function SelectMenuForDeviceType()
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 
 	});
@@ -184,8 +174,6 @@ function CreateListOfDevicesToAdd()
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 
 	});
@@ -198,7 +186,6 @@ function AddDeviceToRoom()
 	var deviceID = $('#devicesToAdd :selected').val();
 	var name = $('#devicesToAdd :selected').text();
 	var dataString = 'deviceID='+deviceID +'&deviceGroupID='+ groupID;
-	alert(dataString);
 	$.ajax({
 		type: 'POST',
 		url: '/HouseControl/api/devices_group/add_device',
@@ -215,8 +202,6 @@ function AddDeviceToRoom()
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 	});
 
@@ -236,22 +221,19 @@ function connectDeviceToRelayPort(deviceID)
 		dataType: 'json',
 		success: function(result)
 		{
-			alert('Device'+ deviceID +'is connected to port' + RelayPort);
 			$.mobile.loading("hide");
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		} 
 
 	}); } 
 	
 	else //no Available port
 		{
-		alert("No available port on relay || All ports are taken");
+			
 		}
 	
 }
@@ -265,15 +247,13 @@ function DisconnectDeviceFromRelayPort(deviceID)
 		dataType: 'json',
 		success: function(result)
 		{
-			alert('Device'+ deviceID +'has been disconnected from port');
+			
 			$.mobile.loading("hide");
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError); 
 		}
 
 	});
@@ -310,8 +290,6 @@ function RunPortTest(portNumber)
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			alert(xhr.status);
-			alert(thrownError);
 			return -2;
 		}
 
@@ -325,7 +303,7 @@ function IsDeviceInTheRoom(name)
 	var flag = false;
 	for (var i=0; i< deviceNamesArray.length; i++)
 	{
-		if(deviceNamesArray[i] === name)
+		if(deviceNamesArray[i] == name)
 			return true; //name exist
 	}
 	
