@@ -43,7 +43,7 @@ function ShowAllRooms(UserID)
 				 setTimeout( function() {
 						createDynamicPieChart();//now we have all data create the pie chart
 						ShowTotalConsumption("month");
-				 },1000);
+				 },3000);
 				
 			},
 
