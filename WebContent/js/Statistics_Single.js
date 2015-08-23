@@ -38,7 +38,7 @@ function ShowAllDevicesInRoom(groupID)
 			
 			 setTimeout( function() {
 					createDynamicBarsChart();//now we have all data create the pie chart
-			 }, 800);
+			 }, 1000);
 
 			
 

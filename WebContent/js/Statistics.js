@@ -43,7 +43,7 @@ function ShowAllRooms(UserID)
 				 setTimeout( function() {
 						createDynamicPieChart();//now we have all data create the pie chart
 						ShowTotalConsumption("month");
-				 },800);
+				 },1000);
 				
 			},
 
@@ -62,6 +62,8 @@ function ShowAllRooms(UserID)
 //Create dynamic pie chart
 function createDynamicPieChart()
 {	
+	CutZeroValueLabel();
+	
 	var data = {
 			  labels: groups,
 			  series: voltage_series
@@ -70,14 +72,25 @@ function createDynamicPieChart()
 	var options = {
 			  labelInterpolationFnc: function(value) {
 			    return value;
-			  },
-			  
-			  chartPadding: 30,
-              labelOffset: 100,
-              labelDirection: 'explode',
+			  }
 			};
 
-	new Chartist.Pie('.ct-chart', data, options);
+			var responsiveOptions = [
+			  ['screen and (min-width: 640px)', {
+			    chartPadding: 30,
+			    labelOffset: 100,
+			    labelDirection: 'explode',
+			    labelInterpolationFnc: function(value) {
+			      return value;
+			    }
+			  }],
+			  ['screen and (min-width: 1024px)', {
+			    labelOffset: 80,
+			    chartPadding: 20
+			  }]
+			];
+
+	new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
 }
 
 function ShowTotalConsumption(timeframe)
@@ -133,4 +146,15 @@ function SetStatsPerRoom(groupID, i)
 		});
 }
 	
+
+//delete all label with value 0
+function CutZeroValueLabel()
+{
+	 for(var i = voltage_series.length; i--;) {
+         if(voltage_series[i] === 0) {
+             groups.splice(i, 1);
+         }
+     }
+}
+
 
