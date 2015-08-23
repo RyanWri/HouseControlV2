@@ -32,7 +32,7 @@ public class ApiTimer {
 			//SessionHandler.verifyAdminRequest(req);
 			timer = gson.fromJson(timerJson, Timer.class);
 			TimerHandler.addTimer(timer);
-			response = Response.ok(GenericResponse.ok(timer)).build();
+			response = Response.ok(GenericResponse.ok("timer created")).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();

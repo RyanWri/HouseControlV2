@@ -65,40 +65,28 @@
 			
 		</div> <!-- /content -->
 		
-		<!--  add device Dialog -->
-	<div data-role="popup" id="CreateDeviceDialog" data-theme="a">
+		<!--  add device Dialog -->	
+		
+	<div data-role="popup" id="CreateDeviceDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">	
 
-		<div data-role="header">
+		<div data-role="header" data-theme="a">
 			<h1>Add Device</h1>
 		</div>
-
 		<div data-role="content" data-theme='a'>
 			<form id="formCreateDevice">
-			<ul class="fieldlist">
-			 <li>
-                <label for="deviceName">enter device Name</label>
-                <input id="deviceName" type="text" class="k-textbox" style="width: 100%;" />
-            </li>
-            <li>
-                <label for="description"> Description </label>
-                <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
-            </li>
-            <li>
-				<label for="devices">Choose Device type</label> <select name="devices" id="devicesTypes" class="icon-menu">
-					<option value="">Select Device Type</option>
-					
-					</select>
-			</li>
-			<li>
+				<label for="deviceName">Enter device Name</label> 
+	            <textarea id="deviceName" class="k-textbox" style="width: 100%;" ></textarea>
+	            <label for="description">Description </label>
+	            <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
+	            <label for="devices">Choose Device type</label> 
+	            <select name="devices" id="devicesTypes" class="icon-menu">
+					<option value="">Select Device Type</option>	
+				</select>
+				<label for="deviceVoltage">Voltage</label>
 				<input type="number" id="deviceVoltage" name="Voltage" min="15" max="50">
-			</li>
-			
-			</ul>
 			<input type="submit" value="add" />
 			</form>
-
 		</div>
-
 	</div>
 	<!-- end of add device Dialog -->
 	
@@ -108,7 +96,7 @@
 	<form onsubmit="AddDeviceToRoom()">
 	<label for="devicesToAdd">Choose Device To Add</label> 
 	<select name="devicesToAdd" id="devicesToAdd" class="icon-menu">
-	<option disabled selected> -- Select The Device You Want To ADD -- </option>
+	<option disabled selected>Select The Device You Want To ADD</option>
 	</select>
 	<input type="submit" value="Add Device To Room">
 	</form>
