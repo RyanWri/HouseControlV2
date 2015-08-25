@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import utils.JDBCUtils;
 import modelObjects.Device;
 
 public class DeviceInGroupHandler{
@@ -17,7 +18,7 @@ public class DeviceInGroupHandler{
 	public static final String DEVICE_IN_GROUP_REMOVE_SUCCESS_MESSAGE = "Device has been removed from group";
 
 	
-	public static void addDeviceToDevicesGroup(int deviceID,int devicesGroupID) throws Exception{
+	public static void addDeviceToDevicesGroup(int deviceID,int devicesGroupID) throws Exception {
 		Connection conn = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;	
@@ -35,13 +36,10 @@ public class DeviceInGroupHandler{
 			if(isSucceeded>0) {
 				System.out.println("Device " + deviceID + " has been added to group " + devicesGroupID + " successfully");
 			}
-			else{
-				throw new Exception();
-			}
 		}
-		catch(Exception ex){
-			System.err.println(ex.getMessage());
-			throw new Exception("A problem has occured while trying adding the device " + deviceID +  " to the group " + devicesGroupID);
+		catch(SQLException ex){
+			JDBCUtils.checkIfDuplicate(ex);
+//			throw new Exception("A problem has occured while trying adding the device " + deviceID +  " to the group " + devicesGroupID);
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);

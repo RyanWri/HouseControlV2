@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import modelObjects.Device;
 import utils.GenericResponse;
 import utils.PiGpio;
+import utils.SessionHandler;
 
 import com.google.gson.Gson;
 
@@ -37,7 +38,7 @@ public class ApiDevice{
 		Gson gson = new Gson();
 
 		try{
-			//SessionHandler.verifyAdminRequest(req);
+			SessionHandler.verifyAdminRequest(req);
 			device = gson.fromJson(deviceJson, Device.class);
 			DeviceHandler.addDevice(device);
 			response = Response.ok(GenericResponse.ok(DeviceHandler.DEVICE_ADD_SUCCESS_MESSAGE)).build();
@@ -56,7 +57,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-			//SessionHandler.verifyAdminRequest(req);
+			SessionHandler.verifyAdminRequest(req);
 			RelayConnectionHandler.connectDeviceToRelay(relayPort,deviceID);
 			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE)).build();
 		}
@@ -73,7 +74,7 @@ public class ApiDevice{
 	public Response diconnectDevice(@Context HttpServletRequest req,@PathParam("deviceID") int deviceID){
 		Response response = null;
 		try{
-			//SessionHandler.verifyAdminRequest(req);
+			SessionHandler.verifyAdminRequest(req);
 			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
 			DeviceHandler.updateDeviceState(deviceID, Device.DeviceState.Inactive);
 			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_DISCONNECT_DEVICE_FROM_RELAY_PORT_SUCCESS_MESSAGE)).build();
@@ -92,7 +93,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			Device device = DeviceHandler.getDevice(deviceID);
 			response = Response.ok(GenericResponse.ok(device)).build();
 		}
@@ -109,7 +110,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			int relayPort = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(deviceID);
 			response = Response.ok(GenericResponse.ok(relayPort)).build();
 		}
@@ -127,7 +128,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			String st = PiGpio.controlGpioPin(deviceID, action); 
 			response = Response.ok(GenericResponse.ok("GREAT the relay port status is: " + st)).build();
 		}
@@ -144,7 +145,7 @@ public class ApiDevice{
 		Response response = null;
 		
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			JSONObject currentPinState = PiGpio.getJsonPinState(port); 
 			response = Response.ok(GenericResponse.ok(currentPinState)).build();
 		} 
@@ -161,7 +162,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			boolean isAvailable = RelayConnectionHandler.isRelayPortAvailable(port);
 			response = Response.ok(GenericResponse.ok(!isAvailable)).build();
 		} 
@@ -178,7 +179,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			String sumAllDevicesStatistics = PiGpio.getAllDevicesStatistics(timeFrame);
 			response = Response.ok(GenericResponse.ok("The total sum of elctricity used during the last " + timeFrame + " is: "+ sumAllDevicesStatistics + "!")).build();
 		}
@@ -195,7 +196,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			String sumAllDevicesStatistics = PiGpio.getDeviceStatistics(timeFrame, deviceID);
 			response = Response.ok(GenericResponse.ok(sumAllDevicesStatistics)).build();
 		}
@@ -212,7 +213,7 @@ public class ApiDevice{
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			JSONArray groupDevicesConsumption = DeviceUsageHandler.getDeviceStatisticsByGroupID(timeFrame, groupID);
 			response = Response.ok(GenericResponse.ok(groupDevicesConsumption)).build();
 		}
@@ -231,7 +232,7 @@ public class ApiDevice{
 		List<Device> devicesGroups = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			devicesGroups = DeviceHandler.getAllDevices();
 			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
 		}
@@ -249,7 +250,7 @@ public class ApiDevice{
 		Response response = null;
 		List<Device> devices = null;
 		try{
-			//SessionHandler.verifyAdminRequest(req);
+			SessionHandler.verifyUserIsAuthorized(req,userID);
 			devices = DeviceHandler.getTurnedOnDevicesByUserID(userID);
 			response = Response.ok(GenericResponse.ok(devices)).build();
 		}
@@ -267,7 +268,6 @@ public class ApiDevice{
 		Response response = null;
 	    JSONObject tempAndHumidity;
 		try{
-			//SessionHandler.verifyAdminRequest(req);
 			tempAndHumidity = DeviceUsageHandler.getTempAndHumidityFromSensor();
 			response = Response.ok(GenericResponse.ok(tempAndHumidity)).build();
 		}

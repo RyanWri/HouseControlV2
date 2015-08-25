@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import modelObjects.Timer;
 import utils.GenericResponse;
+import utils.SessionHandler;
 
 import com.google.gson.Gson;
 
@@ -29,7 +30,7 @@ public class ApiTimer {
 		Gson gson = new Gson();
 
 		try{
-			//SessionHandler.verifyAdminRequest(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			timer = gson.fromJson(timerJson, Timer.class);
 			TimerHandler.addTimer(timer);
 			response = Response.ok(GenericResponse.ok("timer created")).build();
@@ -48,7 +49,7 @@ public class ApiTimer {
 		Response response = null;
 
 		try{
-//			SessionHandler.isAuthUser(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			Timer timer = TimerHandler.getTimerByID(timerID);
 			response = Response.ok(GenericResponse.ok(timer)).build();
 		}
@@ -64,7 +65,7 @@ public class ApiTimer {
 	public Response delete(@Context HttpServletRequest req,@PathParam("timerID") int timerID){
 		Response response = null;
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			TimerHandler.deleteTimer(timerID);
 			response = Response.ok(GenericResponse.ok(TimerHandler.TIMER_DELETE_SUCCESS_MESSAGE)).build();
 		}

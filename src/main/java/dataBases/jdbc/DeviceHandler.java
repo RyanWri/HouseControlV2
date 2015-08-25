@@ -15,6 +15,8 @@ import modelObjects.DeviceType;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import utils.JDBCUtils;
+
 public class DeviceHandler{
 	public static final String DEVICE_ADD_SUCCESS_MESSAGE = "Device has been added successfully";
 
@@ -45,7 +47,7 @@ public class DeviceHandler{
 			}
 		}
 		catch(SQLException ex){
-			throw new Exception("An error has occured when trying add a new device");
+			JDBCUtils.checkIfDuplicate(ex);
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);

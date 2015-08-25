@@ -294,7 +294,7 @@ public class UserHandler{
 		}
 	}
 
-	public static User getUserByUsername(String username) throws SQLException{
+	public static User getUserByUsername(String username) throws Exception{
 		User user = null;
 		Connection conn = null;
 		Statement statement = null;
@@ -310,6 +310,9 @@ public class UserHandler{
 			resultSet = statement.executeQuery(query);
 			if(resultSet.next()){
 				user = mapRow(resultSet,false);
+			}
+			else{
+				throw new Exception("User doesn't exist");
 			}
 		}
 		catch(SQLException ex){

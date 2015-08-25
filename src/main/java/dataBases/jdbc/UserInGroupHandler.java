@@ -13,6 +13,8 @@ import modelObjects.User;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import utils.JDBCUtils;
+
 public class UserInGroupHandler{
 
 	public static final String USER_IN_GROUP_ADD_SUCCESS_MESSAGE = "User has been added to group";
@@ -41,8 +43,7 @@ public class UserInGroupHandler{
 			}
 		}
 		catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			throw new Exception("A problem has occured while trying adding the user " + userID +  " to the group " + deviceGroupID);
+			JDBCUtils.checkIfDuplicate(ex);
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);
@@ -147,10 +148,10 @@ public class UserInGroupHandler{
 
 		return devicesGroups;
 	}
-	
+
 	public static boolean isUserAuthorizedGettingDevicesGroupData(int userID,int devicesGroupID) throws Exception{
 		boolean isAuthorized = false;
-		
+
 		Connection conn = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -174,8 +175,8 @@ public class UserInGroupHandler{
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
-		
+
 		return isAuthorized;	
 	}
-	
+
 }

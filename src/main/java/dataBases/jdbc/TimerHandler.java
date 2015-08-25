@@ -18,6 +18,8 @@ import modelObjects.User;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import utils.JDBCUtils;
+
 public class TimerHandler {
 	public static final String TIMER_DELETE_SUCCESS_MESSAGE = "The timer has been deleted";
 
@@ -57,7 +59,8 @@ public class TimerHandler {
 			}
 		}
 		catch(SQLException ex){
-			throw new Exception("An error has occured when trying add a new timer");
+			JDBCUtils.checkIfDuplicate(ex);
+//			throw new Exception("An error has occured when trying add a new timer");
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);

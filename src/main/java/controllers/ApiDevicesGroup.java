@@ -39,10 +39,9 @@ public class ApiDevicesGroup {
 		Gson gson = new Gson();
 		
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			parsedDevicesGroup = gson.fromJson(groupJson, DevicesGroup.class);
 			devicesGroup = DevicesGroupHandler.insertNewGroup(parsedDevicesGroup.getGroupName(), parsedDevicesGroup.getPicData());
-			 //response = Response.ok(GenericResponse.ok(DevicesGroupHandler.DEVICES_GROUP_CREATE_SUCCESS_MESSAGE)).build();
 			response = Response.ok(GenericResponse.ok(devicesGroup)).build();
 		}
 		catch(Exception ex){
@@ -61,7 +60,7 @@ public class ApiDevicesGroup {
 		Gson gson = new Gson();
 		
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			group = gson.fromJson(groupJson, DevicesGroup.class);
 			DevicesGroupHandler.updateGroup(group);
 			response = Response.ok(GenericResponse.ok(DevicesGroupHandler.DEVICES_GROUP_UPDATE_SUCCESS_MESSAGE)).build();
@@ -79,7 +78,7 @@ public class ApiDevicesGroup {
 	public Response delete(@Context HttpServletRequest req,@PathParam("devicesGroupID") int devicesGroupID){
 		Response response = null;
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			DevicesGroupHandler.deleteDevicesGroup(devicesGroupID);
 			response = Response.ok(GenericResponse.ok(DevicesGroupHandler.DEVICES_GROUP_DELETE_SUCCESS_MESSAGE)).build();
 		}
@@ -97,7 +96,7 @@ public class ApiDevicesGroup {
 		Response response = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			UserInGroupHandler.addUserToDeviceGroup(userID, deviceGroupID);
 			response = Response.ok(GenericResponse.ok(UserInGroupHandler.USER_IN_GROUP_ADD_SUCCESS_MESSAGE)).build();
 		}
@@ -115,7 +114,7 @@ public class ApiDevicesGroup {
 		Response response = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			UserInGroupHandler.removeUserFromDeviceGroup(userID, deviceGroupID);
 			response = Response.ok(GenericResponse.ok(UserInGroupHandler.USER_IN_GROUP_REMOVE_SUCCESS_MESSAGE)).build();
 		}
@@ -134,7 +133,7 @@ public class ApiDevicesGroup {
 		List<User> users = null;
 		
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			users = UserInGroupHandler.getAuthorizedUsersOfDevicesGroup(devicesGroupID);
 			response = Response.ok(GenericResponse.ok(users)).build();
 		}
@@ -153,7 +152,7 @@ public class ApiDevicesGroup {
 		DevicesGroup devicesGroup = null;
 		
 		try{
-//			SessionHandler.verifyUserIsAuthenticated(req);
+			SessionHandler.verifyAuthenticatedUserRequest(req);
 			devicesGroup = DevicesGroupHandler.getDevicesGroupByID(devicesGroupID, false);
 			response = Response.ok(GenericResponse.ok(devicesGroup)).build();
 		}
@@ -172,14 +171,14 @@ public class ApiDevicesGroup {
 		List<Device> devices = null;
 		
 		try{
-//			SessionHandler.verifyUserIsAuthenticated(req);
-//			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
+			SessionHandler.verifyAuthenticatedUserRequest(req);
+			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
 				devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
 				response = Response.ok(GenericResponse.ok(devices)).build();
-//			}
-//			else{
-//				throw new Exceptiopn("You are not allowed accessing this method");
-//			}
+			}
+			else{
+				throw new Exception("You are not allowed accessing this method");
+			}
 		}
 		catch (Exception e) {
 			response = Response.ok(GenericResponse.error(e.getMessage())).build();
@@ -196,7 +195,7 @@ public class ApiDevicesGroup {
 		List<DevicesGroup> devicesGroups = null;
 		
 		try{
-//			SessionHandler.verifyUserIsAuthenticated(req);
+			SessionHandler.verifyUserIsAuthorized(req,userID);
 			devicesGroups = UserInGroupHandler.getDevicesGroupsUserIsMemberOf(userID);
 			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
 		}
@@ -214,7 +213,7 @@ public class ApiDevicesGroup {
 		Response response = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			DeviceInGroupHandler.addDeviceToDevicesGroup(deviceID, deviceGroupID);
 			response = Response.ok(GenericResponse.ok(DeviceInGroupHandler.DEVICE_IN_GROUP_ADD_SUCCESS_MESSAGE)).build();
 		}
@@ -232,7 +231,7 @@ public class ApiDevicesGroup {
 		Response response = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			DeviceInGroupHandler.removeDeviceFromDevicesGroup(deviceID, deviceGroupID);
 			response = Response.ok(GenericResponse.ok(DeviceInGroupHandler.DEVICE_IN_GROUP_REMOVE_SUCCESS_MESSAGE)).build();
 		}
@@ -251,7 +250,7 @@ public class ApiDevicesGroup {
 		List<DevicesGroup> devicesGroups = null;
 
 		try{
-//			SessionHandler.isAdmin(req);
+			SessionHandler.verifyAdminRequest(req);
 			devicesGroups = DevicesGroupHandler.getAllDevicesGroups();
 			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
 		}

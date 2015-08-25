@@ -18,41 +18,6 @@ public class DevicesGroupHandler {
 	public static final String DEVICES_GROUP_UPDATE_SUCCESS_MESSAGE = "The devices group has been updated";
 	public static final String DEVICES_GROUP_DELETE_SUCCESS_MESSAGE = "The devices group has been deleted";
 	
-//	public static void insertNewGroup(String groupName, String picData) throws Exception{
-//		Connection conn = null;
-//		PreparedStatement statement = null;
-//		ResultSet resultSet = null;
-//		int groupID = DEVICES_GROUP_ERROR_CODE;
-//
-//		try{
-//			conn = DBConn.getConnection();
-//			String insertSql = "INSERT into devices_group VALUES(?,?,?)";
-//			statement = conn.prepareStatement(insertSql,Statement.RETURN_GENERATED_KEYS);
-//			statement.setString(1, null);
-//			statement.setString(2, groupName);
-//			statement.setString(3, picData);
-//			statement.executeUpdate();
-//			resultSet = statement.getGeneratedKeys();
-//			if (resultSet != null && resultSet.next()) {
-//				groupID = resultSet.getInt(1);
-//				System.out.println("Devices group was inserted with id:" + groupID);
-//			}
-//			else{
-//				throw new Exception("A problem has occured while trying adding the devices group");
-//			}
-//		}
-//		catch(SQLException ex){
-//			System.err.println(ex.getMessage());
-//			throw ex;
-//		}
-//		finally{
-//			DbUtils.closeQuietly(resultSet);
-//			DbUtils.closeQuietly(statement);
-//			DbUtils.closeQuietly(conn);
-//		}
-//
-//	}
-
 	public static DevicesGroup insertNewGroup(String groupName, String picData) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -82,8 +47,12 @@ public class DevicesGroupHandler {
 			}
 		}
 		catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			throw ex;
+			if(ex.getSQLState().equals("23000")){
+				throw new Exception("Already exists");
+			}
+			else{
+				throw new Exception("A problem has occured while trying adding the devices group");
+			}
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);
@@ -179,6 +148,9 @@ public class DevicesGroupHandler {
 			resultSet = statement.executeQuery(query);
 			if(resultSet.next()){
 				devicesGroup = mapRow(resultSet);
+			}
+			else{
+				throw new Exception("Devices group doesn't exist");
 			}
 		}
 		catch(SQLException ex){
