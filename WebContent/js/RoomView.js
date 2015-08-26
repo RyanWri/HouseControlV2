@@ -305,10 +305,6 @@ function removeDevice()
 		success: function(result)
 		{
 			$.mobile.loading("show");
-		},
-		
-		complete: function (result)
-		{
 			window.location = "RoomView.html"; //only when ajax is finished refresh the room
 		},
 		
