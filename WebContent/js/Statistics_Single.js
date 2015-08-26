@@ -7,49 +7,42 @@
 
 var devices_labels = [];
 var voltage_series = [];
-var devicesID_array = [];
 
 var groupID = localStorage.statisticsGroupID;
 
 
 $(document).ready(function()
 		{
-			ShowAllDevicesInRoom(groupID);
+			ShowAllDevicesInRoom(groupID, "month");
 		});
 
 
 //showing all devices in the room
-function ShowAllDevicesInRoom(groupID)
+function ShowAllDevicesInRoom(groupID, timeframe)
 {
-	var deviceID, name;
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/devices_group/get_devices/' + groupID,
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			for (var i=0; i<result.data.length; i++){
-				deviceID = result.data[i].deviceID;  name = result.data[i].name;  
-				devicesID_array[i] = deviceID;
-				devices_labels[i] = name;
-				GetVoltageDevice("month", deviceID, i);
+		$.ajax({
+			type: 'GET',
+			url: '/HouseControl/api/device/statistics/devices_group/'+ groupID + '/' + timeframe,
+			contentType: "application/json",
+			dataType: 'json',
+			success: function(result)
+			{
+				for (var i=0; i<result.data.myArrayList.length; i++){
+					devices_labels[i] = result.data.myArrayList[i].map.deviceName; //get device name
+					voltage_series[i] = result.data.myArrayList[i].map.voltageSum; //get device usage
+				}
+				
+				 setTimeout( function() {
+						createDynamicBarsChart();//now we have all data create the pie chart
+				 }, 1200);
+			},
+
+			error: function(xhr, ajaxOptions, thrownError)
+			{
+				$.mobile.loading("hide");
 			}
-			
-			 setTimeout( function() {
-					createDynamicBarsChart();//now we have all data create the pie chart
-			 }, 3000);
 
-			
-
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-		}
-
-	});
+		});
 }
 
 
@@ -64,69 +57,24 @@ function createDynamicBarsChart()
 	new Chartist.Bar('.ct-chart',data, {distributeSeries: true });
 }
 
-
-
-
-function GetVoltageDevice (timeframe , deviceID, i)
-{
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/device/statistics/'+ timeframe +'/' +deviceID,
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			voltage_series[i] = result.data;
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-		}
-
-	});
-}
-
 //get data for 1 day
 function DataForDay()
 {
-	var deviceID;
-	for (i=0; i< devicesID_array.length(); i++)
-		{
-			deviceID = devicesID_array[i];
-			voltage_series[i] = GetVoltageDevice("day", deviceID);
-		}
-	
-	createDynamicBarsChart(); //for 1 day
+	ShowAllDevicesInRoom(groupID, "day");
 }
 
 
 //get data for 1 week
 function DataForWeek()
 {
-	var deviceID;
-	for (i=0; i< devicesID_array.length(); i++)
-		{
-			deviceID = devicesID_array[i];
-			voltage_series[i] = GetVoltageDevice("week", deviceID);
-		}
-	
-	createDynamicBarsChart(); //for 1 week
+	ShowAllDevicesInRoom(groupID, "week");
 }
 
 
 //get data for 1 monthe
 function DataForMonth()
 {
-	var deviceID;
-	for (i=0; i< devicesID_array.length(); i++)
-		{
-			deviceID = devicesID_array[i];
-			voltage_series[i] = GetVoltageDevice("month", deviceID);
-		}
-	
-	createDynamicBarsChart(); //for 1 month
-
+	ShowAllDevicesInRoom(groupID, "month");
 }
 
 

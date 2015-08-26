@@ -60,7 +60,7 @@ function ShowRoomName(groupID)
 					picData = result.data[i].deviceType.picData;
 					
 					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#connect_disconnect" data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="addconnectionToPopup('+deviceID+')" data-position-to="window" data-transition="pop">\n\
+							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#connect_disconnect" data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendDeviceID('+deviceID+')" data-position-to="window" data-transition="pop">\n\
 					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
 					        <h2>'+ name+'</h2>\n\
 					        </a></li></ul>');
@@ -209,8 +209,9 @@ function AddDeviceToRoom()
 	
 
 
-function connectDeviceToRelayPort(deviceID)
+function connectDeviceToRelayPort()
 {
+	var deviceID = localStorage.tempDeviceID;
 	var relayPort = FindOpenPortRelay();
 	if (relayPort < 4) //ports are from 0-3
 		{
@@ -238,28 +239,7 @@ function connectDeviceToRelayPort(deviceID)
 	
 }
 
-function DisconnectDeviceFromRelayPort(deviceID)
-{
-	$.ajax({
-		type: 'POST',
-		url: '/HouseControl/api/device/disconnect_device/'+deviceID,
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			
-			$.mobile.loading("hide");
-		},
 
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-		}
-
-	});
-	
-}
-	
 
 function FindOpenPortRelay()
 {
@@ -311,10 +291,59 @@ function IsDeviceInTheRoom(name)
 }
 
 
-//add methods to connect/disconnect popup
-function addconnectionToPopup (deviceID)
+function removeDevice()
 {
-	$('#connectDevice').onclick = connectDeviceToRelayPort(deviceID);
-	$('#disconnectDevice').onclick= DisconnectDeviceFromRelayPort(deviceID);
+	var deviceID = localStorage.tempDeviceID;
+	DisconnectDeviceFromRelayPort(deviceID); //change state to inactive
+	var dataRemove= "deviceID="+ deviceID + "&deviceGroupID=" + groupID;
+	$.ajax({
+		type: 'DELETE',
+		url: '/HouseControl/api/devices_group/remove_device',
+		contentType: "application/json",
+		dataType: 'json',
+		data: dataRemove,
+		success: function(result)
+		{
+			$.mobile.loading("show");
+		},
+		
+		complete: function (result)
+		{
+			window.location = "RoomView.html"; //only when ajax is finished refresh the room
+		},
+		
+		error: function()
+		{
+			$.mobile.loading("hide");
+			errorPopup("Connection Error");
+		}
+	});
+}	
+
+function DisconnectDeviceFromRelayPort(deviceID)
+{
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/device/disconnect_device/'+deviceID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			
+			$.mobile.loading("hide");
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		}
+
+	});
 	
 }
+
+function sendDeviceID( device)
+{
+	localStorage.tempDeviceID = device; 
+}
+	

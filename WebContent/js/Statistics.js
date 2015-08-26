@@ -43,8 +43,23 @@ function ShowAllRooms(UserID)
 				 setTimeout( function() {
 						createDynamicPieChart();//now we have all data create the pie chart
 						ShowTotalConsumption("month");
-				 },3000);
+				 },1200);
 				
+				
+				
+			},
+			
+			complete: function(result)
+			{
+				for (var i=0; i< groupID_array.length; i++)
+				{
+					SetStatsPerRoom(groupID_array[i], i);
+				}
+				
+				 setTimeout( function() {
+						createDynamicPieChart();//now we have all data create the pie chart
+						ShowTotalConsumption("month");
+				 },1200);
 			},
 
 			error: function(xhr, ajaxOptions, thrownError)
@@ -68,29 +83,8 @@ function createDynamicPieChart()
 			  labels: groups,
 			  series: voltage_series
 			};
-	
-	var options = {
-			  labelInterpolationFnc: function(value) {
-			    return value;
-			  }
-			};
 
-			var responsiveOptions = [
-			  ['screen and (min-width: 640px)', {
-			    chartPadding: 30,
-			    labelOffset: 100,
-			    labelDirection: 'explode',
-			    labelInterpolationFnc: function(value) {
-			      return value;
-			    }
-			  }],
-			  ['screen and (min-width: 1024px)', {
-			    labelOffset: 80,
-			    chartPadding: 20
-			  }]
-			];
-
-	new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+	new Chartist.Pie(".ct-chart", data);
 }
 
 function ShowTotalConsumption(timeframe)
@@ -129,13 +123,12 @@ function SetStatsPerRoom(groupID, i)
 			dataType: 'json',
 			success: function(result)
 			{
-				countVolt =0;
+				voltage_series[i] =0;
 				for (var j=0; j<result.data.myArrayList.length; j++)
 				{
-					countVolt = countVolt + result.data.myArrayList[j].map.voltageSum;
+					voltage_series[i] += result.data.myArrayList[j].map.voltageSum; //count usage
 				}
 				
-				voltage_series[i] = countVolt;
 			},
 
 			error: function(xhr, ajaxOptions, thrownError)
@@ -156,5 +149,4 @@ function CutZeroValueLabel()
          }
      }
 }
-
 
