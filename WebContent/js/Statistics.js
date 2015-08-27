@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics main page
-	Last Modification : 26/08/2015
+	Last Modification : 27/08/2015
  */
 
 var groupID_array =[];
@@ -14,12 +14,8 @@ $(document).ready(function()
 		{
 			var UserID= localStorage.userID;
 			ShowAllRooms(UserID);
-			setTimeout( function() {
-				createDynamicPieChart();//now we have all data create the pie chart
-				ShowTotalConsumption("month");
-			},1500);
 		});
-
+ 
 //List All Rooms
 function ShowAllRooms(UserID)
 	{
@@ -33,9 +29,9 @@ function ShowAllRooms(UserID)
 			{
 				for (var i=0; i<result.data.length; i++){
 					groupID = result.data[i].groupID;  name= result.data[i].name; picData=result.data[i].picData;  
-					groups[i] = name;
 					
-					groupID_array.push(groupID);
+					groups.push(name); //labels
+					groupID_array.push(groupID); //for per room stats
 					
 					$("#ListAllRooms").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendGroupID('+groupID+')">\n\
@@ -43,6 +39,7 @@ function ShowAllRooms(UserID)
 					        <h2>'+ name+'</h2>\n\
 					        </a></li></ul>');
 				}
+				
 				SetStatsPerRoom();
 				
 			},
@@ -66,30 +63,14 @@ function SetStatsPerRoom()
 {
 	for (var i=0; i< groupID_array.length; i++)
 	{
-		$.ajax({
-			type: 'GET',
-			url: '/HouseControl/api/device/statistics/devices_group/'+ groupID_array[i] +'/month',
-			contentType: "application/json",
-			dataType: 'json',
-			success: function(result)
-			{
-				countVolt = 0;
-				for (var j=0; j<result.data.myArrayList.length; j++)
-				{
-					countVolt += result.data.myArrayList[j].map.voltageSum; //count usage
-				}
-				
-				voltage_series.push(countVolt);
-			},
-
-			error: function(xhr, ajaxOptions, thrownError)
-			{
-				$.mobile.loading("hide");
-			}
-
-		});
-	}
+		setEachRoomStats(groupID_array[i]); //send every ajax with roomID
+	}	
 	
+	setTimeout( function() {
+		createDynamicPieChart();//now we have all data create the pie chart
+	},3000);
+	
+	ShowTotalConsumption("month");
 }
 	
 
@@ -130,17 +111,29 @@ function sendGroupID( group)
 	window.location = "Statistics_Single.html"; 
 }
 
-/*
- * //delete all label with value 0
-function CutZeroValueLabel()
+function setEachRoomStats(roomID)
 {
-	 for(var i = voltage_series.length; i--;) {
-         if(voltage_series[i] === 0) {
-             groups.splice(i, 1);
-             voltage_series.splice(i, 1);
-         }
-     }
-}
- * 
- */
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/device/statistics/devices_group/'+ roomID +'/month',
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			countVolt = 0;
+			for (var j=0; j<result.data.myArrayList.length; j++)
+			{
+				countVolt += result.data.myArrayList[j].map.voltageSum; //count usage
+			}
+			
+			voltage_series.push(countVolt);
+		},
 
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		}
+
+	});
+
+}
