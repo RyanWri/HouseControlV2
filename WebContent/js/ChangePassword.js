@@ -10,24 +10,60 @@ $(function()
 		}
     });
 	    
+    
+    $.validator.addMethod("alphanumeric", function(value, element) 
+    {
+    	return this.optional(element) || /^\w+$/i.test(value);
+    }, "Letters, numbers, and underscores only please");
+    
     $("#formChangePassword").validate(
+    {
+    	errorPlacement: function(error, element) 
+	    {
+    		error.insertAfter(element);
+	    },
+	    rules:
+		{
+	    	oldpassword:
+			{
+				required: true,
+				minlength: 6,
+				alphanumeric: true,
+			},
+			newpassword:
+			{
+				required: true,
+				minlength: 6,
+				alphanumeric: true,
+			},
+			confirmnewpassword:
+			{
+				required: true,
+				minlength: 6,
+				alphanumeric: true,
+				equalTo: "#newpassword",
+			},
+			
+		},
+		messages:
+		{
+			confirmnewpassword:
+			{
+				equalTo: "Please enter the same password as above"
+			},
+		},
+    	submitHandler: function(form) 
+    	{
+    		if ($("#textBoxNewPassword").val() !== $("#textBoxConfirmNewPassword").val())
     		{
-    			errorPlacement: function(error, element) 
-    		{
-    			error.insertAfter(element);
-    		} ,
-    		submitHandler: function(form) 
-    		{
-    			if ($("#textBoxNewPassword").val() !== $("#textBoxConfirmNewPassword").val())
-    			{
-    				showPopup("Error!", "Passwords don't match");  				
-    			}
-    			else
-    			{
-    				changePassword();
-    			}
+    			showPopup("Error!", "Passwords don't match");  				
     		}
-    	});
+    		else
+    		{
+    			changePassword();
+    		}
+    	}
+    });
     
     $("#buttoncontinue").click(function()
     {
