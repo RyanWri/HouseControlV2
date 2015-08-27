@@ -77,8 +77,6 @@ function SetStatsPerRoom()
 //Create dynamic pie chart
 function createDynamicPieChart()
 {	
-	alert(groups.join('\n'));
-	alert(voltage_series.join('\n'));
 	var data = {
 			  labels: groups,
 			  series: voltage_series
