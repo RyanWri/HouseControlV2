@@ -59,8 +59,8 @@ public class DeviceInGroupHandler{
 
 		try{
 			conn = DBConn.getConnection();
-			String query = "DELETE FROM user_in_group "
-					+  "WHERE groupID =" + deviceGroupID + " and deviceID=" + deviceID;
+			String query = "DELETE FROM device_in_group "
+					+  "WHERE groupID=" + deviceGroupID + " and deviceID=" + deviceID;
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			int isSucceeded = statement.executeUpdate();
 			if(isSucceeded>0) {
