@@ -21,18 +21,18 @@ $(function()
 	    	oldpassword:
 			{
 				required: true,
-				minlength: 6,
+				minlength: 6
 			},
 			newpassword:
 			{
 				required: true,
-				minlength: 6,
+				minlength: 6
 			},
 			confirmnewpassword:
 			{
 				required: true,
 				minlength: 6,
-				equalTo: "#newpassword",
+				equalTo: "#textBoxNewPassword"
 			},
 			
 		},
