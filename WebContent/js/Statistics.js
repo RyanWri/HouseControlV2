@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics main page
-	Last Modification : 26/08/2015
+	Last Modification : 27/08/2015
  */
 
 var groupID_array =[];
@@ -15,7 +15,7 @@ $(document).ready(function()
 			var UserID= localStorage.userID;
 			ShowAllRooms(UserID);
 		});
-
+ 
 //List All Rooms
 function ShowAllRooms(UserID)
 	{

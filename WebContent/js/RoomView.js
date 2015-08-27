@@ -1,8 +1,8 @@
 /*
-	Author: ran yamin
+	Author: ran yamin 
 	date 19/08/2015 
 	javascript for room view page (Manage Devices)
-	Last Modification : --
+	Last Modification : 27/08/2015
  */
 
 
