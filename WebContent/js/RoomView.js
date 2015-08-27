@@ -14,7 +14,10 @@ $(document).ready(function()
 				SelectMenuForDeviceType();
 				ShowRoomName(groupID);
 				ShowDevicesInGroup(groupID); //update all devices
-				CreateListOfDevicesToAdd();
+				setTimeout( function() {
+					CreateListOfDevicesToAdd();
+				},900);
+				
 			});
 
 
@@ -283,7 +286,7 @@ function IsDeviceInTheRoom(name)
 	var flag = false;
 	for (var i=0; i< deviceNamesArray.length; i++)
 	{
-		if(deviceNamesArray[i] == name)
+		if(deviceNamesArray[i] === name)
 			return true; //name exist
 	}
 	
