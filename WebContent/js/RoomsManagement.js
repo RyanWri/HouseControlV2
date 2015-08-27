@@ -2,97 +2,155 @@ var flag = 0;
 var delay = 300;
 var tempGroupID;
 
-$(document).ready(function()
+
+$(function() 
 {
-	$("#btnAddNewRoom").attr("disabled",true);
-	ShowAllRooms();
-});
+
+		
+	$("#addNewRoomButton").click(function()
+	{
+		
+		loadRoomTypes();
+		$("#popupAddNewRoom").click();
+	});
 	
-$("#addNewRoomButton").click(function()
-{
 	
-	loadRoomTypes();
-	$("#popupAddNewRoom").click();
-});
-
-
-$("#buttoncontinue").click(function()
-{
-	window.location = "#";    	    	
-});
-  
-$("#buttonyes").click(function()		
-{
-	removeRoom()
-
-});
-
-
-$("#buttonno").click(function()
-{
-	window.location = "#";
-});
-
-$("#editroombutton").click(function()
-{
-	localStorage.tempGroupID = tempGroupID;
-	window.location = "RoomView.html";
-});
-
-$("#deleteroombutton").click(function()
-{
-	window.location = "#";
-    setTimeout(
-    		function() 
-    		{
-    			$("#popupConfirm").click();
-    		}, delay);	
-});
-
-$("#listOfRoomsTypes").change(function()
-	    {
-	    	if ($("#listOfRoomsTypes").val() === "0")
+	$("#buttoncontinue").click(function()
+	{
+		window.location = "#";    	    	
+	});
+	  
+	$("#buttonyes").click(function()		
+	{
+		removeRoom()
+	
+	});
+	
+	$("#buttonno").click(function()
+	{
+		window.location = "#";
+	});
+	
+	$("#editroombutton").click(function()
+	{
+		localStorage.tempGroupID = tempGroupID;
+		window.location = "RoomView.html";
+	});
+	
+	$("#deleteroombutton").click(function()
+	{
+		window.location = "#";
+	    setTimeout(
+	    		function() 
+	    		{
+	    			$("#popupConfirm").click();
+	    		}, delay);	
+	});
+	
+	$("#listOfRoomsTypes").change(function()
+	{
+		    	if ($("#listOfRoomsTypes").val() === "0")
+		    	{
+		            $("#btnAddNewRoom").attr("disabled",true);
+		    	}
+		    	else
+		    	{
+		    		$("#btnAddNewRoom").attr("disabled",false);
+		    	}
+	});
+	/*
+	$.validator.addMethod("alphanumeric", function(value, element) 
+	{
+		return this.optional(element) || /^\w+$/i.test(value);
+	}, "Letters, numbers, and underscores only please");
+	*/
+	
+	/*$("#formAddRoom").validate(
+			{
+				errorPlacement: function(error, element) 
+			{
+				error.insertAfter(element);
+			},
+			rules:
+			{
+				roomname:
+				{
+					required: true,
+					minlength: 2,
+					maxlength: 10,
+					alphanumeric: true,
+				},
+			},
+			submitHandler: function(form) 
+			{
+				var parameters = {};
+			    var roomName = $('#textBoxRoomName').val();
+			    parameters.name = roomName;
+			    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
+			    var parametersStringified = JSON.stringify(parameters);
+			    $.ajax({
+			    	type: 'POST',
+			    	url: '/HouseControl/api/devices_group/create',
+			    	data: parametersStringified,
+			    	dataType: "json",
+			    	success: function(result)
+			    	{
+			    		if (result.status === "ok")
+			    		{
+				    		$.mobile.loading("hide");
+				    		window.location = "RoomsManagement.html";
+	
+			    		 }
+			    		 else
+			    		 {
+			    		     $.mobile.loading("hide");
+			    		     errorPopup(result.data);
+			    		 }
+			    	},
+			    	error: function()
+			    	{
+			    		errorPopup("Connection Error");
+			    	}
+			    });
+			}
+		});
+	
+	*/
+	
+	
+	
+	$("#formAddRoom").submit( function()
+	{
+		var parameters = {};
+	    var roomName = $('#textBoxRoomName').val();
+	    parameters.name = roomName;
+	    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
+	    var parametersStringified = JSON.stringify(parameters);
+	    $.ajax({
+	    	type: 'POST',
+	    	url: '/HouseControl/api/devices_group/create',
+	    	data: parametersStringified,
+	    	dataType: "json",
+	    	success: function(result)
 	    	{
-	            $("#btnAddNewRoom").attr("disabled",true);
-	    	}
-	    	else
+	    		if (result.status === "ok")
+	    		{
+		    		$.mobile.loading("hide");
+		    		window.location = "RoomsManagement.html";
+	
+	    		 }
+	    		 else
+	    		 {
+	    		     $.mobile.loading("hide");
+	    		     errorPopup(result.data);
+	    		 }
+	    	},
+	    	error: function()
 	    	{
-	    		$("#btnAddNewRoom").attr("disabled",false);
+	    		errorPopup("Connection Error");
 	    	}
 	    });
-
-
-$("#formAddRoom").submit( function()
-{
-	var parameters = {};
-    var roomName = $('#textBoxRoomName').val();
-    parameters.name = roomName;
-    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
-    var parametersStringified = JSON.stringify(parameters);
-    $.ajax({
-    	type: 'POST',
-    	url: '/HouseControl/api/devices_group/create',
-    	data: parametersStringified,
-    	dataType: "json",
-    	success: function(result)
-    	{
-    		if (result.status === "ok")
-    		{
-	    		$.mobile.loading("hide");
-	    		window.location = "RoomsManagement.html";
-
-    		 }
-    		 else
-    		 {
-    		     $.mobile.loading("hide");
-    		     errorPopup(result.data);
-    		 }
-    	},
-    	error: function()
-    	{
-    		errorPopup("Connection Error");
-    	}
-    });
+	});
 });
 
 function loadRoomTypes()
