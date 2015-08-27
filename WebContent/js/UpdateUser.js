@@ -38,51 +38,92 @@ $(function()
     	resetUserPassword();
     });
     
+    $.validator.addMethod("alphanumeric", function(value, element) 
+    {
+    	return this.optional(element) || /^\w+$/i.test(value);
+    }, "Letters, numbers, and underscores only please");
+    
+    $.validator.addMethod("positive", function(value, element) 
+    {
+    	return this.optional(element) || /^\w+$/i.test(value);
+    }, "Positive only");
+    
+    
+    $.validator.addMethod("integer", function(value, element) 
+    {
+    	return this.optional(element) || /^-?\d+$/.test(value);
+    }, "Numbers only");
+    
 	$("#formUpdateUser").validate(
 	{
 		errorPlacement: function(error, element) 
 		{
 			error.insertAfter(element);
 		},
-			submitHandler: function(form) 
+		rules:
+		{
+			firstname:
 			{
-				var parameters = {};    
-	            parameters.userID = userID;
-				parameters.firstname = $("#textBoxFirstname").val();
-	            parameters.lastname = $("#textBoxLastname").val();
-	            parameters.email = $("#textBoxEmail").val();
-	            parameters.mobile = $("#textBoxMobile").val();
-	            var parametersStringified = JSON.stringify(parameters);
-
-	            $.ajax(
-	            { 
-	                type: "PUT",
-	            	url: "/HouseControl/api/user/update",
-	                data: parametersStringified,
-	                dataType: 'json'
-	            }).done(function(result)
-	            { 
-	            	if (result.status === "ok")
-	            	{
-	        			flag = 0;
-	            		$.mobile.loading("hide");
-	        			MessagePopup("Success!", "Succeed to update user details");
-	            	}
-	            	else
-	            	{
-	            		flag = 1;
-	            		$.mobile.loading("hide");
-	        			MessagePopup("Error!", result.data);
-	            	}
-	            	
-
+				required: true,
+				minlength: 2,
+				maxlength: 10,
+				alphanumeric: true,
+			},
+			lastname:
+			{
+				required: true,
+				minlength: 2,
+				maxlength: 10,
+				alphanumeric: true,
+			},
+			email:
+			{
+				required: true,
+			},
+			mobile:
+			{
+				required: true,
+				integer: true,
+				positive: true,
+			}
+			
+		},
+		submitHandler: function(form) 
+		{
+			var parameters = {};    
+	        parameters.userID = userID;
+			parameters.firstname = $("#textBoxFirstname").val();
+	        parameters.lastname = $("#textBoxLastname").val();
+	        parameters.email = $("#textBoxEmail").val();
+	        parameters.mobile = $("#textBoxMobile").val();
+	        var parametersStringified = JSON.stringify(parameters);
+            $.ajax(
+            { 
+                type: "PUT",
+            	url: "/HouseControl/api/user/update",
+                data: parametersStringified,
+                dataType: 'json'
+            }).done(function(result)
+            { 
+            	if (result.status === "ok")
+            	{
+        			flag = 0;
+            		$.mobile.loading("hide");
+        			MessagePopup("Success!", "Succeed to update user details");
+            	}
+            	else
+            	{
+            		flag = 1;
+            		$.mobile.loading("hide");
+        			MessagePopup("Error!", result.data);
+            	}
+            	
 	            }).fail(function()
 	            {
-            		flag = 0;
-            		$.mobile.loading("hide");
-        			MessagePopup("Error!", "Connection Error!");
-	            });
-				
+	           		flag = 0;
+	           		$.mobile.loading("hide");
+	       			MessagePopup("Error!", "Connection Error!");
+	            });	
 			} 
 	});
 });

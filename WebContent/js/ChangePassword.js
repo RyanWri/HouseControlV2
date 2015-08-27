@@ -9,25 +9,52 @@ $(function()
     		window.location = "UserHome.html";
 		}
     });
-	    
+    
     $("#formChangePassword").validate(
+    {
+    	errorPlacement: function(error, element) 
+	    {
+    		error.insertAfter(element);
+	    },
+	    rules:
+		{
+	    	oldpassword:
+			{
+				required: true,
+				minlength: 6
+			},
+			newpassword:
+			{
+				required: true,
+				minlength: 6
+			},
+			confirmnewpassword:
+			{
+				required: true,
+				minlength: 6,
+				equalTo: "#textBoxNewPassword"
+			},
+			
+		},
+		messages:
+		{
+			confirmnewpassword:
+			{
+				equalTo: "Please enter the same password as above"
+			},
+		},
+    	submitHandler: function(form) 
+    	{
+    		if ($("#textBoxNewPassword").val() !== $("#textBoxConfirmNewPassword").val())
     		{
-    			errorPlacement: function(error, element) 
-    		{
-    			error.insertAfter(element);
-    		} ,
-    		submitHandler: function(form) 
-    		{
-    			if ($("#textBoxNewPassword").val() !== $("#textBoxConfirmNewPassword").val())
-    			{
-    				showPopup("Error!", "Passwords don't match");  				
-    			}
-    			else
-    			{
-    				changePassword();
-    			}
+    			showPopup("Error!", "Passwords don't match");  				
     		}
-    	});
+    		else
+    		{
+    			changePassword();
+    		}
+    	}
+    });
     
     $("#buttoncontinue").click(function()
     {

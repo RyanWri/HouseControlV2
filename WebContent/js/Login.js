@@ -11,14 +11,36 @@ $(function()
     	{
     		window.location = "UserHome.html"
     	}
+
     });
-	    
+	   
+    $.validator.addMethod("alphanumeric", function(value, element) 
+    {
+    	return this.optional(element) || /^\w+$/i.test(value);
+    }, "Letters, numbers, and underscores only please");
+        
     $("#formUserLogin").validate(
-    		{
-    			errorPlacement: function(error, element) 
+    {
+    		
+    		errorPlacement: function(error, element) 
     		{
     			error.insertAfter(element);
-    		} ,
+    		},
+    		rules:
+    		{
+    			username:
+    			{
+    				required: true,
+    				minlength: 2,
+    				alphanumeric: true,
+    			},
+    			password:
+    			{
+    				required: true,
+    				minlength: 6,
+    			},
+    			
+    		},
     		submitHandler: function(form) 
     		{
     			var parameters = {};
@@ -60,8 +82,8 @@ $(function()
 						$("#popupbutton").click();
     				},	
     			});
-
-    		}
+    		},
+    		
     	});
     
     $("#continuebutton").click(function()

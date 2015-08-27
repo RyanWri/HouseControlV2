@@ -27,12 +27,67 @@ $(function()
 
 	});
 	
+	$.validator.addMethod("alphanumeric", function(value, element) 
+	{
+		return this.optional(element) || /^\w+$/i.test(value);
+	}, "Letters, numbers, and underscores only please");
+			    
+	$.validator.addMethod("positive", function(value, element) 
+	{
+		return this.optional(element) || /^\w+$/i.test(value);
+    }, "Positive only");
+			        
+	$.validator.addMethod("integer", function(value, element) 
+	{
+		return this.optional(element) || /^-?\d+$/.test(value);
+	}, "Numbers only");
+	
 	$("#formSignup").validate(
 	{
 		errorPlacement: function(error, element) 
 	{
 		error.insertAfter(element);
-	} ,
+	},
+	rules:
+	{
+		username:
+		{
+			required: true,
+			minlength: 2,
+			maxlength: 10,
+			alphanumeric: true,
+		},
+		password:
+		{
+			required: true,
+			minlength: 6,
+			maxlength: 10,
+		},
+		firstname:
+		{
+			required: true,
+			minlength: 2,
+			maxlength: 10,
+			alphanumeric: true,
+		},	
+		lastname:
+		{
+			required: true,
+			minlength: 2,
+			maxlength: 10,
+			alphanumeric: true,
+		},
+		email:
+		{
+			required: true,
+		},
+		mobile:
+		{
+			required: true,
+			integer: true,
+			positive: true,
+		}
+	},
 	submitHandler: function(form) 
 	{
 		var data1 = $('#formSignup').serialize();
@@ -64,23 +119,7 @@ $(function()
 				$.mobile.loading("hide");
 				alert("Connection Error");
 			},
-			/*statusCode: {
-				400: function(){
-					$.mobile.loading("hide");
-					updateLabelLoginError("wrong username of password");
-					setTimeout( $.mobile.hidePageLoadingMsg, 2000 );
-				},
-				401: function(){
-					$.mobile.loading("hide");
-					updateLabelLoginError("Unauthorized");
-				},
-				500: function(){
-					$.mobile.loading("hide");
-					updateLabelLoginError("already logged in");
-				}
-			}*/
 		});
-
 	}
 });
 });
