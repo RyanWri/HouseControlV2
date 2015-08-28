@@ -6,6 +6,11 @@ var tempGroupID;
 $(function() 
 {
 
+	$(document).ready(function()
+	{
+		$("#btnAddNewRoom").attr("disabled",true);
+		ShowAllRooms();
+	});
 		
 	$("#addNewRoomButton").click(function()
 	{
