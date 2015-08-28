@@ -12,9 +12,14 @@ var groupID = localStorage.statisticsGroupID;
 
 
 $(document).ready(function()
-		{
-			ShowAllDevicesInRoom(groupID, "month");
-		});
+{
+	authentication(loadStatisticsSinglePage);		
+});
+
+function loadStatisticsSinglePage()
+{
+	ShowAllDevicesInRoom(groupID, "month");
+}
 
 
 //showing all devices in the room

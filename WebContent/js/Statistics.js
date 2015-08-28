@@ -11,10 +11,16 @@ var voltage_series = [];
 var countVolt;
 
 $(document).ready(function()
-		{
-			var UserID= localStorage.userID;
-			ShowAllRooms(UserID);
-		});
+{
+	authentication(loadStatisticsPage);
+});
+
+
+function loadStatisticsPage()
+{
+	var UserID= localStorage.userID;
+	ShowAllRooms(UserID);
+}
  
 //List All Rooms
 function ShowAllRooms(UserID)

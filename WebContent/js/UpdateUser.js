@@ -6,18 +6,7 @@ $(function()
 {
     $(document).ready(function()
     {
-    	if (localStorage.usertoedit === "")
-    	{
-    		window.location = "UsersManagement.html";
-    	}
-    	else
-    	{
-        	userName = localStorage.usertoedit;
-        	localStorage.usertoedit = "";
-        	
-        	loadUserInformation();
-    	}
-
+    	authentication(loadUpdateUserPage);
     });
     
     $("#buttoncontinue").click(function()
@@ -129,6 +118,22 @@ $(function()
 });
     
    
+function loadUpdateUserPage()
+{
+	if (localStorage.usertoedit === "")
+	{
+		window.location = "UsersManagement.html";
+	}
+	else
+	{
+    	userName = localStorage.usertoedit;
+    	localStorage.usertoedit = "";
+    	
+    	loadUserInformation();
+	}
+}
+
+
 function loadUserInformation()
 {
 	$.mobile.loading("show");

@@ -4,14 +4,7 @@ $(function()
 {
 	$(document).ready(function()
     {
-		continueFlag = 0;
-		$("#textBoxSignupUsername").val("");
-		$("#textBoxSignupPassword").val("");
-		$("#textBoxSignupFirstname").val("");
-		$("#textBoxSignupLastname").val("");
-		$("#textBoxSignupEmail").val("");
-		$("#textBoxSignupMobile").val("");		
-    	$("#choiceBox_SignupType").val("Admin");
+		authentication(loadSignupPage);
     });
 
 	$("#continuebutton").click(function()
@@ -122,6 +115,19 @@ $(function()
 		});
 	}
 });
+
+function loadSignupPage()
+{
+	continueFlag = 0;
+	$("#textBoxSignupUsername").val("");
+	$("#textBoxSignupPassword").val("");
+	$("#textBoxSignupFirstname").val("");
+	$("#textBoxSignupLastname").val("");
+	$("#textBoxSignupEmail").val("");
+	$("#textBoxSignupMobile").val("");		
+	$("#choiceBox_SignupType").val("Admin");
+}
+	
 });
 
 

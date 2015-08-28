@@ -2,19 +2,15 @@ var flag = 0;
 var delay = 300;
 var tempGroupID;
 
-
 $(function() 
 {
-
 	$(document).ready(function()
 	{
-		$("#btnAddNewRoom").attr("disabled",true);
-		ShowAllRooms();
+		authentication(loadRoomsManagementPage);
 	});
 		
 	$("#addNewRoomButton").click(function()
-	{
-		
+	{		
 		loadRoomTypes();
 		$("#popupAddNewRoom").click();
 	});
@@ -63,68 +59,67 @@ $(function()
 		    		$("#btnAddNewRoom").attr("disabled",false);
 		    	}
 	});
-	/*
+	
 	$.validator.addMethod("alphanumeric", function(value, element) 
 	{
 		return this.optional(element) || /^\w+$/i.test(value);
 	}, "Letters, numbers, and underscores only please");
-	*/
+		
 	
-	/*$("#formAddRoom").validate(
+	$("#formAddRoom").validate(
 			{
 				errorPlacement: function(error, element) 
-			{
-				error.insertAfter(element);
-			},
-			rules:
-			{
-				roomname:
 				{
-					required: true,
-					minlength: 2,
-					maxlength: 10,
-					alphanumeric: true,
+					error.insertAfter(element);
 				},
-			},
-			submitHandler: function(form) 
-			{
-				var parameters = {};
-			    var roomName = $('#textBoxRoomName').val();
-			    parameters.name = roomName;
-			    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
-			    var parametersStringified = JSON.stringify(parameters);
-			    $.ajax({
-			    	type: 'POST',
-			    	url: '/HouseControl/api/devices_group/create',
-			    	data: parametersStringified,
-			    	dataType: "json",
-			    	success: function(result)
-			    	{
-			    		if (result.status === "ok")
-			    		{
-				    		$.mobile.loading("hide");
-				    		window.location = "RoomsManagement.html";
+				rules:
+				{
+					roomname:
+					{
+						required: true,
+						minlength: 2,
+						maxlength: 10,
+						alphanumeric: true,
+					},					
+				},
+				submitHandler: function(form) 
+				{
+					var parameters = {};
+				    var roomName = $('#textBoxRoomName').val();
+				    parameters.name = roomName;
+				    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
+				    var parametersStringified = JSON.stringify(parameters);
+				    $.ajax({
+				    	type: 'POST',
+				    	url: '/HouseControl/api/devices_group/create',
+				    	data: parametersStringified,
+				    	dataType: "json",
+				    	success: function(result)
+				    	{
+				    		if (result.status === "ok")
+				    		{
+					    		$.mobile.loading("hide");
+					    		window.location = "RoomsManagement.html";
+				
+				    		 }
+				    		 else
+				    		 {
+				    		     $.mobile.loading("hide");
+				    		     errorPopup(result.data);
+				    		 }
+				    	},
+				    	error: function()
+				    	{
+				    		errorPopup("Connection Error");
+				    	}
+				    });
+				} 
+			});
 	
-			    		 }
-			    		 else
-			    		 {
-			    		     $.mobile.loading("hide");
-			    		     errorPopup(result.data);
-			    		 }
-			    	},
-			    	error: function()
-			    	{
-			    		errorPopup("Connection Error");
-			    	}
-			    });
-			}
-		});
-	
-	*/
 	
 	
 	
-	$("#formAddRoom").submit( function()
+	/*$("#formAddRoom").submit( function()
 	{
 		var parameters = {};
 	    var roomName = $('#textBoxRoomName').val();
@@ -155,8 +150,14 @@ $(function()
 	    		errorPopup("Connection Error");
 	    	}
 	    });
-	});
+	});*/
 });
+
+function loadRoomsManagementPage()
+{
+	$("#btnAddNewRoom").attr("disabled",true);
+	ShowAllRooms();
+}
 
 function loadRoomTypes()
 {

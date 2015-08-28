@@ -9,18 +9,7 @@ $(function()
 {
     $(document).ready(function()
     {  	
-    	if (localStorage.userrooms_userID === "")
-    	{
-    		window.location = "UsersManagement.html";
-    	}
-    	else
-    	{
-        	userID = localStorage.userrooms_userID;
-        	userName = localStorage.userrooms_username;
-        	$("#addButton").attr("disabled",true);
-        	$("#userstitle").text("'"+userName+ "' Rooms:");
-        	getListOfUserRooms();
-    	}
+    	authentication(loadUserRoomsPage);
     });
     
     $("#addroom").click(function()
@@ -67,6 +56,22 @@ $(function()
     	window.location = "UserHome.html";
     });
 });
+
+function loadUserRoomsPage()
+{
+	if (localStorage.userrooms_userID === "")
+	{
+		window.location = "UsersManagement.html";
+	}
+	else
+	{
+    	userID = localStorage.userrooms_userID;
+    	userName = localStorage.userrooms_username;
+    	$("#addButton").attr("disabled",true);
+    	$("#userstitle").text("'"+userName+ "' Rooms:");
+    	getListOfUserRooms();
+	}
+}
 
 function removeRoomFromUser()
 {
