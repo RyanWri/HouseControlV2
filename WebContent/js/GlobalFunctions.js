@@ -1,18 +1,93 @@
-$(function() 
+var globalPageToLoad; 
+
+function authentication(pageToLoad)
 {
-    $(document).ready(function()
-    {
-    	if (!localStorage.username)
-    	{
-    		window.location = "Login.html";
-    	}
-    	else
-    	{
-    		authenticateuser();
-    		initMenu(); 
-    	}
-    });    
-});
+	globalPageToLoad = pageToLoad;
+	
+	if (!localStorage.username)
+	{
+		window.location = "Login.html";
+		//setTimeout(function(){document.location.href = "Login.html;"},10);
+	}
+	else
+	{
+		authenticateuser();
+	}
+}
+
+function authenticateuser()
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/user/authenticateuser',
+		success: function(result)
+		{
+			if (result.status === "error")
+			{
+				relogin();
+			}
+			else
+			{
+				loadPage();
+			}
+		},
+		error: function()
+		{
+			$("#popupMessagetext").text("Error!");
+			$("#popupsubtext").text("Connection Error!");
+			$("#popupbutton").click();
+		},	
+	});
+}
+
+
+function relogin()
+{
+	var parameters = {};
+	parameters.username = localStorage.username;
+	parameters.password = localStorage.password
+	var parametersStringified = JSON.stringify(parameters);
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/user/login',
+        data: parametersStringified,
+        dataType: 'json',
+		success: function(result)
+		{
+			if (result.status === "error")
+			{
+				localStorage.clear();
+				window.location = "Login.html";
+			}
+			else
+			{
+				var tempPassword = localStorage.password;
+				localStorage.clear();
+				localStorage.userID = result.data.userID;
+				localStorage.username = result.data.username;
+				localStorage.password = tempPassword;
+				localStorage.firstname = result.data.firstname;
+				localStorage.lastname = result.data.lastname;
+				localStorage.type = result.data.type;
+				localStorage.email = result.data.email;
+				localStorage.mobile = result.data.mobile;
+				loadPage();
+			}
+		},
+		error: function()
+		{
+			$("#popupMessagetext").text("Error!");
+			$("#popupsubtext").text("Connection Error!");
+			$("#popupbutton").click();
+		},	
+	});
+}
+
+function loadPage()
+{
+	initMenu();
+	globalPageToLoad();
+}
 
 function moveToUsersManagement()
 {
@@ -46,11 +121,13 @@ function logout()
 				localStorage.clear();
 			}
 			window.location = "Login.html";
+			return false;
 
 		},
 		error: function()
 		{
 			window.location ="#";
+			return false;
 		},	
 	});
 }
@@ -81,66 +158,4 @@ function initMenu()
 	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToChangePassword()">Change Password</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="Faq.html">FAQ</a></li>');
 	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="logout()">Logout</a></li>');*/
-}
-
-function authenticateuser()
-{
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/user/authenticateuser',
-		success: function(result)
-		{
-			if (result.status === "error")
-			{
-				relogin();
-			}
-		},
-		error: function()
-		{
-			$("#popupMessagetext").text("Error!");
-			$("#popupsubtext").text("Connection Error!");
-			$("#popupbutton").click();
-		},	
-	});
-}
-
-function relogin()
-{
-	var parameters = {};
-	parameters.username = localStorage.username;
-	parameters.password = localStorage.password
-	var parametersStringified = JSON.stringify(parameters);
-	$.ajax({
-		type: 'POST',
-		url: '/HouseControl/api/user/login',
-        data: parametersStringified,
-        dataType: 'json',
-		success: function(result)
-		{
-			if (result.status === "error")
-			{
-				localStorage.clear();
-				window.location = "Login.html";
-			}
-			else
-			{
-				var tempPassword = localStorage.password;
-				localStorage.clear();
-				localStorage.userID = result.data.userID;
-				localStorage.username = result.data.username;
-				localStorage.password = tempPassword;
-				localStorage.firstname = result.data.firstname;
-				localStorage.lastname = result.data.lastname;
-				localStorage.type = result.data.type;
-				localStorage.email = result.data.email;
-				localStorage.mobile = result.data.mobile;
-			}
-		},
-		error: function()
-		{
-			$("#popupMessagetext").text("Error!");
-			$("#popupsubtext").text("Connection Error!");
-			$("#popupbutton").click();
-		},	
-	});
 }

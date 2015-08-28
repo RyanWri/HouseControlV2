@@ -1,19 +1,33 @@
 var listOfUserRooms;
+var delay = 300;
 
 $(function() 
 {
-    $(document).ready(function()
-    {
-    	loadTempAndHumidity(); //$DEBUG
-    	loadUserRooms();
-    });
-    
-    $("#buttoncontinue").click(function()
-    {
-    	window.location = "Login.html";
-    });
-});
- 
+	$(document).ready(function()
+	{
+		authentication(loadUserHomePage);
+	});
+		    
+	$("#continueButton").click(function()
+	{
+		window.location = "Login.html";
+	});
+}); 
+
+/*
+$('#UserHome').on('pagebeforeshow', function()
+{ 
+	authentication(loadUserHomePage);
+	//checkIfAuthenticateUser(loadUserHomePage);
+	//checkIfAuthenticateUserRegisterOptions();
+});*/
+
+
+function loadUserHomePage()
+{
+	loadUserRooms();
+	//loadTempAndHumidity(); //$DEBUG
+}
 
 function loadUserRooms()
 {
@@ -85,8 +99,6 @@ function enterRoom(groupID)
 
 	window.location = "RoomControl.html";
 }
-
-
 
 function errorPopup(message)
 {
