@@ -10,15 +10,19 @@ var groupID = localStorage.tempGroupID;
 var deviceNamesArray =[];
 
 $(document).ready(function()
-			{
-				SelectMenuForDeviceType();
-				ShowRoomName(groupID);
-				ShowDevicesInGroup(groupID); //update all devices
-				setTimeout( function() {
-					CreateListOfDevicesToAdd();
-				},900);
-				
-			});
+{
+	authentication(loadRoomViewPage);			
+});
+
+function loadRoomViewPage()
+{
+	SelectMenuForDeviceType();
+	ShowRoomName(groupID);
+	ShowDevicesInGroup(groupID); //update all devices
+	setTimeout( function() {
+		CreateListOfDevicesToAdd();
+	},900);
+}
 
 
 function ShowRoomName(groupID)

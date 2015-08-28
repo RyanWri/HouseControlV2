@@ -10,8 +10,7 @@ $(function()
 	});
 		
 	$("#addNewRoomButton").click(function()
-	{
-		
+	{		
 		loadRoomTypes();
 		$("#popupAddNewRoom").click();
 	});
@@ -60,13 +59,13 @@ $(function()
 		    		$("#btnAddNewRoom").attr("disabled",false);
 		    	}
 	});
-	/*
-	$.validator.addMethod("alphanumeric", function(value, element) 
+	
+/*	$.validator.addMethod("alphanumeric", function(value, element) 
 	{
 		return this.optional(element) || /^\w+$/i.test(value);
 	}, "Letters, numbers, and underscores only please");
-	*/
 	
+	*/
 	/*$("#formAddRoom").validate(
 			{
 				errorPlacement: function(error, element) 
@@ -116,12 +115,12 @@ $(function()
 			    });
 			}
 		});
-	
 	*/
 	
 	
 	
-	$("#formAddRoom").submit( function()
+	
+	/*$("#formAddRoom").submit( function()
 	{
 		var parameters = {};
 	    var roomName = $('#textBoxRoomName').val();
@@ -152,7 +151,7 @@ $(function()
 	    		errorPopup("Connection Error");
 	    	}
 	    });
-	});
+	});*/
 });
 
 function loadRoomsManagementPage()
