@@ -60,62 +60,61 @@ $(function()
 		    	}
 	});
 	
-/*	$.validator.addMethod("alphanumeric", function(value, element) 
+	$.validator.addMethod("alphanumeric", function(value, element) 
 	{
 		return this.optional(element) || /^\w+$/i.test(value);
 	}, "Letters, numbers, and underscores only please");
+		
 	
-	*/
-	/*$("#formAddRoom").validate(
+	$("#formAddRoom").validate(
 			{
 				errorPlacement: function(error, element) 
-			{
-				error.insertAfter(element);
-			},
-			rules:
-			{
-				roomname:
 				{
-					required: true,
-					minlength: 2,
-					maxlength: 10,
-					alphanumeric: true,
+					error.insertAfter(element);
 				},
-			},
-			submitHandler: function(form) 
-			{
-				var parameters = {};
-			    var roomName = $('#textBoxRoomName').val();
-			    parameters.name = roomName;
-			    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
-			    var parametersStringified = JSON.stringify(parameters);
-			    $.ajax({
-			    	type: 'POST',
-			    	url: '/HouseControl/api/devices_group/create',
-			    	data: parametersStringified,
-			    	dataType: "json",
-			    	success: function(result)
-			    	{
-			    		if (result.status === "ok")
-			    		{
-				    		$.mobile.loading("hide");
-				    		window.location = "RoomsManagement.html";
-	
-			    		 }
-			    		 else
-			    		 {
-			    		     $.mobile.loading("hide");
-			    		     errorPopup(result.data);
-			    		 }
-			    	},
-			    	error: function()
-			    	{
-			    		errorPopup("Connection Error");
-			    	}
-			    });
-			}
-		});
-	*/
+				rules:
+				{
+					roomname:
+					{
+						required: true,
+						minlength: 2,
+						maxlength: 10,
+						alphanumeric: true,
+					},					
+				},
+				submitHandler: function(form) 
+				{
+					var parameters = {};
+				    var roomName = $('#textBoxRoomName').val();
+				    parameters.name = roomName;
+				    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
+				    var parametersStringified = JSON.stringify(parameters);
+				    $.ajax({
+				    	type: 'POST',
+				    	url: '/HouseControl/api/devices_group/create',
+				    	data: parametersStringified,
+				    	dataType: "json",
+				    	success: function(result)
+				    	{
+				    		if (result.status === "ok")
+				    		{
+					    		$.mobile.loading("hide");
+					    		window.location = "RoomsManagement.html";
+				
+				    		 }
+				    		 else
+				    		 {
+				    		     $.mobile.loading("hide");
+				    		     errorPopup(result.data);
+				    		 }
+				    	},
+				    	error: function()
+				    	{
+				    		errorPopup("Connection Error");
+				    	}
+				    });
+				} 
+			});
 	
 	
 	
