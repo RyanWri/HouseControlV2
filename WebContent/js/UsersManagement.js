@@ -5,8 +5,8 @@ var delay = 300;
 $(function() 
 {
     $(document).ready(function()
-    {
-    	getListOfUsers();
+    {   	
+    	authentication(loadUsersManagementPage);
     });
     
     
@@ -54,6 +54,11 @@ $(function()
 		window.location = "#";
 	});
 });
+
+function loadUsersManagementPage()
+{
+	getListOfUsers();
+}
 
 function getListOfUsers()
 {

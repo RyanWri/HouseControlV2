@@ -8,10 +8,15 @@ $(function()
 {
     $(document).ready(function()
     {
-    	$("#roomName").text(localStorage.roomcontrolName);
-    	loadRoomDevices();
+    	authentication(loadRoomControlPage);
     });
 });
+
+function loadRoomControlPage()
+{
+	$("#roomName").text(localStorage.roomcontrolName);
+	loadRoomDevices();
+}
 
 function loadRoomDevices()
 {

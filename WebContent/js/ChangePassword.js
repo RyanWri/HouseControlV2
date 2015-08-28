@@ -4,10 +4,7 @@ $(function()
 {
     $(document).ready(function()
     {
-    	if (!localStorage.userID)
-		{
-    		window.location = "UserHome.html";
-		}
+    	authentication(loadChangePassword);
     });
     
     $("#formChangePassword").validate(
@@ -68,6 +65,14 @@ $(function()
     	}
     });
 });
+
+function loadChangePassword()
+{
+	if (!localStorage.userID)
+	{
+		window.location = "UserHome.html";
+	}
+}
 
 function changePassword()
 {

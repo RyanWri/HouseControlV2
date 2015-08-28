@@ -2,14 +2,11 @@ var flag = 0;
 var delay = 300;
 var tempGroupID;
 
-
 $(function() 
 {
-
 	$(document).ready(function()
 	{
-		$("#btnAddNewRoom").attr("disabled",true);
-		ShowAllRooms();
+		authentication(loadRoomsManagementPage);
 	});
 		
 	$("#addNewRoomButton").click(function()
@@ -157,6 +154,12 @@ $(function()
 	    });
 	});
 });
+
+function loadRoomsManagementPage()
+{
+	$("#btnAddNewRoom").attr("disabled",true);
+	ShowAllRooms();
+}
 
 function loadRoomTypes()
 {
