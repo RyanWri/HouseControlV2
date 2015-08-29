@@ -111,15 +111,25 @@
 				<div class="row center-xs nd2-headline newfont">Choose Method:</div>
 			</div>
 			<div role="main" class="ui-content">
-				<button id="connectDevice" type="button" onclick="connectDeviceToRelayPort()"
-					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
-					<i class="zmdi zmdi-portable-wifi zmd-fw"></i> Connect Device
-				</button>
+			<div> <!-- list relay ports -->
+			<form onsubmit="connectDeviceToRelayPort()">
+			<label for="relayPorts">Choose Port</label> 
+			<select name="relayPorts" id="ListRelayPorts" class="icon-menu">
+			<option disabled selected>Select The Port you want to connect to</option>
+			</select>
+			<input type="submit" value="Connect">
+			</form>
+			</div>
+			<div>
+				<br><br><br> <label>Disconnect Device</label>
 				<button id="disconnectDevice" type="button" onclick="removeDevice()"
 					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
 					<i class="zmdi zmdi-gps-off zmd-fw"></i> DisConnect Device
 				</button>
 			</div>
+			
+			</div> <!--  end of main content -->
+			
 		</div><!-- connect/disconnect popup -->
 
 

@@ -2,7 +2,7 @@
 	Author: ran yamin 
 	date 19/08/2015 
 	javascript for room view page (Manage Devices)
-	Last Modification : 27/08/2015
+	Last Modification : 28/08/2015
  */
 
 
@@ -19,6 +19,7 @@ function loadRoomViewPage()
 	SelectMenuForDeviceType();
 	ShowRoomName(groupID);
 	ShowDevicesInGroup(groupID); //update all devices
+	CreateRelayPortsList();
 	setTimeout( function() {
 		CreateListOfDevicesToAdd();
 	},900);
@@ -215,75 +216,6 @@ function AddDeviceToRoom()
 }
 	
 
-
-function connectDeviceToRelayPort()
-{
-	var deviceID = localStorage.tempDeviceID;
-	var relayPort = FindOpenPortRelay();
-	if (relayPort < 4) //ports are from 0-3
-		{
-	$.ajax({
-		type: 'POST',
-		url: '/HouseControl/api/device/connect_device_to_relay/'+RelayPort+'/'+deviceID,
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			$.mobile.loading("hide");
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-		} 
-
-	}); } 
-	
-	else //no Available port
-		{
-			
-		}
-	
-}
-
-
-
-function FindOpenPortRelay()
-{
-	for( var portNumber=0; portNumber<4; i++)
-		{
-			if( RunPortTest(portNumber) >= 0)
-				return  RunPortTest(portNumber);
-		}
-	
-	return portNumber; //4 means no one is available
-}
-
-function RunPortTest(portNumber)
-{
-	$.ajax({
-		type: 'POST',
-		url: '/HouseControl/api/device/relay/'+ portNumber +'/inUse/',
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			if(result.data === 'false') //port is not in used
-				return portNumber;
-			
-			else return -1; //port in used
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-			return -2;
-		}
-
-	});
-
-}
-
 //check if device name is in the deviceNamesArray if so return true else false
 function IsDeviceInTheRoom(name)
 {
@@ -350,3 +282,63 @@ function sendDeviceID( device)
 	localStorage.tempDeviceID = device; 
 }
 	
+//connect device with deviceID to relay port chosen by user
+function connectDeviceToRelayPort()
+{
+	var deviceID = localStorage.tempDeviceID;
+	var relayPort = $('#relayPorts :selected').val();
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/device/connect_device_to_relay/'+RelayPort+'/'+deviceID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			$.mobile.loading("hide");
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		} 
+
+	});
+	
+}
+
+
+//create relay ports list for user to choose
+function CreateRelayPortsList()
+{
+	for( var portNumber=0; portNumber<29; portNumber++)
+	{
+		RunPortTest(portNumber);
+	}
+
+}
+
+function RunPortTest(portNumber)
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/device/relay/'+ portNumber +'/inUse/',
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			if(result.data == false) //port is not in used
+			{
+				var option = '<option value="'+ portNumber +'">' + portNumber +'</option>';
+				$("#ListRelayPorts").append(option);
+			}
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		}
+
+	});
+
+}
+
