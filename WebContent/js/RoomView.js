@@ -2,7 +2,7 @@
 	Author: ran yamin 
 	date 19/08/2015 
 	javascript for room view page (Manage Devices)
-	Last Modification : 28/08/2015
+	Last Modification : 30/08/2015
  */
 
 
@@ -244,7 +244,6 @@ function removeDevice()
 		success: function(result)
 		{
 			$.mobile.loading("show");
-			window.location = "RoomView.html"; //only when ajax is finished refresh the room
 		},
 		
 		error: function()
@@ -253,6 +252,11 @@ function removeDevice()
 			errorPopup("Connection Error");
 		}
 	});
+	
+	setTimeout( function() {
+		location.reload();
+	},300);
+	
 }	
 
 function DisconnectDeviceFromRelayPort(deviceID)
@@ -264,7 +268,6 @@ function DisconnectDeviceFromRelayPort(deviceID)
 		dataType: 'json',
 		success: function(result)
 		{
-			
 			$.mobile.loading("hide");
 		},
 
@@ -286,7 +289,7 @@ function sendDeviceID( device)
 function connectDeviceToRelayPort()
 {
 	var deviceID = localStorage.tempDeviceID;
-	var relayPort = $('#relayPorts :selected').val();
+	var relayPort = $('#ListRelayPorts :selected').val();
 	$.ajax({
 		type: 'POST',
 		url: '/HouseControl/api/device/connect_device_to_relay/'+RelayPort+'/'+deviceID,
