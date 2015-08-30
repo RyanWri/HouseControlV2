@@ -204,7 +204,6 @@ function AddDeviceToRoom()
 		{
 			var contentDevice='<li><a href="#'+deviceID +'" class="ui-btn">'+name+'</a></li>';
 			$("#ListAllDevices").append(contentDevice);
-			location.reload();
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -212,6 +211,11 @@ function AddDeviceToRoom()
 			$.mobile.loading("hide");
 		}
 	});
+	
+	setTimeout( function() {
+		location.reload();
+	},200);
+
 
 }
 	
@@ -254,8 +258,9 @@ function removeDevice()
 	});
 	
 	setTimeout( function() {
-		window.location= "RoomView.html";
+		location.reload();
 	},200);
+
 	
 }	
 
@@ -279,7 +284,10 @@ function DisconnectDeviceFromRelayPort()
 
 	});
 	
-	location.reload();
+	setTimeout( function() {
+		location.reload();
+	},200);
+
 	
 }
 
@@ -295,7 +303,7 @@ function connectDeviceToRelayPort()
 	var relayPort = $('#ListRelayPorts :selected').val();
 	$.ajax({
 		type: 'POST',
-		url: '/HouseControl/api/device/connect_device_to_relay/'+RelayPort+'/'+deviceID,
+		url: '/HouseControl/api/device/connect_device_to_relay/'+relayPort+'/'+deviceID,
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
@@ -310,6 +318,9 @@ function connectDeviceToRelayPort()
 
 	});
 	
+	setTimeout( function() {
+		location.reload();
+	},200);
 }
 
 
