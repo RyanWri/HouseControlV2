@@ -26,7 +26,7 @@ public class DeviceInGroupHandler{
 		if(deviceID < 1 || devicesGroupID<1){
 			throw new Exception("device or device group hasn't been provided");
 		}
-		try{
+		try {
 			conn = DBConn.getConnection();
 			String insertSql = "INSERT into device_in_group VALUES(?,?)";
 			statement = conn.prepareStatement(insertSql,Statement.RETURN_GENERATED_KEYS);
