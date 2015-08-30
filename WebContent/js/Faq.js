@@ -6,4 +6,17 @@
  */
 
 //at the moment no javascript is needed here
-    
+
+$(function() 
+{
+	$(document).ready(function()
+    {
+		authentication(loadFaqPage);
+    });
+});
+
+function loadFaqPage(){}
+
+	
+
+
