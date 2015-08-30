@@ -120,13 +120,21 @@
 			<input type="submit" value="Connect">
 			</form>
 			</div>
-			<div>
-				<br><br><br> <label>Disconnect Device</label>
-				<button id="disconnectDevice" type="button" onclick="removeDevice()"
+			<div><br>
+				<label>Disconnect Device</label>
+				<button id="disconnectDevice" type="button" onclick="DisconnectDeviceFromRelayPort()"
 					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
 					<i class="zmdi zmdi-gps-off zmd-fw"></i> DisConnect Device
 				</button>
 			</div>
+			<div><br>
+				<label>Remove Device</label>
+				<button id="removeDeviceFromGroup" type="button" onclick="removeDevice()"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
+					<i class="zmdi zmdi-portable-wifi-off zmd-fw"></i> Remove Device From Room
+				</button>
+			</div>
+			
 			
 			</div> <!--  end of main content -->
 			

@@ -233,7 +233,7 @@ function IsDeviceInTheRoom(name)
 function removeDevice()
 {
 	var deviceID = localStorage.tempDeviceID;
-	DisconnectDeviceFromRelayPort(deviceID); //change state to inactive
+	DisconnectDeviceFromRelayPort();
 	var dataRemove= "deviceID="+ deviceID + "&deviceGroupID=" + groupID;
 	$.ajax({
 		type: 'DELETE',
@@ -254,13 +254,14 @@ function removeDevice()
 	});
 	
 	setTimeout( function() {
-		location.reload();
-	},300);
+		window.location= "roomView.html";
+	},200);
 	
 }	
 
-function DisconnectDeviceFromRelayPort(deviceID)
+function DisconnectDeviceFromRelayPort()
 {
+	var deviceID = localStorage.tempDeviceID;
 	$.ajax({
 		type: 'POST',
 		url: '/HouseControl/api/device/disconnect_device/'+deviceID,
