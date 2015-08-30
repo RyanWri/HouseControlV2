@@ -97,7 +97,7 @@ function enterRoom(groupID)
 		}
 	}
 
-	window.location = "RoomControl.html";
+	window.location = "Keren.html";
 }
 
 function errorPopup(message)
