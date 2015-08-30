@@ -254,7 +254,7 @@ function removeDevice()
 	});
 	
 	setTimeout( function() {
-		window.location= "roomView.html";
+		window.location= "RoomView.html";
 	},200);
 	
 }	
@@ -278,6 +278,8 @@ function DisconnectDeviceFromRelayPort()
 		}
 
 	});
+	
+	location.reload();
 	
 }
 
