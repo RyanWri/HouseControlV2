@@ -1,5 +1,6 @@
 package modelObjects;
 
+
 import java.sql.Timestamp;
 
 public class Timer {
@@ -71,4 +72,5 @@ public class Timer {
 		Active,
 		Inactive;
 	}
+
 }
