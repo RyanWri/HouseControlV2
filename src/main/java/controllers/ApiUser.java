@@ -259,4 +259,14 @@ public class ApiUser{
 
 		return response;
 	}
+	
+	@GET
+	@Path("/or")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response or_test(@Context HttpServletRequest req) {
+		Response response = null;
+
+		response = Response.ok(GenericResponse.ok("or test")).build();
+		return response;
+	}	
 }
