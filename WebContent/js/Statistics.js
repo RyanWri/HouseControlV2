@@ -48,6 +48,11 @@ function ShowAllRooms(UserID)
 				
 				SetStatsPerRoom();
 				
+				setTimeout( function() {
+					createDynamicPieChart();//now we have all data create the pie chart
+					ShowTotalConsumption("month");
+				},4000);
+				
 			},
 	
 			
@@ -71,12 +76,6 @@ function SetStatsPerRoom()
 	{
 		setEachRoomStats(groupID_array[i]); //send every ajax with roomID
 	}	
-	
-	setTimeout( function() {
-		createDynamicPieChart();//now we have all data create the pie chart
-	},3000);
-	
-	ShowTotalConsumption("month");
 }
 	
 
@@ -88,7 +87,7 @@ function createDynamicPieChart()
 			  series: voltage_series
 			};
 
-	new Chartist.Pie(".ct-chart", data);
+	new Chartist.Pie('.ct-chart', data);
 }
 
 function ShowTotalConsumption(timeframe)
