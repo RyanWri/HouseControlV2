@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import dataBases.jdbc.DBHandler;
+import dataBases.jdbc.TimerHandler;
 import utils.PiGpio;
 
 public class Initializer implements ServletContextListener {
@@ -30,6 +31,7 @@ public class Initializer implements ServletContextListener {
 		try{
 		DBHandler.createTables();
 		//PiGpio.initializePiGpio();//$$FOR DEBUG
+		TimerHandler.initilizeMyTimers();
 		}
 		catch(Exception ex){
 			ex.printStackTrace();
