@@ -5,26 +5,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-
-
-
 import java.sql.Timestamp;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.dbutils.DbUtils;
 
 import modelObjects.Device;
 import modelObjects.Timer;
 import modelObjects.User;
-
-import org.apache.commons.dbutils.DbUtils;
-
+import utils.HouseControlTimerTask;
 import utils.JDBCUtils;
+
 
 public class TimerHandler {
 	public static final String TIMER_DELETE_SUCCESS_MESSAGE = "The timer has been deleted";
+	public static final String ON = "on";
+	public static final String OFF = "off";
+	public static final Object TIMER_UPDATE_SUCCESS_MESSAGE = "Timer was update successfully";
+
+	public static Map<String, java.util.Timer> myTimers = new HashMap<String, java.util.Timer>();
 
 
-	public static void addTimer(Timer timer) throws Exception{
+	public static void addTimer(Timer timers) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -35,23 +40,18 @@ public class TimerHandler {
 			conn = DBConn.getConnection();	
 			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 			statement.setNull(1, java.sql.Types.INTEGER);
-			statement.setInt(2,timer.getDevice().getDeviceID());
-			statement.setString(3, timer.getTimerName());
-			statement.setInt(4, timer.getUser().getUserID());
-			statement.setTimestamp(5, timer.getTurnOnTime());
-			statement.setTimestamp(6, timer.getTurnOffTime());
-			statement.setString(7, timer.getState().toString());
+			statement.setInt(2,timers.getDevice().getDeviceID());
+			statement.setString(3, timers.getTimerName());
+			statement.setInt(4, timers.getUser().getUserID());
+			statement.setTimestamp(5, timers.getTurnOnTime());
+			statement.setTimestamp(6, timers.getTurnOffTime());
+			statement.setString(7, timers.getState().toString());
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			if (resultSet != null && resultSet.next()) {
 				System.out.println("Timer was inserted with id:" + resultSet.getInt(1));
-				if(timer.getState().equals(Timer.TimerState.Active)){
-					Timer t=new Timer();
-//					t.schedule(new TimerTask() {
-//					    public void run() {
-//					        
-//					    }
-//					}, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2012-07-06 13:40:20"));
+				if(timers.getState().equals(Timer.TimerState.Active)){
+					addAndInsertOnOffTimers(timers, resultSet.getInt(1));
 				}
 			}
 			else{
@@ -60,7 +60,6 @@ public class TimerHandler {
 		}
 		catch(SQLException ex){
 			JDBCUtils.checkIfDuplicate(ex);
-//			throw new Exception("An error has occured when trying add a new timer");
 		}
 		finally{
 			DbUtils.closeQuietly(resultSet);
@@ -100,7 +99,7 @@ public class TimerHandler {
 		return timer;
 	}
 
-	protected static Timer mapRow(ResultSet resultSet) throws SQLException {
+	private static Timer mapRow(ResultSet resultSet) throws SQLException {
 		Timer timer = new Timer();
 		Device device = new Device();
 		User user = new User();
@@ -118,10 +117,11 @@ public class TimerHandler {
 		return timer;
 	}
 
-	public static void deleteTimer(int timerID) throws Exception{	
+	public static Boolean deleteTimerFromDB(int timerID) throws Exception{	
 
 		Connection conn = null;
 		PreparedStatement statement = null;
+		Boolean isDeleted = false;
 
 		if(timerID<1)		{
 			throw new Exception("Invalid timer to delete");
@@ -134,6 +134,7 @@ public class TimerHandler {
 			int isSucceeded = statement.executeUpdate();
 			if(isSucceeded > 0){
 				System.out.println("Timer has been deleted");
+				isDeleted = true;
 			}
 			else{
 				throw new Exception("Deleting timer has failed");
@@ -146,44 +147,186 @@ public class TimerHandler {
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
+		return isDeleted;
 	}
 
-	public static void updateTimer(Timer timer) throws Exception{	
+	public static void deleteTimer(int timerID) throws Exception{
+		try {
+			if(deleteTimerFromDB(timerID))
+			{
+				CancelAndDeleteMyTimer(timerID, ON);
+				CancelAndDeleteMyTimer(timerID, OFF);	
+			}
+		} 
+		catch (Exception e) {
+		}
+	}
 
+	private static void addAndInsertMyTimer(Timer timer, int timerID, String action) {
+		java.util.Timer time=new java.util.Timer();
+		if(action.equals(ON)){
+			time.schedule(new HouseControlTimerTask(timer.getDevice().getDeviceID(), timerID , 1)
+					, new java.sql.Date(timer.getTurnOnTime().getTime()));
+		}
+		else{
+			time.schedule(new HouseControlTimerTask(timer.getDevice().getDeviceID(), timerID, 0)
+					,new java.sql.Date(timer.getTurnOffTime().getTime()));
+		}	
+		myTimers.put(timerID + action, time);
+	}
+
+	public static void CancelAndDeleteMyTimer(int timerID, String action) throws Exception {
+		try{
+			if (myTimers.containsKey(timerID + action))
+			{
+				myTimers.get(timerID + action).cancel();
+				myTimers.remove(timerID + action);
+			}
+		}
+		catch(Exception ex){
+			throw new Exception("An error has occured while trying cancel and delete timer");
+		}
+	}
+
+	public static void updateTimer(Timer timer) throws Exception {
+		if (timer.getTurnOnTime().after(new Timestamp(System.currentTimeMillis()))){
+			updateTimerFromDB(timer);
+		}
+		else{
+			timer.setTurnOnTime(null);
+			updateTimerFromDB(timer);
+		}
+	}
+	
+	public static void updateTimerFromDB(Timer timer) throws Exception {
 		Connection conn = null;
 		PreparedStatement statement = null;
 
-		if(timer == null || timer.getTimerID()<1)		{
-			throw new Exception("Invalid timer to update");
+		if(timer == null){
+			throw new Exception("An error has occured while trying update timer");
+		}
+		if(timer.getTimerID()<1){
+			throw new Exception("Cannot update a timer that doesn't exist");
+		}
+		try{
+			String query = "UPDATE timer "
+					+"SET timerName=? ,turnOnTime =?,"
+					+"turnOffTime = ? ,state = ? "
+					+"WHERE timerID = " + timer.getTimerID();
+			conn = DBConn.getConnection();
+			conn.setAutoCommit(false);
+			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			statement.clearParameters();
+			statement.setString(1, timer.getTimerName());
+			statement.setTimestamp(2, timer.getTurnOnTime());
+			statement.setTimestamp(3, timer.getTurnOffTime());
+			statement.setString(4, timer.getState().toString());
+
+			int isSucceeded = statement.executeUpdate();
+			if(isSucceeded == 0){
+				throw new Exception("Failed to update timer");
+			}
+			CancelAndDeleteMyTimer(timer.getTimerID(), ON);
+			CancelAndDeleteMyTimer(timer.getTimerID(), OFF);
+			addAndInsertOnOffTimers(timer, timer.getTimerID());
+			System.out.println("User has been updated");
+
+			conn.commit();
+		}
+		catch(SQLException ex){
+			conn.rollback();
+			throw new Exception(ex);
+		}
+		finally{
+			conn.setAutoCommit(true);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+	}
+
+
+	public static List<Timer> getAllTimersByDeviceID(int deviceID) throws Exception {
+
+		List<Timer> timers = new ArrayList<Timer>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		String query = "SELECT * "
+				+ "FROM timer "
+				+ "WHERE deviceID=" + deviceID;
+		if(deviceID<1){
+			throw new Exception("Please provide a valid device");
 		}
 		try{
 			conn = DBConn.getConnection();
-			String query = "UPDATE timer "
-					+  "SET turnOnTime=?, turnOffTime=?, state=? "
-					+  "WHERE timerID =" + timer.getTimerID();
-			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-			statement.setTimestamp(1, timer.getTurnOnTime());
-			statement.setTimestamp(2, timer.getTurnOffTime());
-			statement.setString(3, timer.getState().toString());
-			int isSucceeded = statement.executeUpdate();
-			if(isSucceeded>0){
-				System.out.println("Timer has been updated");
-			}
-			else{
-				throw new Exception("Failed to update timer");
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				timers.add(mapRow(resultSet));
 			}
 		}
-		catch(SQLException ex){
-			throw new Exception("Cannot update timer");
+		catch (Exception e) {
+			throw new Exception("Failed to get timers of device");
 		}
 		finally{
 			DbUtils.closeQuietly(statement);
 			DbUtils.closeQuietly(conn);
 		}
+
+		return timers;
 	}
 
+	private static List<Timer> getAllTimers () throws Exception {
+		List<Timer> timers = new ArrayList<Timer>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		String query = "SELECT * "
+				+ "FROM timer ";	
+		try{
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				timers.add(mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get timers of all the devices");
+		}
+		finally{
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
 
-	//getalltimers of device (by specific user or of all)
+		return timers;
+	}
 
+	public static void initilizeMyTimers() throws Exception {
+		List<Timer> timers = new ArrayList<Timer>();
 
+		try {
+			timers = getAllTimers();
+			for( Timer timer : timers){
+				if (timer.getTurnOnTime().after( new Timestamp(System.currentTimeMillis()))){
+					addAndInsertOnOffTimers(timer, timer.getTimerID());
+				}
+				else if(timer.getTurnOffTime().after( new Timestamp(System.currentTimeMillis()))){
+					addAndInsertMyTimer(timer, timer.getTimerID(), OFF);
+				}
+				else{
+					deleteTimerFromDB(timer.getTimerID());
+				}
+			}
+
+		} catch (Exception ex) {
+
+			throw new Exception("An error has occured while trying to initialize myTimers");
+		}
+	}
+	private static void addAndInsertOnOffTimers(Timer timer, int timerID) {
+		addAndInsertMyTimer(timer, timerID, ON);
+		addAndInsertMyTimer(timer, timerID, OFF);
+	}
 }
