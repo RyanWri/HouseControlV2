@@ -1,9 +1,13 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -76,23 +80,43 @@ public class ApiTimer {
 		return response;
 	}
 	
-//	@GET
-//	@Path("/get_timers_of_device/{deviceID}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getTimersOfDevice(@Context HttpServletRequest req, @PathParam("deviceID")int deviceID){
-//		Response response = null;
-//		List<Timer> timers = new ArrayList<Timer>();
-//		
-//		try{
-////			SessionHandler.isAuthUser(req);
-//			Timer timer = TimerHandler.getTimerByID(deviceID);
-//			response = Response.ok(GenericResponse.ok(timer)).build();
-//		}
-//		catch(Exception ex){
-//			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
-//		}
-//		return response;
-//	}
+	@GET
+	@Path("/get_timers_of_device/{deviceID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTimersOfDevice(@Context HttpServletRequest req, @PathParam("deviceID")int deviceID){
+		Response response = null;
+		List<Timer> timers = new ArrayList<Timer>();
+		
+		try{
+			SessionHandler.isAuthUser(req);
+			timers = TimerHandler.getAllTimersByDeviceID(deviceID);
+			response = Response.ok(GenericResponse.ok(timers)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
+	
+	@PUT
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(@Context HttpServletRequest req, String timerJson){
+		Response response = null;
+		Timer timer = null;
+		Gson gson = new Gson();
+
+		try{				
+			SessionHandler.verifyAuthenticatedUserRequest(req);
+			timer = gson.fromJson(timerJson, Timer.class);
+			TimerHandler.updateTimer(timer);
+			response = Response.ok(GenericResponse.ok(TimerHandler.TIMER_UPDATE_SUCCESS_MESSAGE)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
 }
 
 
