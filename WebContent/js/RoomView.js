@@ -214,8 +214,7 @@ function AddDeviceToRoom()
 	
 	setTimeout( function() {
 		location.reload();
-	},200);
-
+	},300);
 
 }
 	
