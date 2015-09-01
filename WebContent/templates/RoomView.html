@@ -65,7 +65,7 @@
 			
 		</div> <!-- /content -->
 		
-		<!--  add device Dialog -->	
+		<!--  create device Dialog -->	
 		
 	<div data-role="popup" id="CreateDeviceDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">	
 
@@ -74,21 +74,21 @@
 		</div>
 		<div data-role="content" data-theme='a'>
 			<form id="formCreateDevice">
-				<label for="deviceName">Enter device Name</label> 
-	            <textarea id="deviceName" class="k-textbox" style="width: 100%;" ></textarea>
-	            <label for="description">Description </label>
-	            <textarea id="description" class="k-textbox" style="width: 100%;" ></textarea>
-	            <label for="devices">Choose Device type</label> 
-	            <select name="devices" id="devicesTypes" class="icon-menu">
+				<label for="deviceName">Enter device Name (required)</label>
+	            <input id="deviceName" class="k-input" minlength="4" type="text" required>
+	            <label for="description">Description (required)</label>
+	            <input id="description" class="k-input" minlength="4" type="text" required>
+	            <label for="devices">Choose Device type (required)</label> 
+	            <select name="devices" id="devicesTypes" class="icon-menu" required>
 					<option value="">Select Device Type</option>	
 				</select>
-				<label for="deviceVoltage">Voltage</label>
-				<input type="number" id="deviceVoltage" name="Voltage" min="15" max="50">
+				<label for="deviceVoltage">Voltage (required)</label>
+				<input type="number" id="deviceVoltage" name="Voltage" min="15" max="50" required>
 			<input type="submit" value="add" />
 			</form>
 		</div>
 	</div>
-	<!-- end of add device Dialog -->
+	<!-- end of create device Dialog -->
 	
 
 		
