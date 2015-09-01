@@ -3,12 +3,15 @@ var globalGroupID;
 var globalAction;
 var delay = 150;
 var lock = 0;
+var varInterval;
+var refreshRate = 3000;
 
 $(function() 
 {
     $(document).ready(function()
     {
     	authentication(loadKerenPage);
+    	varInterval = window.setInterval(reloadRoomDevices, refreshRate);
     });
     
     $("#loadagain").click(function()
