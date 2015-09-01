@@ -294,34 +294,6 @@ function sendDeviceID( device)
 {
 	localStorage.tempDeviceID = device; 
 }
-	
-//connect device with deviceID to relay port chosen by user
-function connectDeviceToRelayPort()
-{
-	var deviceID = localStorage.tempDeviceID;
-	var relayPort = $('#ListRelayPorts :selected').val();
-	$.ajax({
-		type: 'POST',
-		url: '/HouseControl/api/device/connect_device_to_relay/'+relayPort+'/'+deviceID,
-		contentType: "application/json",
-		dataType: 'json',
-		success: function(result)
-		{
-			$.mobile.loading("hide");
-		},
-
-		error: function(xhr, ajaxOptions, thrownError)
-		{
-			$.mobile.loading("hide");
-		} 
-
-	});
-	
-	setTimeout( function() {
-		location.reload();
-	},200);
-}
-
 
 //create relay ports list for user to choose
 function CreateRelayPortsList()
@@ -356,5 +328,63 @@ function RunPortTest(portNumber)
 
 	});
 
+}
+
+//validate if device is already connected
+function ValidateConnectedDevice()
+{
+	var deviceID = localStorage.tempDeviceID;
+	var relayPort = $('#ListRelayPorts :selected').val();
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/device/get_relay_port/' +deviceID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			if(result.data === -1)
+			{
+			   connectDeviceToRelayPort(deviceID, relayPort);
+			}
+			else
+			{
+				$('#DeviceAlreadyConnectedAlert').popup( "open" );
+			}
+			
+			$.mobile.loading("hide");
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		} 
+
+	});
+	
+	setTimeout( function() {
+		location.reload();
+	},300);
+}
+
+//connect device with deviceID to relay port chosen by user
+function connectDeviceToRelayPort(deviceID, relayPort)
+{
+	$.ajax({
+		type: 'POST',
+		url: '/HouseControl/api/device/connect_device_to_relay/'+relayPort+'/'+deviceID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			$.mobile.loading("hide");
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		} 
+
+	});
+	
 }
 

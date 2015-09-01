@@ -112,9 +112,9 @@
 			</div>
 			<div role="main" class="ui-content">
 			<div> <!-- list relay ports -->
-			<form onsubmit="connectDeviceToRelayPort()">
-			<label for="relayPorts">Choose Port</label> 
-			<select name="relayPorts" id="ListRelayPorts" class="icon-menu">
+			<form onsubmit="ValidateConnectedDevice()">
+			<label for="relayPorts">Choose Port (required)</label> 
+			<select name="relayPorts" id="ListRelayPorts" class="icon-menu" required>
 			<option disabled selected>Select The Port you want to connect to</option>
 			</select>
 			<input type="submit" value="Connect">
@@ -139,6 +139,21 @@
 			</div> <!--  end of main content -->
 			
 		</div><!-- connect/disconnect popup -->
+
+
+	<!--  device already connected popup -->	
+		
+	<div data-role="popup" id="DeviceAlreadyConnectedAlert" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">	
+
+		<div data-role="header" data-theme="a">
+			<h1>Device Already Connected!!!</h1>
+		</div>
+		<div data-role="content" data-theme='a'>
+			<h2> Please try to disconnect device before connect</h2>
+		</div>
+	</div>
+	<!-- end of device already connected popup-->
+
 
 
 

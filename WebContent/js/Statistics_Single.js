@@ -18,6 +18,7 @@ $(document).ready(function()
 
 function loadStatisticsSinglePage()
 {
+	ShowRoomName();
 	ShowAllDevicesInRoom(groupID, "month");
 }
 
@@ -82,6 +83,26 @@ function DataForMonth()
 	ShowAllDevicesInRoom(groupID, "month");
 }
 
+function ShowRoomName()
+{
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/devices_group/get_group/'+ groupID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			$('#RoomName').append(result.data.name);
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+		}
+
+	});
+
+}
 
 
 

@@ -83,11 +83,16 @@ function SetStatsPerRoom()
 function createDynamicPieChart()
 {	
 	var data = {
-			  labels: groups,
 			  series: voltage_series
 			};
 
-	new Chartist.Pie('.ct-chart', data);
+	var sum = function(a, b) { return a + b };
+
+	new Chartist.Pie('.ct-chart', data, {
+	  labelInterpolationFnc: function(value) {
+	    return Math.round(value / data.series.reduce(sum) * 100) + '%';
+	  }
+	});
 }
 
 function ShowTotalConsumption(timeframe)
