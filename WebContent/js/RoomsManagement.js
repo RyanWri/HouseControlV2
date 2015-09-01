@@ -78,7 +78,7 @@ $(function()
 					{
 						required: true,
 						minlength: 2,
-						maxlength: 10,
+						maxlength: 20,
 						alphanumeric: true,
 					},					
 				},
