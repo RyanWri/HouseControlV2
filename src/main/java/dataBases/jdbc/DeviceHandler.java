@@ -239,6 +239,35 @@ public class DeviceHandler{
 		return devices;
 	}
 	
+	public static List<Device> getAllAvaialableDevices() throws Exception {
+		List<Device> devices = new ArrayList<Device>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try{
+			conn = DBConn.getConnection();
+			String query = "SELECT device.*,device_type.* "
+			+"FROM device,device_type "
+			+"WHERE device.typeID=device_type.typeID and (device.deviceID NOT IN "
+			+"(SELECT deviceID FROM device_in_group))";
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devices.add(mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get deviceslist");
+		}
+		finally{
+			DbUtils.close(resultSet);
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+		
+		return devices;
+	}
+	
 	public static List<Device> getTurnedOnDevicesByUserID(int userID) throws Exception{
 		String query = "SELECT device.*,device_type.* "
 				+"FROM device "

@@ -229,12 +229,31 @@ public class ApiDevice{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllDevices(@Context HttpServletRequest req){
 		Response response = null;
-		List<Device> devicesGroups = null;
+		List<Device> devices = null;
 
 		try{
 			SessionHandler.verifyAdminRequest(req);
-			devicesGroups = DeviceHandler.getAllDevices();
-			response = Response.ok(GenericResponse.ok(devicesGroups)).build();
+			devices = DeviceHandler.getAllDevices();
+			response = Response.ok(GenericResponse.ok(devices)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
+	@GET
+	@Path("/all_available_devices")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllAvailableDevices(@Context HttpServletRequest req){
+		Response response = null;
+		List<Device> devices = null;
+
+		try{
+			SessionHandler.verifyAdminRequest(req);
+			devices = DeviceHandler.getAllAvaialableDevices();
+			response = Response.ok(GenericResponse.ok(devices)).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
