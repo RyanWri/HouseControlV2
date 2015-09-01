@@ -10,6 +10,11 @@ $(function()
     {
     	authentication(loadKerenPage);
     });
+    
+    $("#loadagain").click(function()
+    {
+    	reloadRoomDevices();
+    });
 });
 
 function loadKerenPage()
@@ -17,6 +22,13 @@ function loadKerenPage()
 	$("#roomName").text(localStorage.roomcontrolName);
 	loadRoomDevices();
 }
+
+function reloadRoomDevices()
+{
+	$("#listOfRoomDevices").empty();
+	loadRoomDevices();
+}
+
 
 function loadRoomDevices()
 {
