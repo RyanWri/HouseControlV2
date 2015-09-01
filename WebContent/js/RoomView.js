@@ -161,7 +161,7 @@ function CreateListOfDevicesToAdd()
 	var option;
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/device/all',
+		url: '/HouseControl/api/device/all_available_devices',
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)

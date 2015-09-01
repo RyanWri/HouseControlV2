@@ -10,8 +10,6 @@
 <link rel="stylesheet" type="text/css" href="../vendor/waves/waves.min.css" />
 <link rel="stylesheet" href="../css/nativedroid2.css" />
 <link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
-<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-
 
 </head>
 <body class="ui-mobile-viewport ui-overlay-a">
@@ -58,14 +56,14 @@
 	<ul id="ListAllRooms" data-role="listview" data-autodividers="false" data-inset="true"></ul>
 	<!--  All user rooms will be inserted here -->
 	</div>
-	
-	<!--  create dyanmic pie chart for the entire house -->
-	 <div class="ct-chart ct-perfect-fourth">
-	 
-	 </div>
 	 
 	 <div id="TotalConsumption">
 	 
+	 
+	 </div>
+	 
+	 <!--  create dyanmic pie chart for the entire house -->
+	 <div id="chartdiv" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
 	 
 	 </div>
 	
@@ -79,8 +77,12 @@
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 <script src="../js/nativedroid2.js"></script>
-<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 <script type="text/javascript" src="../js/GlobalFunctions.js"></script>
 <script src="../js/Statistics.js"></script>
+
+
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+​
 
 </html>

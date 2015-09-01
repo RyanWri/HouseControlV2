@@ -47,11 +47,11 @@ function ShowAllRooms(UserID)
 				}
 				
 				SetStatsPerRoom();
+				ShowTotalConsumption("month");
 				
 				setTimeout( function() {
-					createDynamicPieChart();//now we have all data create the pie chart
-					ShowTotalConsumption("month");
-				},4000);
+					createChart();
+				},3000);
 				
 			},
 	
@@ -78,22 +78,6 @@ function SetStatsPerRoom()
 	}	
 }
 	
-
-//Create dynamic pie chart
-function createDynamicPieChart()
-{	
-	var data = {
-			  series: voltage_series
-			};
-
-	var sum = function(a, b) { return a + b };
-
-	new Chartist.Pie('.ct-chart', data, {
-	  labelInterpolationFnc: function(value) {
-	    return Math.round(value / data.series.reduce(sum) * 100) + '%';
-	  }
-	});
-}
 
 function ShowTotalConsumption(timeframe)
 {
@@ -147,3 +131,72 @@ function setEachRoomStats(roomID)
 	});
 
 }
+
+function createChart()
+{
+    // Build the chart
+    $('#chartdiv').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'House Consumption, September 2015'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: "Usage",
+            colorByPoint: true,            
+            data: createArray()
+        }]
+    });
+}
+
+function createArray()
+{
+	var length = groups.length;
+	var data = new Array();
+	for (var i = 0; i < length; i++)
+	{
+		  var obj = {name: groups[i], y: voltage_series[i]};
+		  data.push(obj);
+	}
+	
+	
+	return data;
+}
+/*
+            data: [{
+                name: groups[0],
+                y: 	voltage_series[0]
+            }, {
+                name: "Chrome",
+                y: 24.03,
+            }, {
+                name: "Firefox",
+                y: 10.38
+            }, {
+                name: "Safari",
+                y: 4.77
+            }, {
+                name: "Opera",
+                y: 0.91
+            }, {
+                name: "Proprietary or Undetectable",
+                y: 0.2
+            }]
+*/
