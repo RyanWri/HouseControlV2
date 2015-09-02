@@ -22,7 +22,7 @@ function loadRoomViewPage()
 	CreateRelayPortsList();
 	setTimeout( function() {
 		CreateListOfDevicesToAdd();
-	},900);
+	},500);
 }
 
 
@@ -169,12 +169,14 @@ function CreateListOfDevicesToAdd()
 			for (var i=0; i<result.data.length; i++){
 				//adding option to add device to Room
 				var name = result.data[i].name , deviceID = result.data[i].deviceID;
+				option = '<option value="'+ deviceID +'">' + name +'</option>';
+				$("#devicesToAdd").append(option);
 				//only if device is not in the room you can add him
-				if(!IsDeviceInTheRoom(name))
+				/*if(!IsDeviceInTheRoom(name))
 				{
 					option = '<option value="'+ deviceID +'">' + name +'</option>';
 					$("#devicesToAdd").append(option);
-				}
+				}*/
 			}
 
 		},
