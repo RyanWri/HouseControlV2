@@ -10,9 +10,18 @@ var groups = [];
 var voltage_series = [];
 var countVolt;
 
+$(document).on("pagebeforeshow","#Statistics",function(event){
+	authentication(loadStatisticsPage);
+	});
+
 $(document).ready(function()
 {
-	authentication(loadStatisticsPage);
+	$.mobile.loading( "show" );
+	setTimeout( function() {
+		$.mobile.loading( "hide" );
+	},800);
+	
+	//authentication(loadStatisticsPage);
 });
 
 
@@ -51,7 +60,7 @@ function ShowAllRooms(UserID)
 				
 				setTimeout( function() {
 					createChart();
-				},3000);
+				},1500);
 				
 			},
 	
@@ -140,6 +149,7 @@ function setEachRoomStats(roomID)
 
 function createChart()
 {
+	var object_data = createArray();
     // Build the chart
     $('#chartdiv').highcharts({
         chart: {
@@ -167,7 +177,7 @@ function createChart()
         series: [{
             name: "Usage",
             colorByPoint: true,            
-            data: createArray()
+            data: object_data
         }]
     });
 }
@@ -181,7 +191,6 @@ function createArray()
 		  var obj = {name: groups[i], y: voltage_series[i]};
 		  data.push(obj);
 	}
-	
 	
 	return data;
 }
