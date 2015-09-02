@@ -146,6 +146,7 @@ function initMenu()
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="ChangePassword.html"> <i class="zmdi zmdi-key zmd-fw"></i> Change Password</a></li>');
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Faq.html"> <i class="zmdi zmdi-help zmd-fw"></i> FAQ</a></li>');
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="#" onclick="logout()"> <i class="zmdi zmdi-power-off zmd-fw"></i> Logout</a></li>');
+	$("#menuitems").append('<li> <img id="Logo" class="nd2-card card-media-right card-media-medium card-media" src="../img/logo.jpg" alt="Our Logo"></li>');
 	/*$("#menuitems").append('<div><a class="ui-link" href="#" onclick="moveToHomePage()">Home</a></div>');
 	if (localStorage.type === "Admin")
 	{

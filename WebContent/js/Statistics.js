@@ -88,7 +88,12 @@ function ShowTotalConsumption(timeframe)
 		dataType: 'json',
 		success: function(result)
 		{
-			$('#TotalConsumption').append('<h2>' + result.data+ '</h2>'); 
+			var cutStr = result.data.slice(0,27);
+			cutStr +='<br>' + result.data.slice(27,58) +'<br>' +result.data.slice(58);
+			var content = '<div class="nd2-card card-media-right card-media-medium"><div class="card-media"><img src="../img/card_thumb_1.jpg">';
+			content +='</div><div class="card-title"><h3 class="card-primary-title">Total Usage</h3>';
+			content += '<h5 class="card-subtitle">' + cutStr + '</h5></div></div>';
+			$('#TotalConsumption').append(content);
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -97,6 +102,7 @@ function ShowTotalConsumption(timeframe)
 		}
 
 	});
+	
 }
 
 function sendGroupID( group)
