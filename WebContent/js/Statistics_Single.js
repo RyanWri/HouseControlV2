@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics Single page Room stats
-	Last Modification : 20/08/2015
+	Last Modification : 02/09/2015
  */
 
 var devices_labels = [];
@@ -13,13 +13,32 @@ var groupID = localStorage.statisticsGroupID;
 
 $(document).ready(function()
 {
+	$('#Week').click(function(){
+		$(this).css('background','green');
+		 $('#Day').css('background','white');
+		 $('#Month').css('background','white');
+	  });
+	
+	  $('#Day').click(function(){
+		  $(this).css('background','green');
+		  $('#Week').css('background','white');
+		  $('#Month').css('background','white');
+	  });
+	  
+	$('#Month').click(function(){
+		$(this).css('background','green');
+		 $('#Day').css('background','white');
+		 $('#Week').css('background','white');
+		 });
+	
 	authentication(loadStatisticsSinglePage);		
 });
 
 function loadStatisticsSinglePage()
 {
 	ShowRoomName();
-	ShowAllDevicesInRoom(groupID, "month");
+	//ShowAllDevicesInRoom(groupID, "month");
+	DataForMonth();	
 }
 
 
@@ -40,7 +59,7 @@ function ShowAllDevicesInRoom(groupID, timeframe)
 				
 				 setTimeout( function() {
 						createDynamicBarsChart();//now we have all data create the pie chart
-				 }, 1200);
+				 }, 1500);
 			},
 
 			error: function(xhr, ajaxOptions, thrownError)
@@ -82,6 +101,7 @@ function DataForMonth()
 {
 	ShowAllDevicesInRoom(groupID, "month");
 }
+
 
 function ShowRoomName()
 {
