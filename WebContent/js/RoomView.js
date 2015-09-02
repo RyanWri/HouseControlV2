@@ -55,7 +55,7 @@ function ShowRoomName(groupID)
 //	List All Devices
 	function ShowDevicesInGroup( groupID)
 	{
-		var deviceID, name, image;
+		var deviceID, name, image, description;
 		$.ajax({
 			type: 'GET',
 			url: '/HouseControl/api/devices_group/get_devices/' + groupID,
@@ -65,12 +65,12 @@ function ShowRoomName(groupID)
 			{
 				for (var i=0; i<result.data.length; i++){
 					deviceID = result.data[i].deviceID;  name = result.data[i].name;
-					picData = result.data[i].deviceType.picData;
+					picData = result.data[i].deviceType.picData; description = result.data[i].description; 
 					
 					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#connect_disconnect" data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendDeviceID('+deviceID+')" data-position-to="window" data-transition="pop">\n\
 					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
-					        <h2>'+ name+'</h2>\n\
+					        <h2>'+ name +'</h2><h5>'+description +'</h5>\n\
 					        </a></li></ul>');
 					
 					deviceNamesArray[i]= name; //create list of names all devices in the room
@@ -344,13 +344,14 @@ function ValidateConnectedDevice()
 		dataType: 'json',
 		success: function(result)
 		{
-			if(result.data === -1)
+			if(result.data == -1)
 			{
 			   connectDeviceToRelayPort(deviceID, relayPort);
 			}
 			else
 			{
-				$('#DeviceAlreadyConnectedAlert').popup( "open" );
+				//$('#DeviceAlreadyConnectedAlert').popup( "open" );
+				//do nothing
 			}
 			
 			$.mobile.loading("hide");
