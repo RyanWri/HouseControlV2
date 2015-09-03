@@ -48,7 +48,7 @@ public class ApiDevice{
 		}
 
 		return response;
-	}
+	} 
 
 	@POST
 	@Path("/connect_device_to_relay/{relayPort}/{deviceID}")
@@ -223,6 +223,22 @@ public class ApiDevice{
 		return response;
 	}
 	
+	@GET
+	@Path("/statistics/all_groups")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response allGroupStatistics(@Context HttpServletRequest req){
+		Response response = null;
+
+		try{
+			SessionHandler.verifyAuthenticatedUserRequest(req);
+			JSONArray groupDevicesConsumption = DeviceUsageHandler.getAllGroupsStatisticsByGroupID();
+			response = Response.ok(GenericResponse.ok(groupDevicesConsumption)).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}
 	
 	@GET
 	@Path("/all")
