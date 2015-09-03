@@ -16,8 +16,10 @@ import org.apache.commons.dbutils.DbUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import utils.SessionHandler;
 import modelObjects.Device;
 import modelObjects.DeviceUsage;
+import modelObjects.DevicesGroup;
 
 public class DeviceUsageHandler {
 	public static final long DAY_OFFSET = 24L*60*60000 ; //HOURS*MINUTES*MILLISECONDS
@@ -414,5 +416,33 @@ public class DeviceUsageHandler {
         }
 
 		return retVal; 
+	}
+
+	
+	public static JSONArray getAllGroupsStatisticsByGroupID() throws Exception {
+		JSONArray groupDevicesConsumption = new JSONArray();
+		JSONArray allGroupsConsumption = new JSONArray();
+		long groupSumConsumption;
+		List<DevicesGroup> devicesGroups = null;
+
+		try{
+			devicesGroups = DevicesGroupHandler.getAllDevicesGroups();
+			for (int i=0 ; i < devicesGroups.size() ;i++) {
+				groupDevicesConsumption = getDeviceStatisticsByGroupID("month", devicesGroups.get(i).getGroupID());
+				groupSumConsumption = 0;
+				for (int j = 0; j < groupDevicesConsumption.length(); j++) {
+					groupSumConsumption += groupDevicesConsumption.getJSONObject(j).getLong("voltageSum");
+				}
+				JSONObject currentGroup = new JSONObject();
+				currentGroup.put("groupName", devicesGroups.get(i).getGroupName());
+				currentGroup.put("groupID", devicesGroups.get(i).getGroupID());
+				currentGroup.put("groupConsumption", groupSumConsumption);
+				allGroupsConsumption.put(currentGroup);
+			}
+		}
+		catch(Exception ex){
+			throw new Exception("An error has occurred while trying to calculate all groups monthly consumption");
+		}	
+		return allGroupsConsumption;
 	}
 }
