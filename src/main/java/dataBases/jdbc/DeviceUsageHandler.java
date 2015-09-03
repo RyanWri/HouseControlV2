@@ -424,7 +424,7 @@ public class DeviceUsageHandler {
 		JSONArray allGroupsConsumption = new JSONArray();
 		long groupSumConsumption;
 		List<DevicesGroup> devicesGroups = null;
-
+ 
 		try{
 			devicesGroups = DevicesGroupHandler.getAllDevicesGroups();
 			for (int i=0 ; i < devicesGroups.size() ;i++) {
