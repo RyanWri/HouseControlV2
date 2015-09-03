@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics main page
-	Last Modification : 27/08/2015
+	Last Modification : 03/09/2015
  */
 
 var groupID_array =[];
@@ -11,17 +11,19 @@ var voltage_series = [];
 var countVolt;
 
 $(document).on("pagebeforeshow","#Statistics",function(event){
-	authentication(loadStatisticsPage);
+	//authentication(loadStatisticsPage);
 	});
 
 $(document).ready(function()
 {
 	$.mobile.loading( "show" );
+	
+	authentication(loadStatisticsPage);
+	
 	setTimeout( function() {
 		$.mobile.loading( "hide" );
-	},800);
-	
-	//authentication(loadStatisticsPage);
+		createChart();
+	},2000);
 });
 
 
@@ -58,9 +60,9 @@ function ShowAllRooms(UserID)
 				SetStatsPerRoom();
 				ShowTotalConsumption("month");
 				
-				setTimeout( function() {
-					createChart();
-				},1500);
+				//setTimeout( function() {
+					//createChart();
+				//},2400);
 				
 			},
 	
@@ -193,4 +195,10 @@ function createArray()
 	}
 	
 	return data;
+}
+
+//refresh stats data
+function refreshPage()
+{
+	location.reload();
 }
