@@ -10,20 +10,14 @@ var KeyValueArray = [];
 
 $(document).ready(function()
 {
-	$.mobile.loading( "show" );
-	
 	authentication(loadStatisticsPage);
-	
-	setTimeout( function() {
-		$.mobile.loading( "hide" );
-	},1500);
+	SetDataForChart();
 });
 
 
 function loadStatisticsPage()
 {
 	var UserID= localStorage.userID;
-	SetDataForChart();
 	ShowAllRooms(UserID);
 }
  
@@ -121,7 +115,7 @@ function SetDataForChart()
 			setTimeout( function() {
 				createChart();
 				$.mobile.loading( "hide" );
-			},2000);
+			},1400);
 			
 			
 			
