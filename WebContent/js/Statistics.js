@@ -6,13 +6,7 @@
  */
 
 var groupID_array =[];
-var groups = [];
-var voltage_series = [];
-var countVolt;
-
-$(document).on("pagebeforeshow","#Statistics",function(event){
-	//authentication(loadStatisticsPage);
-	});
+var KeyValueArray = [];
 
 $(document).ready(function()
 {
@@ -22,13 +16,14 @@ $(document).ready(function()
 	
 	setTimeout( function() {
 		$.mobile.loading( "hide" );
-	},2000);
+	},1500);
 });
 
 
 function loadStatisticsPage()
 {
 	var UserID= localStorage.userID;
+	SetDataForChart();
 	ShowAllRooms(UserID);
 }
  
@@ -46,8 +41,6 @@ function ShowAllRooms(UserID)
 				for (var i=0; i<result.data.length; i++){
 					groupID = result.data[i].groupID;  name= result.data[i].name; picData=result.data[i].picData;  
 					
-					groups.push(name); //labels
-					groupID_array.push(groupID); //for per room stats
 					
 					$("#ListAllRooms").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendGroupID('+groupID+')">\n\
@@ -56,14 +49,8 @@ function ShowAllRooms(UserID)
 					        </a></li></ul>');
 				}
 				
-				SetStatsPerRoom();
-				ShowTotalConsumption("month");
 				
-				//create pie chart
-				setTimeout( function() {
-					createChart();
-				},2000);
-				
+				ShowTotalConsumption("month");				
 				
 			},
 	
@@ -80,16 +67,6 @@ function ShowAllRooms(UserID)
 		
 	}
 
-
-
-function SetStatsPerRoom()
-{
-	for (var i=0; i< groupID_array.length; i++)
-	{
-		setEachRoomStats(groupID_array[i]); //send every ajax with roomID
-	}	
-}
-	
 
 function ShowTotalConsumption(timeframe)
 {
@@ -117,28 +94,37 @@ function ShowTotalConsumption(timeframe)
 	
 }
 
-function sendGroupID( group)
-{
-	localStorage.statisticsGroupID = group;
-	window.location = "Statistics_Single.html"; 
-}
 
-function setEachRoomStats(roomID)
+
+function SetDataForChart()
 {
+	$.mobile.loading( "show" );
+	KeyValueArray.splice(0,KeyValueArray.length); //first clear the array
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/device/statistics/devices_group/'+ roomID +'/month',
+		url: '/HouseControl/api/device/statistics/all_groups',
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
 		{
-			countVolt = 0;
+			var group_name, group_usage;
 			for (var j=0; j<result.data.myArrayList.length; j++)
 			{
-				countVolt += result.data.myArrayList[j].map.voltageSum; //count usage
+				group_name = result.data.myArrayList[j].map.groupName;
+				group_usage = result.data.myArrayList[j].map.groupConsumption;
+				var obj = {name: group_name, y: group_usage};
+				
+				KeyValueArray.push(obj); //add data to array
 			}
 			
-			voltage_series.push(countVolt);
+			//create pie chart
+			setTimeout( function() {
+				createChart();
+				$.mobile.loading( "hide" );
+			},2000);
+			
+			
+			
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -152,7 +138,6 @@ function setEachRoomStats(roomID)
 
 function createChart()
 {
-	//var object_data = createArray();
     // Build the chart
     $('#chartdiv').highcharts({
         chart: {
@@ -180,27 +165,23 @@ function createChart()
         series: [{
             name: "Usage",
             colorByPoint: true,            
-            data: createArray()
+            data: KeyValueArray
         }]
     });
 }
 
-//create key-value array for the chart
-function createArray()
+
+//for statistics single room
+function sendGroupID( group)
 {
-	var length = groups.length;
-	var data = new Array();
-	for (var i = 0; i < length; i++)
-	{
-		  var obj = {name: groups[i], y: voltage_series[i]};
-		  data.push(obj);
-	}
-	
-	return data;
+	localStorage.statisticsGroupID = group;
+	window.location = "Statistics_Single.html"; 
 }
+
 
 //refresh stats data
 function refreshPage()
 {
-	window.location = "Statistics.html";
+	SetDataForChart();
 }
+
