@@ -22,7 +22,6 @@ $(document).ready(function()
 	
 	setTimeout( function() {
 		$.mobile.loading( "hide" );
-		createChart();
 	},2000);
 });
 
@@ -60,9 +59,11 @@ function ShowAllRooms(UserID)
 				SetStatsPerRoom();
 				ShowTotalConsumption("month");
 				
-				//setTimeout( function() {
-					//createChart();
-				//},2400);
+				//create pie chart
+				setTimeout( function() {
+					createChart();
+				},2000);
+				
 				
 			},
 	
@@ -151,7 +152,7 @@ function setEachRoomStats(roomID)
 
 function createChart()
 {
-	var object_data = createArray();
+	//var object_data = createArray();
     // Build the chart
     $('#chartdiv').highcharts({
         chart: {
@@ -179,11 +180,12 @@ function createChart()
         series: [{
             name: "Usage",
             colorByPoint: true,            
-            data: object_data
+            data: createArray()
         }]
     });
 }
 
+//create key-value array for the chart
 function createArray()
 {
 	var length = groups.length;
@@ -200,5 +202,5 @@ function createArray()
 //refresh stats data
 function refreshPage()
 {
-	location.reload();
+	window.location = "Statistics.html";
 }

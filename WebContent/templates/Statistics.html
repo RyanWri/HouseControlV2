@@ -52,10 +52,6 @@
   
   
   <div data-role="main" class="ui-content">
-	<div> <!-- refresh statistics -->
-	<a href="#" onclick="refreshPage()"class="ui-btn ui-btn-icon-left waves-effect waves-button waves-effect waves-button"><i class="zmdi zmdi-refresh-alt"></i> Refresh Data</a>
-	</div>
-	
 	<div >
 	<ul id="ListAllRooms" data-role="listview" data-autodividers="false" data-inset="true"></ul>
 	<!--  All user rooms will be inserted here -->
@@ -64,6 +60,9 @@
 	<div id="TotalConsumption">
 	</div>
 	 
+	 <div> <!-- refresh statistics -->
+	<a href="#" onclick="refreshPage()"class="ui-btn ui-btn-icon-left waves-effect waves-button waves-effect waves-button clr-btn-green"><i class="zmdi zmdi-refresh-alt"></i> Refresh Data</a>
+	</div>
 	 <!--  create dyanmic pie chart for the entire house -->
 	 <div id="chartdiv" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
 	 
