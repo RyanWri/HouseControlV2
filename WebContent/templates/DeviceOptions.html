@@ -10,12 +10,14 @@
 		<link rel="stylesheet" href="../css/nativedroid2.css" />
 		<link rel="stylesheet" type="text/css" href="../vendor/wow/animate.css">
 		<link rel="stylesheet" type="text/css" href="../css/HouseControl.css">
-		<title>Rooms Management</title>
+		<link rel="stylesheet" href="../css/jquery.mobile.datepicker.css" />
+		<link rel="stylesheet" href="../css/jquery.mobile.datepicker.theme.css" />
+		<title>Device Options</title>
 	</head>
 	
 	<body class="ui-mobile-viewport ui-overlay-a">
 		
-		<div data-role="page" id="roommanagement" class="ui-page-theme-a">
+		<div data-role="page" id="deviceoptions" class="ui-page-theme-a">
 			
 		<!-- Menu Panel Start-->
 			<div data-role="panel" id="menu_panel" data-position="right" data-display="overlay" data-position-fixed="true">
@@ -41,7 +43,7 @@
 		<!-- Header Start -->
 			
 			<div data-role="header" class="ui-page-theme-a ui-header">
-					<h1 class="ui-title">Rooms Management</h1>
+					<h1 id="deviceName" class="ui-title"></h1>
 					<a href="#" data-rel="back" class="ui-btn-left wow fadeIn ui-btn waves-effect waves-button  waves-effect waves-button" data-wow-delay="0.8s" data-role="button" role="button" style="visibility: visible; animation-delay: 0.8s; animation-name: fadeIn;">
 						<i class="zmdi zmdi-arrow-back zmd-fw"></i>
 					</a>					
@@ -55,43 +57,56 @@
 		<!-- Content Start -->
 		 
 		<div data-role="main" class="ui-content">
-		 	<div id="addNewRoomButton" class="ui-btn ui-btn-icon-left waves-effect waves-button waves-effect waves-button ui-shadow newfont"><i class="zmdi zmdi-local-store zmd-fw"></i> Create Room</div><br>
-			 <div id="roomstitle" class="title newfont">House Rooms:</div>
-			 <ul id="listofrooms" data-role="listview" data-autodividers="false" data-inset="true"></ul>
+		 	<div id="addNewTimer" class="ui-btn ui-btn-icon-left waves-effect waves-button waves-effect waves-button ui-shadow newfont"><i class="zmdi zmdi-alarm-add zmd-fw"></i> New Timer</div><br>
+			 <div id="activeTimerTitle" class="title newfont">Active Timers:</div>		 
+			 <ul id="listOfActiveTimer" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-autodividers="false" data-inset="false"></ul>
+
 		</div>
   
   		<!-- Content End -->
 		
 		<!-- Popups Start-->
-		<a href="#popupAddNewRoomDialog" id="popupAddNewRoom" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
-		<div data-role="popup" id="popupAddNewRoomDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
-			<div data-role="header" data-theme="a">
-				<div id="popuptext" class="row center-xs nd2-headline newfont">Add Room:</div>
-			</div>
-			<div role="main" class="ui-content">
-				<form id="formAddRoom">
-					<div class="nd2-title">Name:</div>
-					<textarea id="textBoxRoomName" class="form-control" name="roomname" style="width: 100%;" placeholder="Name"></textarea><br>
-					<div class="nd2-title">Select Room Type:</div>
-					<div class="ui-field-contain">
-						<select name="select-native-1" id="listOfRoomsTypes">
-							  <option value="0" selected></option>
-						</select>
-					</div>
-					<button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont" id="btnAddNewRoom">Add</button>
-				</form>
-			</div>
-		</div>
-	
-		<a href="#popupDialog" id="popupbutton" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
-			<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+			
+		<a href="#popupNewTimerStartDialog" id="popupNewTimerStart" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupNewTimerStartDialog" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:330px; min-width:330px;">
 				<div data-role="header" data-theme="a">
-			   		<div id="popuptext" class="row center-xs nd2-headline newfont">Room Options:</div>
+			   		<div id="popuptext" class="row center-xs nd2-headline newfont">New Timer - Turn On Time:</div>
 				</div>
 				<div role="main" class="ui-content">
-					<div id="popupsubtext" class="nd2-headline row center-xs newfont"></div><br>
-				    <button id="editroombutton" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont"><i class="zmdi zmdi-edit zmd-fw"></i> Edit Room</button>
-				    <button id="deleteroombutton" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont"><i class="zmdi zmdi-delete zmd-fw"></i> Delete Room</button>
+					<form id="formStartTimer">
+						<div id="startDatePicker"></div>
+					    <label for="slider-1">Hours:</label>
+					    <input id="startHour" name="slider-1" min="0" max="23" value="0" type="range">
+					    <label for="slider-2">Minutes:</label>
+					    <input id="startMin" name="slider-2" min="0" max="59" value="0" type="range">
+					    <label for="slider-3">Seconds:</label>
+					    <input id="startSec" name="slider-3" min="0" max="59" value="0" type="range">
+					    <div class="nd2-title">Timer Name:</div>
+						<textarea id="textBoxTimerName" class="form-control" name="timername" style="width: 100%;" placeholder="Name"></textarea><br>
+					    <button id="buttoncontinuetoendtime" type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">Continue</button>
+					    <button id="buttoncancel1" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">Cancel</button>
+					</form>				
+				</div>
+			</div>
+	
+			
+		<a href="#popupNewTimerEndDialog" id="popupNewTimerEnd" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupNewTimerEndDialog" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:330px; min-width:330px;">
+				<div data-role="header" data-theme="a">
+			   		<div id="popuptext" class="row center-xs nd2-headline newfont">New Timer - Turn Off Time:</div>
+				</div>
+				<div role="main" class="ui-content">
+					<form id="formEndTimer">
+						<div id="endDatePicker"></div>
+					    <label for="slider-4">Hours:</label>
+					    <input id="endHour" name="slider-4" min="0" max="23" value="0" type="range">
+					    <label for="slider-5">Minutes:</label>
+					    <input id="endMin" name="slider-5" min="0" max="59" value="0" type="range">
+					    <label for="slider-6">Seconds:</label>
+					    <input id="endSec" name="slider-6" min="0" max="59" value="0" type="range">
+					    <button id="buttondone" type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">Done</button>
+					    <button id="buttoncancel2" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">Cancel</button>
+					</form>			
 				</div>
 			</div>
 			
@@ -128,5 +143,10 @@
 		<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/additional-methods.min.js"></script>
 		<script src="../js/nativedroid2.js"></script>
 		<script type="text/javascript" src="../js/GlobalFunctions.js"></script>
-		<script type="text/javascript" src="../js/RoomsManagement.js"></script>
+		<script type="text/javascript" src="../js/DeviceOptions.js"></script>	
+		<script src="../js/datepicker.js"></script>
+		<!-- <script src="http://code.jquery.com/mobile/git/jquery.mobile-git.js"></script> -->
+		<script src="../js/jquery.mobile.datepicker.js"></script>
+				
+
 </html>

@@ -39,7 +39,7 @@ function loadRoomDevices()
 											<span class="ui-flipswitch-off">Off</span>\n\
 											<input class="ui-flipswitch-input" tabindex="-1" data-role="flipswitch" name="flip-checkbox-1" type="checkbox">\n\
 											</div>\n\
-										<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button">\n\
+										<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button" onclick="loadDeviceOptions('+listOfDevices[i].deviceID+')">\n\
 											<i class="zmdi zmdi-wrench"></i>\n\
 										</a>\n\
 									</div>\n\
@@ -54,6 +54,19 @@ function loadRoomDevices()
 			errorPopup("Connection Error");
 		},	
 	});
+}
+
+function loadDeviceOptions(tempDeviceID)
+{
+	localStorage.deviceoptionsDeviceID = tempDeviceID;
+	for (var i = 0; i < listOfDevices.length; i++)
+	{
+		if (listOfDevices[i].deviceID === tempDeviceID)
+		{
+			localStorage.deviceoptionsName = listOfDevices[i].name;
+		}
+	}
+	window.location = "DeviceOptions.html";
 }
 
 function loadDeviceCurrentStatus(deviceID)
