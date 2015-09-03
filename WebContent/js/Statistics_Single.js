@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics Single page Room stats
-	Last Modification : 02/09/2015
+	Last Modification : 03/09/2015
  */
 
 var devices_labels = [];
@@ -14,21 +14,21 @@ var groupID = localStorage.statisticsGroupID;
 $(document).ready(function()
 {
 	$('#Week').click(function(){
-		$(this).css('background','green');
-		 $('#Day').css('background','white');
-		 $('#Month').css('background','white');
+		$(this).css('background-color','green');
+		 $('#Day').css('background-color','white');
+		 $('#Month').css('background-color','white');
 	  });
 	
 	  $('#Day').click(function(){
-		  $(this).css('background','green');
-		  $('#Week').css('background','white');
-		  $('#Month').css('background','white');
+		  $(this).css('background-color','green');
+		  $('#Week').css('background-color','white');
+		  $('#Month').css('background-color','white');
 	  });
 	  
 	$('#Month').click(function(){
-		$(this).css('background','green');
-		 $('#Day').css('background','white');
-		 $('#Week').css('background','white');
+		$(this).css('background-color','green');
+		 $('#Day').css('background-color','white');
+		 $('#Week').css('background-color','white');
 		 });
 	
 	authentication(loadStatisticsSinglePage);		
@@ -45,6 +45,7 @@ function loadStatisticsSinglePage()
 //showing all devices in the room
 function ShowAllDevicesInRoom(groupID, timeframe)
 {
+		$.mobile.loading("show");
 		$.ajax({
 			type: 'GET',
 			url: '/HouseControl/api/device/statistics/devices_group/'+ groupID + '/' + timeframe,
@@ -59,6 +60,7 @@ function ShowAllDevicesInRoom(groupID, timeframe)
 				
 				 setTimeout( function() {
 						createDynamicBarsChart();//now we have all data create the pie chart
+						$.mobile.loading("hide");
 				 }, 1500);
 			},
 
@@ -112,7 +114,7 @@ function ShowRoomName()
 		dataType: 'json',
 		success: function(result)
 		{
-			$('#RoomName').append(result.data.name);
+			$('#RoomName').append(result.data.name+ "	Statistics");
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
