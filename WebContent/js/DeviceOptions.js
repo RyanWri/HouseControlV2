@@ -10,6 +10,7 @@ $(function()
 {
     $(document).ready(function()
     {
+    	
     	authentication(loadDeviceOptionsPage);	
     });
     
@@ -114,18 +115,22 @@ function loadDeviceOptionsPage()
 	{
 		window.location = "UserHome.html";
 	}
-	$("#deviceName").text(localStorage.deviceoptionsName);
-	loadActiveTimers();
-	$("#startDatePicker").datepicker();
-	$("#endDatePicker").datepicker();
-	$("#startDatePicker").datepicker('option', 
+	else
 	{
-		dateFormat: 'dd-mm-yy',
-	}).datepicker("refresh");
-	$("#endDatePicker").datepicker('option', 
-	{
-		dateFormat: 'dd-mm-yy',
-	}).datepicker("refresh");
+		$("#deviceName").text(localStorage.deviceoptionsName);
+		loadActiveTimers();
+		$("#startDatePicker").datepicker();
+		$("#endDatePicker").datepicker();
+		$("#startDatePicker").datepicker('option', 
+		{
+			dateFormat: 'dd-mm-yy',
+		}).datepicker("refresh");
+		$("#endDatePicker").datepicker('option', 
+		{
+			dateFormat: 'dd-mm-yy',
+		}).datepicker("refresh");
+	}
+
 }
 
 function loadActiveTimers()
