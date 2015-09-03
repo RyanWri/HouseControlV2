@@ -1,7 +1,7 @@
  /* 
 	Author: ran yamin
 	date 18/08/2015 
-	javascript for Statistics main page
+	javascript for Statistics main page (highcharts used)
 	Last Modification : 03/09/2015
  */
 
