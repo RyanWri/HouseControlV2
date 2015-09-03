@@ -68,10 +68,12 @@ $(function()
 			email:
 			{
 				required: true,
+				maxlength: 40,
 			},
 			mobile:
 			{
 				required: true,
+				maxlength: 20,
 				integer: true,
 				positive: true,
 			}

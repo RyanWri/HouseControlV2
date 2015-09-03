@@ -178,6 +178,11 @@ function CreateListOfDevicesToAdd()
 					$("#devicesToAdd").append(option);
 				}*/
 			}
+			
+			if(i == 0)
+			{
+				$("#SubmitAddDevice").attr('disabled', true);
+			}
 
 		},
 
@@ -286,7 +291,7 @@ function DisconnectDeviceFromRelayPort()
 	});
 	
 	setTimeout( function() {
-		location.reload();
+		window.location= "RoomView.html";
 	},200);
 
 	
@@ -350,11 +355,10 @@ function ValidateConnectedDevice()
 			}
 			else
 			{
-				//$('#DeviceAlreadyConnectedAlert').popup( "open" );
-				//do nothing
+				alert("Device Is Already Connected!!!");
 			}
 			
-			$.mobile.loading("hide");
+			
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -365,8 +369,9 @@ function ValidateConnectedDevice()
 	});
 	
 	setTimeout( function() {
-		location.reload();
-	},300);
+		window.location= "RoomView.html";
+	},200);
+
 }
 
 //connect device with deviceID to relay port chosen by user
@@ -379,7 +384,7 @@ function connectDeviceToRelayPort(deviceID, relayPort)
 		dataType: 'json',
 		success: function(result)
 		{
-			$.mobile.loading("hide");
+			alert("Device Has Been Connected Succesfully");
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -388,6 +393,10 @@ function connectDeviceToRelayPort(deviceID, relayPort)
 		} 
 
 	});
+	
+	setTimeout( function() {
+		window.location= "RoomView.html";
+	},200);
 	
 }
 
