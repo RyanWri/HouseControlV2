@@ -5,6 +5,9 @@ var currentHour;
 var currentMin;
 var currentSec;
 var delay = 300;
+var globalTimerName;
+var globalTimerID;
+var editFlag = 0;
 
 $(function() 
 {
@@ -17,6 +20,7 @@ $(function()
     $("#addNewTimer").click(function()
     {
     	
+    	editFlag = 0;
     	$("#textBoxTimerName").val("");
     	initTimerStartTime();
     	$("#popupNewTimerStart").click();
@@ -64,11 +68,21 @@ $(function()
     	window.location = "#";
     });
     
+    $("#buttonDeleteTimer").click(function()
+    {
+    	deleteTimer();
+    });
+    
+    $("#buttonEditTimer").click(function()
+    {
+    	editTimer();
+    });
+    
     $("#buttondone").click(function()
     {
     	
-    	var startTime = convertDate($("#startDatePicker").val(), $("#startHour").val(), $("#startMin").val(),$("#startSec").val());
-    	var endTime = convertDate($("#endDatePicker").val(), $("#endHour").val(), $("#endMin").val(),$("#endSec").val());
+    	var startTime = convertFullDateToAMPM($("#startDatePicker").val(), $("#startHour").val(), $("#startMin").val(),$("#startSec").val());
+    	var endTime = convertFullDateToAMPM($("#endDatePicker").val(), $("#endHour").val(), $("#endMin").val(),$("#endSec").val());
 
 		var parameters = {};
 		var deviceJ = {};
@@ -93,7 +107,14 @@ $(function()
 			{
 				if (result.status === "ok")
 				{
-					window.location = "DeviceOptions.html";
+					if (editFlag === 1)
+					{
+						deleteTimer();
+					}
+					else
+					{
+						window.location = "DeviceOptions.html";
+					}
 				}
 				else
 				{
@@ -148,7 +169,7 @@ function loadActiveTimers()
 				for (var i = 0; i < listOfTimers.length; i++) 
 				{
 					
-					$("#listOfActiveTimer").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false"><li class="ui-first-child ui-last-child"><a id="'+listOfTimers[i].userID+'" class="ui-btn waves-effect waves-button waves-effect waves-button"><h2>'+listOfTimers[i].timerName+'</h2>\n\
+					$("#listOfActiveTimer").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false"><li class="ui-first-child ui-last-child"><a id="'+listOfTimers[i].timerID+'" class="ui-btn waves-effect waves-button waves-effect waves-button" onclick="timerDialog('+"'"+listOfTimers[i].timerName+"',"+listOfTimers[i].timerID+')"><h2>'+listOfTimers[i].timerName+'</h2>\n\
 							<p><b>Turn On: </b>'+listOfTimers[i].turnOnTime+'</p>\n\
 							<p><b>Turn Off: </b>'+listOfTimers[i].turnOffTime+'</p></a></li></ul>');
 					
@@ -162,7 +183,7 @@ function loadActiveTimers()
 	});	
 }
 
-function convertDate(date, hour, min, sec)
+function convertFullDateToAMPM(date, hour, min, sec)
 {
 	var dateToConvert = date;
 	var tempHour;
@@ -282,6 +303,72 @@ function setTimerEndToSpecificTimer(hour, min, sec)
 	$("#endSec").val(sec).slider("refresh");
 }
 
+function deleteTimer()
+{
+	$.ajax({
+		type: 'DELETE',
+		url: '/HouseControl/api/timer/delete/' + globalTimerID,
+        dataType: 'json',
+		success: function(result)
+		{	
+			if (result.status === "ok")
+			{
+				window.location = "DeviceOptions.html";	
+			}
+			else
+			{
+				errorPopup(result.data);
+			}
+		},
+		error: function()
+		{
+			errorPopup("Connection Error");
+		},	
+	});	
+}
+
+function editTimer()
+{
+	window.location = "#";
+	
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/timer/get_timer/' + globalTimerID,
+        dataType: 'json',
+		success: function(result)
+		{	
+			if (result.status === "ok")
+			{
+    			setTimeout(
+			    		function() 
+			    		{
+			    			editFlag = 1;
+			    			$("#textBoxTimerName").val(result.data.timerName);
+					    	initTimerStartTime();
+					    	$("#popupNewTimerStart").click();
+			    		}, delay);	
+			}
+			else
+			{
+				errorPopup(result.data);
+			}
+		},
+		error: function()
+		{
+			errorPopup("Connection Error");
+		},	
+	});	
+}
+
+function timerDialog(timerName, timerID)
+{
+	globalTimerName = timerName;
+	globalTimerID = timerID;
+	$("#popupsubtext").text(timerName);
+	$("#popupbutton").click();
+}
+
+
 function errorPopup(message)
 {
 	window.location = "#";
@@ -292,4 +379,4 @@ function errorPopup(message)
     			$("#popupMessagesubtext").text(message);
     			$("#popupMessage").click();
     		}, delay);	
-}	
+}

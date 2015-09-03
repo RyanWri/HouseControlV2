@@ -67,6 +67,18 @@
 		
 		<!-- Popups Start-->
 			
+		<a href="#popupDialog" id="popupbutton" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+			<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">
+				<div data-role="header" data-theme="a">
+			   		<div id="popuptext" class="row center-xs nd2-headline newfont">Timer Options:</div>
+				</div>
+				<div role="main" class="ui-content">
+					<div id="popupsubtext" class="nd2-headline row center-xs newfont"></div><br>
+				    <button id="buttonEditTimer" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont"><i class="zmdi zmdi-time-countdown zmd-fw"></i> Edit Timer</button>
+				    <button id="buttonDeleteTimer" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont"><i class="zmdi zmdi-timer-off zmd-fw"></i> Delete Timer</button>
+				</div>
+			</div>
+
 		<a href="#popupNewTimerStartDialog" id="popupNewTimerStart" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
 			<div data-role="popup" id="popupNewTimerStartDialog" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:330px; min-width:330px;">
 				<div data-role="header" data-theme="a">
