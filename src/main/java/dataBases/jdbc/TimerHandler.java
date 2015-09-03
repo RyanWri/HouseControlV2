@@ -35,27 +35,37 @@ public class TimerHandler {
 		ResultSet resultSet = null;
 
 		try{
-			conn = DBConn.getConnection();
-			String query = "INSERT into timer VALUES(?,?,?,?,?,?,?)";
-			conn = DBConn.getConnection();	
-			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-			statement.setNull(1, java.sql.Types.INTEGER);
-			statement.setInt(2,timers.getDevice().getDeviceID());
-			statement.setString(3, timers.getTimerName());
-			statement.setInt(4, timers.getUser().getUserID());
-			statement.setTimestamp(5, timers.getTurnOnTime());
-			statement.setTimestamp(6, timers.getTurnOffTime());
-			statement.setString(7, timers.getState().toString());
-			statement.executeUpdate();
-			resultSet = statement.getGeneratedKeys();
-			if (resultSet != null && resultSet.next()) {
-				System.out.println("Timer was inserted with id:" + resultSet.getInt(1));
-				if(timers.getState().equals(Timer.TimerState.Active)){
-					addAndInsertOnOffTimers(timers, resultSet.getInt(1));
+			if(timers.getTurnOnTime().after(new Timestamp(System.currentTimeMillis()))){
+				if(timers.getTurnOnTime().before(timers.getTurnOffTime())){
+					conn = DBConn.getConnection();
+					String query = "INSERT into timer VALUES(?,?,?,?,?,?,?)";
+					conn = DBConn.getConnection();	
+					statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+					statement.setNull(1, java.sql.Types.INTEGER);
+					statement.setInt(2,timers.getDevice().getDeviceID());
+					statement.setString(3, timers.getTimerName());
+					statement.setInt(4, timers.getUser().getUserID());
+					statement.setTimestamp(5, timers.getTurnOnTime());
+					statement.setTimestamp(6, timers.getTurnOffTime());
+					statement.setString(7, timers.getState().toString());
+					statement.executeUpdate();
+					resultSet = statement.getGeneratedKeys();
+					if (resultSet != null && resultSet.next()) {
+						System.out.println("Timer was inserted with id:" + resultSet.getInt(1));
+						if(timers.getState().equals(Timer.TimerState.Active)){
+							addAndInsertOnOffTimers(timers, resultSet.getInt(1));
+						}
+					}
+					else{
+						throw new SQLException();
+					}
+				}
+				else{
+					throw new Exception("An error has occured while trying to create timer because TurnOnTime is after TurnOffTime");
 				}
 			}
 			else{
-				throw new SQLException();
+				throw new Exception("An error has occured while trying to create timer because TurnOnTime is before the current time");
 			}
 		}
 		catch(SQLException ex){
@@ -189,12 +199,27 @@ public class TimerHandler {
 	}
 
 	public static void updateTimer(Timer timer) throws Exception {
-		if (timer.getTurnOnTime().after(new Timestamp(System.currentTimeMillis()))){
-			updateTimerFromDB(timer);
+		try{
+			if(timer.getTurnOnTime().after(new Timestamp(System.currentTimeMillis()))){
+				if(timer.getTurnOnTime().before(timer.getTurnOffTime())){
+					updateTimerFromDB(timer);
+				}
+				else{
+					throw new Exception("An error has occured while trying to update timer because TurnOnTime is after TurnOffTime");
+				}
+			}
+			else{
+				throw new Exception("An error has occured while trying to update timer because TurnOnTime is before the current time");
+			}
+
+			/*else{
+				throw new Exception("An error has occured while trying to update timer");
+				timer.setTurnOnTime(null);
+				updateTimerFromDB(timer);
+			}*/
 		}
-		else{
-			timer.setTurnOnTime(null);
-			updateTimerFromDB(timer);
+		catch(Exception ex){
+			throw ex;
 		}
 	}
 	
