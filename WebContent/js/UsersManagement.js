@@ -2,12 +2,17 @@ var userID;
 var userName;
 var delay = 300;
 
+$('#UsersManagment').on('pagebeforeshow', function()
+{ 
+	authentication(loadUsersManagementPage);
+});
+
 $(function() 
 {
-    $(document).ready(function()
+  /*  $(document).ready(function()
     {   	
     	authentication(loadUsersManagementPage);
-    });
+    });*/
     
     
     $("#addnewuser").click(function()
@@ -58,6 +63,7 @@ $(function()
 function loadUsersManagementPage()
 {
 	getListOfUsers();
+	document.getElementById("UsersManagment").style.display = "inline";
 }
 
 function getListOfUsers()
