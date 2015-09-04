@@ -14,18 +14,16 @@ $(document).ready(function()
 	authentication(loadRoomViewPage);			
 });
 
+$("#buttoncontinue").click(function()
+{
+	window.location= "RoomView.html";
+});
+
 function loadRoomViewPage()
 {
 	$("#RoomName").append(localStorage.tempGroupName);
 	ShowDevicesInGroup(groupID);
-	//SelectMenuForDeviceType();
-	//ShowRoomName(groupID);
-
-/*	setTimeout( function() {
-		CreateListOfDevicesToAdd();
-	},500);*/
 }
-
 
 function ShowDevicesInGroup(groupID)
 {
@@ -52,6 +50,7 @@ function ShowDevicesInGroup(groupID)
 					        <h2>'+ name +'</h2><h5>'+description +'</h5>\n\
 					        </a></li></ul>');
 				}
+				
 				CreateRelayPortsList();
 			}
 			else
@@ -115,6 +114,7 @@ function deviceOptionPopup(device, port)
 	{
         $("#SubmitConnectButton").attr("disabled",true);
         $("#ListRelayPorts").attr("disabled",true);
+        $("#ListRelayPorts").val("");
 	}
 	localStorage.tempDeviceID = device;
 	$("#popupConnectDisconnect").click();
@@ -136,6 +136,8 @@ function SelectMenuForDeviceType()
 				var option = '<option value="'+ typeID +'">' + name +'</option>';
 				$("#devicesTypes").append(option);
 			}
+			
+			CreateListOfDevicesToAdd();
 
 		},
 
@@ -310,6 +312,8 @@ function CreateRelayPortsList()
 						$("#ListRelayPorts").append(option);
 					}
 				}
+				
+				SelectMenuForDeviceType();
 			}
 			else
 			{
@@ -343,7 +347,6 @@ function ValidateConnectedDevice()
 			}
 			else
 			{
-				alert("Device Is Already Connected!!!");
 				window.location= "#";
 			}	
 		},
@@ -366,8 +369,7 @@ function connectDeviceToRelayPort(deviceID, relayPort)
 		dataType: 'json',
 		success: function(result)
 		{
-			alert("Device Has Been Connected Succesfully");
-			window.location= "RoomView.html";
+			$("#popupConnectionSuccess").click();
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)

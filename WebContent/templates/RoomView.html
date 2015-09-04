@@ -102,7 +102,6 @@
 	</form>
 	</div> <!--end of Add existing device to Room -->
 
-
 	<!-- connect/disconnect popup -->
 		<a href="#connect_disconnect" id="popupConnectDisconnect" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
 		<div data-role="popup" id="connect_disconnect" data-overlay-theme="a"
@@ -144,14 +143,16 @@
 
 	<!--  device already connected popup -->	
 		
-	<div data-role="popup" id="DeviceAlreadyConnectedAlert" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">	
+	<a href="#DeviceConnectionSuccess" id="popupConnectionSuccess" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
+	<div data-role="popup" id="DeviceConnectionSuccess" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:300px; min-width:300px;">	
 
 		<div data-role="header" data-theme="a">
-			<h1>Device Already Connected!!!</h1>
+			<h1>Success!</h1>
 		</div>
 		<div data-role="content" data-theme='a'>
-			<h2> Please try to disconnect device before connect</h2>
+			<h2>Device is now connected to port</h2>
 		</div>
+		<button id="buttoncontinue" type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">Continue</button>
 	</div>
 	<!-- end of device already connected popup-->
 
