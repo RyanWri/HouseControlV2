@@ -5,11 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelObjects.Device;
 import modelObjects.RelayConnection;
 import modelObjects.RelayConnection.PortState;
 import utils.PiGpio;
+
 import org.apache.commons.dbutils.DbUtils;
 
 public class RelayConnectionHandler{
@@ -288,5 +291,14 @@ public class RelayConnectionHandler{
 		}
 
 		return relayPort;
+	}
+
+	public static List<Boolean> isRelayPortsAreAvailable() throws Exception {
+		List<Boolean> isAvailable = new ArrayList<Boolean>();
+		for (int i = 0; i < 29; i++) {	
+			isAvailable.add(i, !isRelayPortAvailable(i));
+		}
+		
+		return isAvailable;
 	}
 }
