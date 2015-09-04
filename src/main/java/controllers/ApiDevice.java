@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -154,6 +155,24 @@ public class ApiDevice{
 		}
 		return response;
 	}
+	
+	@GET
+	@Path("/relay/all_in_use")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isAllRelayPortsAvailable(@Context HttpServletRequest req){
+		List<Boolean> isAvailable = new ArrayList<Boolean>();
+		Response response = null;
+
+		try{
+			SessionHandler.verifyAuthenticatedUserRequest(req);
+			isAvailable = RelayConnectionHandler.isRelayPortsAreAvailable();
+			response = Response.ok(GenericResponse.ok(isAvailable)).build();
+		} 
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+		return response;
+	}	
 	
 	@GET
 	@Path("/relay/{port}/inUse")
