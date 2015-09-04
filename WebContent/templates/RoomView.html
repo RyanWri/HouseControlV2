@@ -104,6 +104,7 @@
 
 
 	<!-- connect/disconnect popup -->
+		<a href="#connect_disconnect" id="popupConnectDisconnect" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b" style='display:none;'></a>
 		<div data-role="popup" id="connect_disconnect" data-overlay-theme="a"
 			data-theme="a" data-dismissible="true"
 			style="max-width: 300px; min-width: 300px;">
@@ -113,11 +114,11 @@
 			<div role="main" class="ui-content">
 			<div> <!-- list relay ports -->
 			<form onsubmit="ValidateConnectedDevice()">
-			<label for="relayPorts">Choose Port (required)</label> 
-			<select name="relayPorts" id="ListRelayPorts" class="icon-menu" required>
-			<option disabled selected>Select The Port you want to connect to</option>
-			</select>
-			<input type="submit" value="Connect" id="SubmitConnectButton">
+				<label for="relayPorts">Choose Port (required)</label> 
+				<select id="ListRelayPorts" name="relayPorts" class="icon-menu" required>
+				<option disabled selected>Select The Port you want to connect to</option>
+				</select>
+				<input id="SubmitConnectButton" type="submit" value="Connect">
 			</form>
 			</div>
 			<div><br>

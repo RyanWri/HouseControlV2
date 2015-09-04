@@ -1,6 +1,7 @@
 var flag = 0;
 var delay = 300;
 var tempGroupID;
+var tempGroupName;
 
 $(function() 
 {
@@ -35,6 +36,7 @@ $(function()
 	$("#editroombutton").click(function()
 	{
 		localStorage.tempGroupID = tempGroupID;
+		localStorage.tempGroupName = tempGroupName;
 		window.location = "RoomView.html";
 	});
 	
@@ -115,42 +117,6 @@ $(function()
 				    });
 				} 
 			});
-	
-	
-	
-	
-	/*$("#formAddRoom").submit( function()
-	{
-		var parameters = {};
-	    var roomName = $('#textBoxRoomName').val();
-	    parameters.name = roomName;
-	    parameters.picData = $('#listOfRoomsTypes').val() + ".png";
-	    var parametersStringified = JSON.stringify(parameters);
-	    $.ajax({
-	    	type: 'POST',
-	    	url: '/HouseControl/api/devices_group/create',
-	    	data: parametersStringified,
-	    	dataType: "json",
-	    	success: function(result)
-	    	{
-	    		if (result.status === "ok")
-	    		{
-		    		$.mobile.loading("hide");
-		    		window.location = "RoomsManagement.html";
-	
-	    		 }
-	    		 else
-	    		 {
-	    		     $.mobile.loading("hide");
-	    		     errorPopup(result.data);
-	    		 }
-	    	},
-	    	error: function()
-	    	{
-	    		errorPopup("Connection Error");
-	    	}
-	    });
-	});*/
 });
 
 function loadRoomsManagementPage()
@@ -199,7 +165,7 @@ function ShowAllRooms()
 				 for (var i = 0; i < result.data.length; i++)
 				 {
 					 $("#listofrooms").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-								<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+result.data[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="houseRoomOptions('+result.data[i].groupID+')">\n\
+								<li class="ui-li-has-thumb ui-first-child ui-last-child"><a id="'+result.data[i].groupID+'" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="houseRoomOptions('+"'"+result.data[i].name+"',"+result.data[i].groupID+')">\n\
 						        <img src="../img/devicesGroups/'+result.data[i].picData+'" class="button">\n\
 						        <h2>'+result.data[i].name+'</h2>\n\
 						        </a></li></ul>');
@@ -220,9 +186,10 @@ function ShowAllRooms()
 		});
 }
   
-function houseRoomOptions(groupID)
+function houseRoomOptions(groupName, groupID)
 {
 	tempGroupID = groupID;
+	tempGroupName = groupName;
 	$("#popupbutton").click();
 }
 

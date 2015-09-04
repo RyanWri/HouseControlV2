@@ -7,7 +7,7 @@
 
 
 var groupID = localStorage.tempGroupID;
-var deviceNamesArray =[];
+var deviceNamesArray = {};
 
 $(document).ready(function()
 {
@@ -16,78 +16,58 @@ $(document).ready(function()
 
 function loadRoomViewPage()
 {
-	SelectMenuForDeviceType();
-	ShowRoomName(groupID);
-	ShowDevicesInGroup(groupID); //update all devices
-	CreateRelayPortsList();
-	setTimeout( function() {
+	$("#RoomName").append(localStorage.tempGroupName);
+	ShowDevicesInGroup(groupID);
+	//SelectMenuForDeviceType();
+	//ShowRoomName(groupID);
+
+/*	setTimeout( function() {
 		CreateListOfDevicesToAdd();
-	},500);
+	},500);*/
 }
 
 
-function ShowRoomName(groupID)
+function ShowDevicesInGroup(groupID)
 {
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/devices_group/get_group/' + groupID,
+		url: '/HouseControl/api/devices_group/get_devices_extra/' + groupID,
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
 		{
-			$("#RoomName").append(result.data.name);
-
+			if (result.status === "ok")
+			{
+				var deviceID, name, picData, description, port;
+				for (var i = 0; i < result.data.myArrayList.length; i++)
+				{
+					deviceID = result.data.myArrayList[i].map.device.deviceID;
+					name = result.data.myArrayList[i].map.device.name;
+					picData = result.data.myArrayList[i].map.device.deviceType.picData;
+					description = result.data.myArrayList[i].map.device.description;
+					port = result.data.myArrayList[i].map.port;
+					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
+							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deviceOptionPopup('+deviceID+','+port+')" data-position-to="window" data-transition="pop">\n\
+					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
+					        <h2>'+ name +'</h2><h5>'+description +'</h5>\n\
+					        </a></li></ul>');
+				}
+				CreateRelayPortsList();
+			}
+			else
+			{
+				window.location = "UserHome.html";
+			}
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
-			return "Error getting name";
 		}
 
-	});
-
-
+	});	
 }
-	
 
-
-//	List All Devices
-	function ShowDevicesInGroup( groupID)
-	{
-		var deviceID, name, image, description;
-		$.ajax({
-			type: 'GET',
-			url: '/HouseControl/api/devices_group/get_devices/' + groupID,
-			contentType: "application/json",
-			dataType: 'json',
-			success: function(result)
-			{
-				for (var i=0; i<result.data.length; i++){
-					deviceID = result.data[i].deviceID;  name = result.data[i].name;
-					picData = result.data[i].deviceType.picData; description = result.data[i].description; 
-					
-					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a href="#connect_disconnect" data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="sendDeviceID('+deviceID+')" data-position-to="window" data-transition="pop">\n\
-					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
-					        <h2>'+ name +'</h2><h5>'+description +'</h5>\n\
-					        </a></li></ul>');
-					
-					deviceNamesArray[i]= name; //create list of names all devices in the room
-				}
-
-			},
-
-			error: function(xhr, ajaxOptions, thrownError)
-			{
-				$.mobile.loading("hide");
-			}
-
-		});
-		
-		
-	}
-	
 	
 	//when add device form is submit -> create device on server
 	$("#formCreateDevice").submit( function()
@@ -125,8 +105,21 @@ function ShowRoomName(groupID)
 			}
 
 
-		}); });	
-		
+		}); 
+});	
+	
+	
+function deviceOptionPopup(device, port)
+{
+	if (port !== -1)
+	{
+        $("#SubmitConnectButton").attr("disabled",true);
+        $("#ListRelayPorts").attr("disabled",true);
+	}
+	localStorage.tempDeviceID = device;
+	$("#popupConnectDisconnect").click();
+}
+
 function SelectMenuForDeviceType()
 {
 	$.ajax({
@@ -297,34 +290,30 @@ function DisconnectDeviceFromRelayPort()
 	
 }
 
-function sendDeviceID( device)
-{
-	localStorage.tempDeviceID = device; 
-}
-
 //create relay ports list for user to choose
 function CreateRelayPortsList()
 {
-	for( var portNumber=0; portNumber<29; portNumber++)
-	{
-		RunPortTest(portNumber);
-	}
-
-}
-
-function RunPortTest(portNumber)
-{
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/device/relay/'+ portNumber +'/inUse/',
+		url: '/HouseControl/api/device/relay/all_in_use',
 		contentType: "application/json",
 		dataType: 'json',
 		success: function(result)
 		{
-			if(result.data == false) //port is not in used
+			if (result.status === "ok")
 			{
-				var option = '<option value="'+ portNumber +'">' + portNumber +'</option>';
-				$("#ListRelayPorts").append(option);
+				for (var portNumber = 0; portNumber < result.data.length; portNumber++)
+				{
+					if(result.data[portNumber] === false) //port is not in used
+					{
+						var option = '<option value="'+ portNumber +'">' + portNumber +'</option>';
+						$("#ListRelayPorts").append(option);
+					}
+				}
+			}
+			else
+			{
+				window.location = "UserHome.html";
 			}
 		},
 
@@ -334,7 +323,6 @@ function RunPortTest(portNumber)
 		}
 
 	});
-
 }
 
 //validate if device is already connected
@@ -349,16 +337,15 @@ function ValidateConnectedDevice()
 		dataType: 'json',
 		success: function(result)
 		{
-			if(result.data == -1)
+			if(result.data === -1)
 			{
 			   connectDeviceToRelayPort(deviceID, relayPort);
 			}
 			else
 			{
 				alert("Device Is Already Connected!!!");
-			}
-			
-			
+				window.location= "#";
+			}	
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -367,11 +354,6 @@ function ValidateConnectedDevice()
 		} 
 
 	});
-	
-	setTimeout( function() {
-		window.location= "RoomView.html";
-	},200);
-
 }
 
 //connect device with deviceID to relay port chosen by user
@@ -385,18 +367,15 @@ function connectDeviceToRelayPort(deviceID, relayPort)
 		success: function(result)
 		{
 			alert("Device Has Been Connected Succesfully");
+			window.location= "RoomView.html";
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
+			window.location = "#";
 		} 
 
-	});
-	
-	setTimeout( function() {
-		window.location= "RoomView.html";
-	},200);
-	
+	});	
 }
 

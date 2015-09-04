@@ -26,7 +26,7 @@ $('#UserHome').on('pagebeforeshow', function()
 function loadUserHomePage()
 {
 	loadUserRooms();
-	//loadTempAndHumidity(); //$DEBUG
+	loadTempAndHumidity(); //$DEBUG
 }
 
 function loadUserRooms()
