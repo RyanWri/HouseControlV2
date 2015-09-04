@@ -15,12 +15,8 @@ $(document).ready(function()
 function loadStatisticsPage()
 {
 	var UserID= localStorage.userID;
-	ShowAllRooms(UserID);
 	$.mobile.loading("show");
-	ShowTotalConsumption("month");
-	setTimeout(function(){}, 1000);
-	refreshPage(); //creates the pie chart
-	setTimeout(function(){$.mobile.loading("hide"); }, 2000);	
+	ShowAllRooms(UserID);
 }
  
 //List All Rooms
@@ -43,7 +39,9 @@ function ShowAllRooms(UserID)
 					        <img src="../img/devicesGroups/'+picData +'" class="button">\n\
 					        <h2>'+ name+'</h2>\n\
 					        </a></li></ul>');
-				}			
+				}	
+				
+				ShowTotalConsumption("month"); //set card for total usage
 				
 			},
 	
@@ -76,6 +74,9 @@ function ShowTotalConsumption(timeframe)
 			content +='</div><div class="card-title"><h3 class="card-primary-title">Total Usage</h3>';
 			content += '<h5 class="card-subtitle">' + cutStr + '</h5></div></div>';
 			$('#TotalConsumption').append(content);
+			
+			refreshPage(); //creates the pie chart	
+			
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
@@ -111,6 +112,8 @@ function SetDataForChart()
 			
 			//create pie chart
 			createChart(KeyValueArray);
+			
+			$.mobile.loading("hide");
 			
 		},
 
@@ -171,6 +174,5 @@ function refreshPage()
 {
 	$.mobile.loading("show");
 	SetDataForChart();
-	setTimeout(function(){$.mobile.loading("hide"); }, 2000);
 }
 
