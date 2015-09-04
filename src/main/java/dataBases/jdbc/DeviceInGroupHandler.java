@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import utils.JDBCUtils;
+import utils.PiGpio;
 import modelObjects.Device;
 
 public class DeviceInGroupHandler{
@@ -107,6 +110,38 @@ public class DeviceInGroupHandler{
 		}
 
 		return devices;
+	}
+
+	public static JSONArray getAllDevicesOfDevicesGroupByIDAndPortsAndStatuses(int devicesGroupID) throws Exception {
+		JSONArray allGroupDevices = new JSONArray();
+		//JSONObject portState = new JSONObject();
+		List<Device> devices;
+		int port = -1;
+		try{
+			devices = getAllDevicesOfDevicesGroupByID(devicesGroupID);
+			for (Device device : devices) {
+				//groupDevices.put(groupDevices);
+				JSONObject groupDevices = new JSONObject();
+				port = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(device.getDeviceID());
+				
+				if (port >=0 && port < PiGpio.NUMBER_OF_PINS_IN_RPI) {
+					groupDevices = PiGpio.getJsonPinState(port);
+					groupDevices.put("device", device);
+				}
+				else{
+					groupDevices.put("currentPinState", -1);
+					groupDevices.put("port", -1);
+					groupDevices.put("device", device);
+				}
+				
+				//groupDevices.put("portAndStatus", portState);
+				allGroupDevices.put(groupDevices);
+			}
+		}
+		catch(Exception ex){
+			throw new Exception("Failed to get all devices in group");
+		}
+		return allGroupDevices;
 	}
 	
 	
