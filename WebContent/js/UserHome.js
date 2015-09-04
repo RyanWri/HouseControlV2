@@ -1,32 +1,25 @@
 var listOfUserRooms;
 var delay = 300;
 
+$('#UserHome').on('pagebeforeshow', function()
+{ 
+	authentication(loadUserHomePage);
+});
+
+
 $(function() 
-{
-	$(document).ready(function()
-	{
-		authentication(loadUserHomePage);
-	});
-		    
+{		    
 	$("#continueButton").click(function()
 	{
 		window.location = "Login.html";
 	});
 }); 
 
-/*
-$('#UserHome').on('pagebeforeshow', function()
-{ 
-	authentication(loadUserHomePage);
-	//checkIfAuthenticateUser(loadUserHomePage);
-	//checkIfAuthenticateUserRegisterOptions();
-});*/
-
-
 function loadUserHomePage()
 {
 	loadUserRooms();
-	loadTempAndHumidity(); //$DEBUG
+	//loadTempAndHumidity(); //$DEBUG
+	document.getElementById("UserHome").style.display = "inline";
 }
 
 function loadUserRooms()

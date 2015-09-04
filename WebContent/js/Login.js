@@ -1,19 +1,19 @@
+$('#Login').on('pagebeforeshow', function()
+{ 
+	if (!localStorage.username)
+	{
+		$("#textBoxLoginUsername").val("");
+		$("#textBoxLoginPassword").val("");
+		document.getElementById("Login").style.display = "inline";
+	}
+	else
+	{
+		window.location = "UserHome.html"
+	}
+});
+
 $(function() 
 {
-    $(document).ready(function()
-    {
-    	if (!localStorage.username)
-		{
-    		$("#textBoxLoginUsername").val("");
-    		$("#textBoxLoginPassword").val("");
-		}
-    	else
-    	{
-    		window.location = "UserHome.html"
-    	}
-
-    });
-	   
     $.validator.addMethod("alphanumeric", function(value, element) 
     {
     	return this.optional(element) || /^\w+$/i.test(value);
