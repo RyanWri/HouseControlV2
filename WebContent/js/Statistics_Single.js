@@ -37,7 +37,6 @@ $(document).ready(function()
 function loadStatisticsSinglePage()
 {
 	ShowRoomName();
-	//ShowAllDevicesInRoom(groupID, "month");
 	DataForMonth();	
 }
 
@@ -58,8 +57,8 @@ function ShowAllDevicesInRoom(groupID, timeframe)
 					voltage_series[i] = result.data.myArrayList[i].map.voltageSum; //get device usage
 				}
 				
+				createDynamicBarsChart();//now we have all data create the pie chart
 				 setTimeout( function() {
-						createDynamicBarsChart();//now we have all data create the pie chart
 						$.mobile.loading("hide");
 				 }, 1500);
 			},

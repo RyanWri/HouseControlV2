@@ -5,13 +5,10 @@
 	Last Modification : 03/09/2015
  */
 
-var groupID_array =[];
-var KeyValueArray = [];
 
 $(document).ready(function()
 {
 	authentication(loadStatisticsPage);
-	SetDataForChart();
 });
 
 
@@ -19,6 +16,11 @@ function loadStatisticsPage()
 {
 	var UserID= localStorage.userID;
 	ShowAllRooms(UserID);
+	$.mobile.loading("show");
+	ShowTotalConsumption("month");
+	setTimeout(function(){}, 1000);
+	refreshPage(); //creates the pie chart
+	setTimeout(function(){$.mobile.loading("hide"); }, 2000);	
 }
  
 //List All Rooms
@@ -41,10 +43,7 @@ function ShowAllRooms(UserID)
 					        <img src="../img/devicesGroups/'+picData +'" class="button">\n\
 					        <h2>'+ name+'</h2>\n\
 					        </a></li></ul>');
-				}
-				
-				
-				ShowTotalConsumption("month");				
+				}			
 				
 			},
 	
@@ -92,8 +91,7 @@ function ShowTotalConsumption(timeframe)
 
 function SetDataForChart()
 {
-	$.mobile.loading( "show" );
-	KeyValueArray.splice(0,KeyValueArray.length); //first clear the array
+	var KeyValueArray = [];
 	$.ajax({
 		type: 'GET',
 		url: '/HouseControl/api/device/statistics/all_groups',
@@ -112,12 +110,7 @@ function SetDataForChart()
 			}
 			
 			//create pie chart
-			setTimeout( function() {
-				createChart();
-				$.mobile.loading( "hide" );
-			},1400);
-			
-			
+			createChart(KeyValueArray);
 			
 		},
 
@@ -130,7 +123,7 @@ function SetDataForChart()
 
 }
 
-function createChart()
+function createChart( KeyValueArray)
 {
     // Build the chart
     $('#chartdiv').highcharts({
@@ -176,6 +169,8 @@ function sendGroupID( group)
 //refresh stats data
 function refreshPage()
 {
+	$.mobile.loading("show");
 	SetDataForChart();
+	setTimeout(function(){$.mobile.loading("hide"); }, 2000);
 }
 
