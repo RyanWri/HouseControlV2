@@ -30,9 +30,10 @@ function loadRoomDevices()
 			for (var i = 0; i < listOfDevices.length; i++)
 			{	
 				$("#listOfRoomDevices").append('\n\
+						<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
 							<li id="li-'+listOfDevices[i].deviceID+'" class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
 								<img src="../img/devicesTypes/'+listOfDevices[i].deviceType.picData+'.png">\n\
-								<h3>'+listOfDevices[i].name+'\n\
+								<h3>'+listOfDevices[i].name+'<p><b>'+listOfDevices[i].description+'</b></p>\n\
 									<div align="right">\n\
 										<div id="'+listOfDevices[i].deviceID+'" class="ui-flipswitch ui-shadow-inset ui-bar-inherit ui-corner-all" onclick="changeOnOff('+listOfDevices[i].deviceID+', null)">\n\
 											<a class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</a>\n\
@@ -40,11 +41,11 @@ function loadRoomDevices()
 											<input class="ui-flipswitch-input" tabindex="-1" data-role="flipswitch" name="flip-checkbox-1" type="checkbox">\n\
 											</div>\n\
 										<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button" onclick="loadDeviceOptions('+listOfDevices[i].deviceID+')">\n\
-											<i class="zmdi zmdi-wrench"></i>\n\
+											<i class="zmdi zmdi-alarm-add ui-shadow"></i>\n\
 										</a>\n\
 									</div>\n\
 								</h3>\n\
-							</li>');
+							</li></ul>');				
 					
 				loadDeviceCurrentStatus(listOfDevices[i].deviceID);	
 			}
