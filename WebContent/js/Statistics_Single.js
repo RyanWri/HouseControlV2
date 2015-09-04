@@ -36,8 +36,7 @@ $(document).ready(function()
 
 function loadStatisticsSinglePage()
 {
-	ShowRoomName();
-	DataForMonth();	
+	ShowRoomName();	
 }
 
 
@@ -58,9 +57,7 @@ function ShowAllDevicesInRoom(groupID, timeframe)
 				}
 				
 				createDynamicBarsChart();//now we have all data create the pie chart
-				 setTimeout( function() {
-						$.mobile.loading("hide");
-				 }, 1500);
+				$.mobile.loading("hide");
 			},
 
 			error: function(xhr, ajaxOptions, thrownError)
@@ -114,6 +111,8 @@ function ShowRoomName()
 		success: function(result)
 		{
 			$('#RoomName').append(result.data.name+ "	Statistics");
+			
+			DataForMonth(); //show bar chart for month
 		},
 
 		error: function(xhr, ajaxOptions, thrownError)
