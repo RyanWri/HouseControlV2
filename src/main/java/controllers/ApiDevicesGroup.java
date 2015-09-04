@@ -15,6 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.google.gson.Gson;
 
 import modelObjects.Device;
@@ -175,6 +178,32 @@ public class ApiDevicesGroup {
 			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
 				devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
 				response = Response.ok(GenericResponse.ok(devices)).build();
+			}
+			else{
+				throw new Exception("You are not allowed accessing this method");
+			}
+		}
+		catch (Exception e) {
+			response = Response.ok(GenericResponse.error(e.getMessage())).build();
+		}
+		
+		return response;
+	}
+	
+	@GET
+	@Path("/get_devices_extra/{devicesGroupID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevicesInDeviceGroupAndPortStatus(@Context HttpServletRequest req, @PathParam("devicesGroupID") int devicesGroupID) {
+		JSONArray groupDevices = new JSONArray();
+		Response response = null;
+		
+		try{
+			SessionHandler.verifyAuthenticatedUserRequest(req);
+			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
+				
+				groupDevices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByIDAndPortsAndStatuses(devicesGroupID);
+				
+				response = Response.ok(GenericResponse.ok(groupDevices)).build();
 			}
 			else{
 				throw new Exception("You are not allowed accessing this method");
