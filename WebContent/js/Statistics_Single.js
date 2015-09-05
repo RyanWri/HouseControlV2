@@ -10,7 +10,29 @@ var voltage_series = [];
 
 var groupID = localStorage.statisticsGroupID;
 
-
+$('#Statistics_Single').on('pagebeforeshow', function()
+{ 
+	$('#Week').click(function(){
+		$(this).css('background-color','green');
+		 $('#Day').css('background-color','white');
+		 $('#Month').css('background-color','white');
+	  });
+	
+	  $('#Day').click(function(){
+		  $(this).css('background-color','green');
+		  $('#Week').css('background-color','white');
+		  $('#Month').css('background-color','white');
+	  });
+	  
+	$('#Month').click(function(){
+		$(this).css('background-color','green');
+		 $('#Day').css('background-color','white');
+		 $('#Week').css('background-color','white');
+		 });
+	
+	authentication(loadStatisticsSinglePage);			
+});
+/*
 $(document).ready(function()
 {
 	$('#Week').click(function(){
@@ -32,11 +54,12 @@ $(document).ready(function()
 		 });
 	
 	authentication(loadStatisticsSinglePage);		
-});
+});*/
 
 function loadStatisticsSinglePage()
 {
 	ShowRoomName();	
+	document.getElementById("Statistics_Single").style.display = "inline";
 }
 
 
