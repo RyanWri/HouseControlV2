@@ -8,13 +8,7 @@ $('#UsersManagment').on('pagebeforeshow', function()
 });
 
 $(function() 
-{
-  /*  $(document).ready(function()
-    {   	
-    	authentication(loadUsersManagementPage);
-    });*/
-    
-    
+{   
     $("#addnewuser").click(function()
     {
     	window.location = "Signup.html";

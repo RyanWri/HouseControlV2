@@ -5,13 +5,13 @@ var listOfUserRooms = {};
 var delay = 300;
 var addedRoomFlag = 0;
 
+$('#UsersManagment').on('pagebeforeshow', function()
+{ 
+	authentication(loadUserRoomsPage);		
+});
+
 $(function() 
 {
-    $(document).ready(function()
-    {  	
-    	authentication(loadUserRoomsPage);
-    });
-    
     $("#addroom").click(function()
     {
     	loadRoomsToAdd();
@@ -70,6 +70,7 @@ function loadUserRoomsPage()
     	$("#addButton").attr("disabled",true);
     	$("#userstitle").text("'"+userName+ "' Rooms:");
     	getListOfUserRooms();
+    	document.getElementById("UserRooms").style.display = "inline";
 	}
 }
 

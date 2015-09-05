@@ -2,13 +2,13 @@ var userid;
 var userName;
 var flag = 0;
 
+$('#UpdateUser').on('pagebeforeshow', function()
+{ 
+	authentication(loadUpdateUserPage);
+});
+
 $(function() 
-{
-    $(document).ready(function()
-    {
-    	authentication(loadUpdateUserPage);
-    });
-    
+{    
     $("#buttoncontinue").click(function()
     {
     	if (flag === 0)
@@ -132,6 +132,7 @@ function loadUpdateUserPage()
     	localStorage.usertoedit = "";
     	
     	loadUserInformation();
+    	document.getElementById("UpdateUser").style.display = "inline";
 	}
 }
 
