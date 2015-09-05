@@ -5,7 +5,7 @@ var listOfUserRooms = {};
 var delay = 300;
 var addedRoomFlag = 0;
 
-$('#UsersManagment').on('pagebeforeshow', function()
+$('#UserRooms').on('pagebeforeshow', function()
 { 
 	authentication(loadUserRoomsPage);		
 });
