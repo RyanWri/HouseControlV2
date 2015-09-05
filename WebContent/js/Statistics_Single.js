@@ -32,29 +32,6 @@ $('#Statistics_Single').on('pagebeforeshow', function()
 	
 	authentication(loadStatisticsSinglePage);			
 });
-/*
-$(document).ready(function()
-{
-	$('#Week').click(function(){
-		$(this).css('background-color','green');
-		 $('#Day').css('background-color','white');
-		 $('#Month').css('background-color','white');
-	  });
-	
-	  $('#Day').click(function(){
-		  $(this).css('background-color','green');
-		  $('#Week').css('background-color','white');
-		  $('#Month').css('background-color','white');
-	  });
-	  
-	$('#Month').click(function(){
-		$(this).css('background-color','green');
-		 $('#Day').css('background-color','white');
-		 $('#Week').css('background-color','white');
-		 });
-	
-	authentication(loadStatisticsSinglePage);		
-});*/
 
 function loadStatisticsSinglePage()
 {

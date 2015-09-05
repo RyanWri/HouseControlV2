@@ -20,10 +20,10 @@ $(function()
 
 	});
 	
-		$.validator.addMethod("alphanumeric", function(value, element) 
-		{
-			return this.optional(element) || /^\w+$/i.test(value);
-		}, "Letters, numbers, and underscores only please");
+	    $.validator.addMethod("alphanumeric", function(value, element) 
+	    {
+	    	return this.optional(element) || /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i.test(value);
+	    }, "Letters, numbers, spaces and underscores only please");
 				    
 		$.validator.addMethod("positive", function(value, element) 
 		{
