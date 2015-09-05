@@ -3,13 +3,14 @@ var delay = 300;
 var tempGroupID;
 var tempGroupName;
 
+
+$('#RoomsManagement').on('pagebeforeshow', function()
+{ 
+	authentication(loadRoomsManagementPage);
+});
+
 $(function() 
-{
-	$(document).ready(function()
-	{
-		authentication(loadRoomsManagementPage);
-	});
-		
+{		
 	$("#addNewRoomButton").click(function()
 	{		
 		loadRoomTypes();
@@ -123,6 +124,7 @@ function loadRoomsManagementPage()
 {
 	$("#btnAddNewRoom").attr("disabled",true);
 	ShowAllRooms();
+	document.getElementById("RoomsManagement").style.display = "inline";
 }
 
 function loadRoomTypes()

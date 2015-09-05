@@ -5,13 +5,12 @@
 	Last Modification : 01/09/2015
  */
 
-
 var groupID = localStorage.tempGroupID;
 var deviceNamesArray = {};
 
-$(document).ready(function()
-{
-	authentication(loadRoomViewPage);			
+$('#RoomView').on('pagebeforeshow', function()
+{ 
+	authentication(loadRoomViewPage);		
 });
 
 $("#buttoncontinue").click(function()
@@ -23,6 +22,7 @@ function loadRoomViewPage()
 {
 	$("#RoomName").append(localStorage.tempGroupName);
 	ShowDevicesInGroup(groupID);
+	document.getElementById("RoomView").style.display = "inline";
 }
 
 function ShowDevicesInGroup(groupID)
