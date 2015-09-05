@@ -69,9 +69,9 @@ function ShowTotalConsumption(timeframe)
 		{
 			var cutStr = result.data.slice(0,27);
 			cutStr +='<br>' + result.data.slice(27,58) +'<br>' +result.data.slice(58);
-			var content = '<div class="nd2-card card-media-right card-media-medium"><div class="card-media"><img src="../img/Stats_logo.png">';
-			content +='</div><div class="card-title"><h3 class="card-primary-title">Total Usage</h3>';
-			content += '<h5 class="card-subtitle">' + cutStr + '</h5></div></div>';
+			var content = '<div class="nd2-card card-media-right card-media-small"><div class="card-media"><img src="../img/Stats_logo.png">';
+			content +='</div><div class="card-title"><h6 class="card-primary-title nd2-subhead">Total Usage</h6>';
+			content += '<h6 class="card-subtitle nd2-subhead">' + cutStr + '</h6></div></div>';
 			$('#TotalConsumption').append(content);
 			
 			refreshPage(); //creates the pie chart	

@@ -47,7 +47,7 @@ function ShowDevicesInGroup(groupID)
 					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
 							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deviceOptionPopup('+deviceID+','+port+')" data-position-to="window" data-transition="pop">\n\
 					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
-					        <h2>'+ name +'</h2><h5>'+description +'</h5>\n\
+					        <h2>'+ name +'</h2><h6 class="nd2-subhead">'+description +'</h6>\n\
 					        </a></li></ul>');
 				}
 				
