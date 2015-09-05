@@ -49,7 +49,7 @@ $(function()
 							  {
 								  initTimerEndTime();
 								  $("#popupNewTimerEnd").click();
-							  }, delay);
+							  }, 600);
 				} 
 			});
     
