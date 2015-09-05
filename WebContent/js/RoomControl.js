@@ -4,18 +4,17 @@ var globalAction;
 var delay = 150;
 var lock = 0;
 
-$(function() 
-{
-    $(document).ready(function()
-    {
-    	authentication(loadRoomControlPage);
-    });
+
+$('#RoomControl').on('pagebeforeshow', function()
+{ 
+	authentication(loadRoomControlPage);		
 });
 
 function loadRoomControlPage()
 {
 	$("#roomName").text(localStorage.roomcontrolName);
 	loadRoomDevices();
+	document.getElementById("RoomControl").style.display = "inline";
 }
 
 function loadRoomDevices()

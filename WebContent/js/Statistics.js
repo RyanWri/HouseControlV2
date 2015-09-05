@@ -5,18 +5,17 @@
 	Last Modification : 03/09/2015
  */
 
-
-$(document).ready(function()
-{
+$('#Statistics').on('pagebeforeshow', function()
+{ 
 	authentication(loadStatisticsPage);
 });
-
 
 function loadStatisticsPage()
 {
 	var UserID= localStorage.userID;
 	$.mobile.loading("show");
 	ShowAllRooms(UserID);
+	document.getElementById("Statistics").style.display = "inline";
 }
  
 //List All Rooms

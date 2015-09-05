@@ -9,14 +9,13 @@ var globalTimerName;
 var globalTimerID;
 var editFlag = 0;
 
+$('#DeviceOptions').on('pagebeforeshow', function()
+{ 
+	authentication(loadDeviceOptionsPage);	
+});
+
 $(function() 
-{
-    $(document).ready(function()
-    {
-    	
-    	authentication(loadDeviceOptionsPage);	
-    });
-    
+{    
     $("#addNewTimer").click(function()
     {
     	
@@ -150,8 +149,8 @@ function loadDeviceOptionsPage()
 		{
 			dateFormat: 'dd-mm-yy',
 		}).datepicker("refresh");
+		document.getElementById("DeviceOptions").style.display = "inline"
 	}
-
 }
 
 function loadActiveTimers()

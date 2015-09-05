@@ -1,5 +1,10 @@
 var flag = 0;
 
+$('#ChangePassword').on('pagebeforeshow', function()
+{ 
+	authentication(loadChangePassword);
+});
+
 $(function() 
 {
     $(document).ready(function()
@@ -71,6 +76,10 @@ function loadChangePassword()
 	if (!localStorage.userID)
 	{
 		window.location = "UserHome.html";
+	}
+	else
+	{
+		document.getElementById("ChangePassword").style.display = "inline";
 	}
 }
 
