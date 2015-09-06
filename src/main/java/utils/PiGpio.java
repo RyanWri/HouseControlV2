@@ -309,10 +309,10 @@ public class PiGpio {
 		}
 		return totalConsumption; 
 	}
-	public static void  turnOffDisconnectedPin(int deviceID ) throws Exception {
+	public static void  turnOffDisconnectedPin(int relayPort ) throws Exception {
 
 		try{
-			myPins[RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(deviceID)].setState(PinState.HIGH);
+			myPins[relayPort].setState(PinState.HIGH);
 		}
 		catch(Exception ex){
 			throw new Exception("An error has occured while trying to turn off disconnected device");
