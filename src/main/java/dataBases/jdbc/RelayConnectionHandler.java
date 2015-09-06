@@ -15,6 +15,8 @@ import utils.PiGpio;
 
 import org.apache.commons.dbutils.DbUtils;
 
+import com.pi4j.io.gpio.PinState;
+
 public class RelayConnectionHandler{
 	public static final int DISCONNECTED_DEVICE = -1;
 	public static final String RELAY_CONNECTION_UPDATE_RELAY_PORT_SUCCESS_MESSAGE = "The device was connected successfully to the relay port";
@@ -250,10 +252,11 @@ public class RelayConnectionHandler{
 
 	public static void disconnectDeviceFromRelay(int deviceID) throws Exception {
 		int relayPort;
-		
+
 		try{
 			relayPort = getRelayPortOfConnectedDevicesOnRelay(deviceID);
-			PiGpio.controlGpioPin(deviceID , 0);
+			PiGpio.turnOffDisconnectedPin(deviceID);
+			DeviceUsageHandler.updateDeviceUsageTurnOffTimeStamp(deviceID, DeviceUsageHandler.getCurrentTimeStamp());
 			updateDeviceToRelayPort(relayPort, DISCONNECTED_DEVICE);
 		}
 		catch (Exception ex) {
