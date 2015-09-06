@@ -253,6 +253,7 @@ public class RelayConnectionHandler{
 		
 		try{
 			relayPort = getRelayPortOfConnectedDevicesOnRelay(deviceID);
+			PiGpio.controlGpioPin(deviceID , 0);
 			updateDeviceToRelayPort(relayPort, DISCONNECTED_DEVICE);
 		}
 		catch (Exception ex) {
