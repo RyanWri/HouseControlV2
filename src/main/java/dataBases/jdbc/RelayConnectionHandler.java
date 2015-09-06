@@ -255,7 +255,7 @@ public class RelayConnectionHandler{
 
 		try{
 			relayPort = getRelayPortOfConnectedDevicesOnRelay(deviceID);
-			PiGpio.turnOffDisconnectedPin(deviceID);
+			PiGpio.turnOffDisconnectedPin(relayPort);
 			DeviceUsageHandler.updateDeviceUsageTurnOffTimeStamp(deviceID, DeviceUsageHandler.getCurrentTimeStamp());
 			updateDeviceToRelayPort(relayPort, DISCONNECTED_DEVICE);
 		}
