@@ -9,7 +9,7 @@
 
 $('#Faq').on('pagebeforeshow', function()
 { 
-	authentication(loadRoomControlPage);		
+	authentication(loadFaqPage);		
 });
 
 $(function() 
