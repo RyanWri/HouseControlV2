@@ -36,7 +36,7 @@ public class DeviceHandler{
 			statement.setInt(4, device.getDeviceType().getTypeID());
 			statement.setString(5, device.getConnectionType().toString());
 			statement.setFloat(6, device.getVoltage());
-			statement.setString(7, DeviceState.Inactive.toString());
+			statement.setString(7, DeviceState.Active.toString());
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			if (resultSet != null && resultSet.next()) {
@@ -90,38 +90,32 @@ public class DeviceHandler{
 		}
 	}
 	
-//	public static void updateDevice(DeviceType deviceType) throws Exception{	
+//	public static void updateDevice(Device device) throws Exception{
 //		Connection conn = null;
 //		PreparedStatement statement = null;
 //
-//		if (deviceType == null){
-//			throw new Exception("Information is missing");
-//		}
-//		if(deviceType.getTypeID()<1)		{
-//			throw new Exception("Invalid device type to update");
-//		}
-//		if(deviceType.getName().isEmpty()){
-//			throw new Exception("Devices group name cannot be empty");
+//
+//		if(device.getDeviceID()<1)		{
+//			throw new Exception("Invalid device to update");
 //		}
 //		try{
 //			conn = DBConn.getConnection();
-//			String query = "UPDATE device_type "
-//					+  "SET name = ?, picData = ? "
-//					+  "WHERE typeID =" + deviceType.getTypeID();
+//			String query = "UPDATE device "
+//					+  "SET state = ? "
+//					+  "WHERE deviceID =" + deviceID;
 //			conn.setAutoCommit(false);
 //			statement = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-//			statement.setString(1, deviceType.getName());
-//			statement.setString(2, deviceType.getPicData());
+//			statement.setString(1, deviceState.toString());
 //			int isSucceeded = statement.executeUpdate();
 //			if(isSucceeded== 0){
-//				throw new Exception("Failed to update the requested devices type");
+//				throw new Exception("Failed to update the requested device");
 //			}
-//			System.out.println("Device type has been updated");
+//			System.out.println("Device has been updated");
 //			conn.commit();
 //		}
 //		catch(SQLException ex){
 //			conn.rollback();
-//			throw new Exception("Cannot update device type");
+//			throw new Exception("Cannot update device");
 //		}
 //		finally{
 //			conn.setAutoCommit(true);
@@ -129,7 +123,7 @@ public class DeviceHandler{
 //			DbUtils.closeQuietly(conn);
 //		}
 //	}
-
+	
 	public static Device getDevice(int deviceID) throws Exception{
 		Connection conn = null;
 		PreparedStatement statement = null;
@@ -248,7 +242,7 @@ public class DeviceHandler{
 			conn = DBConn.getConnection();
 			String query = "SELECT device.*,device_type.* "
 			+"FROM device,device_type "
-			+"WHERE device.typeID=device_type.typeID and (device.deviceID NOT IN "
+			+"WHERE device.typeID=device_type.typeID and device.state='Active' and (device.deviceID NOT IN "
 			+"(SELECT deviceID FROM device_in_group))";
 			statement = conn.createStatement();
 			resultSet = statement.executeQuery(query);

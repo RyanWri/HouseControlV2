@@ -170,8 +170,7 @@ public class UserHandler{
 		}
 		catch(SQLException ex){
 			conn.rollback();
-			throw new Exception(ex);
-			//	throw new Exception("A problem has occured while trying updating user details");
+			throw new Exception("A problem has occured while trying updating user details");
 		}
 		finally{
 			conn.setAutoCommit(true);

@@ -176,7 +176,8 @@ public class ApiDevicesGroup {
 		try{
 			SessionHandler.verifyAuthenticatedUserRequest(req);
 			if(SessionHandler.getType(req).equals(UserType.Admin) || UserInGroupHandler.isUserAuthorizedGettingDevicesGroupData(SessionHandler.getId(req), devicesGroupID)){
-				devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
+				//devices = DeviceInGroupHandler.getAllDevicesOfDevicesGroupByID(devicesGroupID);
+				devices = DeviceInGroupHandler.getAllActiveDevicesOfDevicesGroupByID(devicesGroupID);
 				response = Response.ok(GenericResponse.ok(devices)).build();
 			}
 			else{

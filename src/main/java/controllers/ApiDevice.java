@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -77,7 +78,7 @@ public class ApiDevice{
 		try{
 			SessionHandler.verifyAdminRequest(req);
 			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
-			DeviceHandler.updateDeviceState(deviceID, Device.DeviceState.Inactive);
+			//DeviceHandler.updateDeviceState(deviceID, Device.DeviceState.Inactive);
 			response = Response.ok(GenericResponse.ok(RelayConnectionHandler.RELAY_CONNECTION_DISCONNECT_DEVICE_FROM_RELAY_PORT_SUCCESS_MESSAGE)).build();
 		}
 		catch(Exception ex){
@@ -86,6 +87,25 @@ public class ApiDevice{
 
 		return response;
 	}
+	
+	@DELETE
+	@Path("/delete_device/{deviceID}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteDevice(@Context HttpServletRequest req,@PathParam("deviceID") int deviceID){
+		Response response = null;
+		try{
+			SessionHandler.verifyAdminRequest(req);
+			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
+			DeviceHandler.updateDeviceState(deviceID, Device.DeviceState.Inactive);
+			response = Response.ok(GenericResponse.ok("Device deleted successfully")).build();
+		}
+		catch(Exception ex){
+			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
+		}
+
+		return response;
+	}
+	
 
 	@GET
 	@Path("/get_device/{deviceID}")

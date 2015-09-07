@@ -87,9 +87,41 @@ public class DeviceInGroupHandler{
 		Connection conn = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
+	
 		String query = "SELECT device.* ,device_type.* "
 					 + "FROM device,device_in_group,device_type "
 					 + "WHERE device.deviceID = device_in_group.deviceID and device_type.typeID=device.typeID and device_in_group.groupID="+ devicesGroupID;
+		if(devicesGroupID<1){
+			throw new Exception("Please provide a valid group");
+		}
+		try{
+			conn = DBConn.getConnection();
+			statement = conn.createStatement();
+			resultSet = statement.executeQuery(query);
+			while(resultSet.next()){
+				devices.add(DeviceHandler.mapRow(resultSet));
+			}
+		}
+		catch (Exception e) {
+			throw new Exception("Failed to get devices in group");
+		}
+		finally{
+			DbUtils.closeQuietly(statement);
+			DbUtils.closeQuietly(conn);
+		}
+
+		return devices;
+	}
+	
+	public static List<Device> getAllActiveDevicesOfDevicesGroupByID(int devicesGroupID) throws Exception{
+		List<Device> devices = new ArrayList<Device>();
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		String query = "SELECT device.* ,device_type.* "
+					 + "FROM device,device_in_group,device_type "
+					 + "WHERE device.deviceID = device_in_group.deviceID and device_type.typeID=device.typeID and device.state='Active' and device_in_group.groupID="+ devicesGroupID;
 		if(devicesGroupID<1){
 			throw new Exception("Please provide a valid group");
 		}
@@ -118,7 +150,8 @@ public class DeviceInGroupHandler{
 		List<Device> devices;
 		int port = -1;
 		try{
-			devices = getAllDevicesOfDevicesGroupByID(devicesGroupID);
+			//devices = getAllDevicesOfDevicesGroupByID(devicesGroupID);
+			devices = getAllActiveDevicesOfDevicesGroupByID(devicesGroupID);
 			for (Device device : devices) {
 				//groupDevices.put(groupDevices);
 				JSONObject groupDevices = new JSONObject();
