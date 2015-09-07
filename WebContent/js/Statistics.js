@@ -67,12 +67,21 @@ function ShowTotalConsumption(timeframe)
 		dataType: 'json',
 		success: function(result)
 		{
-			var cutStr = result.data.slice(0,27);
-			cutStr +='<br>' + result.data.slice(27,58) +'<br>' +result.data.slice(58);
+			//usage
+			var answer = "During the last month is:"+ result.data +"KW";
 			var content = '<div class="nd2-card card-media-right card-media-small"><div class="card-media"><img src="../img/Stats_logo.png">';
 			content +='</div><div class="card-title"><h6 class="card-primary-title nd2-subhead">Total Usage</h6>';
-			content += '<h6 class="card-subtitle nd2-subhead">' + cutStr + '</h6></div></div>';
+			content += '<h6 class="card-subtitle nd2-subhead">' + answer + '</h6></div></div>';
 			$('#TotalConsumption').append(content);
+		
+			//Cost 
+			var PricePerWatt = 0.54;
+			var cost = PricePerWatt*(result.data/1000);
+			content = '<div class="nd2-card card-media-right card-media-small"><div class="card-media"><img src="../img/CostLogo.png">';
+			content +='</div><div class="card-title"><h6 class="card-primary-title nd2-subhead">Monthly Cost</h6>';
+			content += '<h6 class="card-subtitle nd2-subhead">' + cost +" NIS" + '</h6></div></div>';
+			$('#TotalConsumption').append(content);
+			
 			
 			refreshPage(); //creates the pie chart	
 			
