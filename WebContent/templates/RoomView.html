@@ -75,9 +75,11 @@
 		<div data-role="content" data-theme='a'>
 			<form id="formCreateDevice">
 				<label for="deviceName">Enter device Name (required)</label>
-	            <input id="deviceName" class="k-input" minlength="4" type="text" required>
+				<textarea id="deviceName" class="form-control" name="deviceName" style="width: 100%;" placeholder="Device Name" minlength="4" required></textarea><br>
+	            <!--  <input id="deviceName" class="k-input" minlength="4" type="text" required> -->
 	            <label for="description">Description (required)</label>
-	            <input id="description" class="k-input" minlength="4" type="text" required>
+	            <textarea id="description" class="form-control" name="description" style="width: 100%;" placeholder="Description" minlength="4" required></textarea><br>
+	            <!--  <input id="description" class="k-input" minlength="4" type="text" required> -->
 	            <label for="devices">Choose Device type (required)</label> 
 	            <select name="devices" id="devicesTypes" class="icon-menu" required>
 					<option value="">Select Device Type</option>	
