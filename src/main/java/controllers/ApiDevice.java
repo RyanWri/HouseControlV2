@@ -220,7 +220,8 @@ public class ApiDevice{
 		try{
 			SessionHandler.verifyAuthenticatedUserRequest(req);
 			String sumAllDevicesStatistics = PiGpio.getAllDevicesStatistics(timeFrame);
-			response = Response.ok(GenericResponse.ok("The total sum of elctricity used during the last " + timeFrame + " is: "+ sumAllDevicesStatistics + "!")).build();
+			response = Response.ok(GenericResponse.ok("During the last " + timeFrame + " is:   "
+					+ ""+ sumAllDevicesStatistics + "KW!")).build();
 		}
 		catch(Exception ex){
 			response = Response.ok(GenericResponse.error(ex.getMessage())).build();
