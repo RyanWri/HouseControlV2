@@ -22,12 +22,15 @@ import com.google.gson.Gson;
 
 import modelObjects.Device;
 import modelObjects.DevicesGroup;
+import modelObjects.RelayConnection;
 import modelObjects.User;
 import modelObjects.User.UserType;
 import utils.GenericResponse;
 import utils.SessionHandler;
+import dataBases.jdbc.DeviceHandler;
 import dataBases.jdbc.DeviceInGroupHandler;
 import dataBases.jdbc.DevicesGroupHandler;
+import dataBases.jdbc.RelayConnectionHandler;
 import dataBases.jdbc.UserInGroupHandler;
 
 @Path("/devices_group")
@@ -262,6 +265,7 @@ public class ApiDevicesGroup {
 
 		try{
 			SessionHandler.verifyAdminRequest(req);
+			RelayConnectionHandler.disconnectDeviceFromRelay(deviceID);
 			DeviceInGroupHandler.removeDeviceFromDevicesGroup(deviceID, deviceGroupID);
 			response = Response.ok(GenericResponse.ok(DeviceInGroupHandler.DEVICE_IN_GROUP_REMOVE_SUCCESS_MESSAGE)).build();
 		}
