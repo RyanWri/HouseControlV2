@@ -38,6 +38,7 @@ function loadRoomDevices()
 		{
 			if (result.status === "ok")
 			{
+				listOfDevices = result.data.myArrayList;
 				for (var i = 0; i < result.data.myArrayList.length; i++)
 				{
 					
@@ -83,9 +84,9 @@ function loadDeviceOptions(tempDeviceID)
 	localStorage.deviceoptionsDeviceID = tempDeviceID;
 	for (var i = 0; i < listOfDevices.length; i++)
 	{
-		if (listOfDevices[i].deviceID === tempDeviceID)
+		if (listOfDevices[i].map.device.deviceID === tempDeviceID)
 		{
-			localStorage.deviceoptionsName = listOfDevices[i].name;
+			localStorage.deviceoptionsName = listOfDevices[i].map.device.name;
 		}
 	}
 	window.location = "DeviceOptions.html";
