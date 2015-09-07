@@ -19,41 +19,54 @@ function loadRoomControlPage()
 
 function loadRoomDevices()
 {
+	
 	$.ajax({
 		type: 'GET',
-		url: '/HouseControl/api/devices_group/get_devices/' + localStorage.roomcontrolGroupId,
-        dataType: 'json',
+		url: '/HouseControl/api/devices_group/get_devices_extra/' + localStorage.roomcontrolGroupId,
+		contentType: "application/json",
+		dataType: 'json',
 		success: function(result)
 		{
-			listOfDevices = result.data;
-			for (var i = 0; i < listOfDevices.length; i++)
-			{	
-				$("#listOfRoomDevices").append('\n\
-						<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
-							<li id="li-'+listOfDevices[i].deviceID+'" class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
-								<img src="../img/devicesTypes/'+listOfDevices[i].deviceType.picData+'.png">\n\
-								<h3>'+listOfDevices[i].name+'<p><b>'+listOfDevices[i].description+'</b></p>\n\
-									<div align="right">\n\
-										<div id="'+listOfDevices[i].deviceID+'" class="ui-flipswitch ui-shadow-inset ui-bar-inherit ui-corner-all" onclick="changeOnOff('+listOfDevices[i].deviceID+', null)">\n\
-											<a class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</a>\n\
-											<span class="ui-flipswitch-off">Off</span>\n\
-											<input class="ui-flipswitch-input" tabindex="-1" data-role="flipswitch" name="flip-checkbox-1" type="checkbox">\n\
-											</div>\n\
-										<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button" onclick="loadDeviceOptions('+listOfDevices[i].deviceID+')">\n\
-											<i class="zmdi zmdi-alarm-add ui-shadow"></i>\n\
-										</a>\n\
-									</div>\n\
-								</h3>\n\
-							</li></ul>');				
+			if (result.status === "ok")
+			{
+				for (var i = 0; i < result.data.myArrayList.length; i++)
+				{
 					
-				loadDeviceCurrentStatus(listOfDevices[i].deviceID);	
+					if(result.data.myArrayList[i].map.port !== -1)
+					{
+						$("#listOfRoomDevices").append('\n\
+								<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
+									<li id="li-'+result.data.myArrayList[i].map.device.deviceID+'" class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
+										<img src="../img/devicesTypes/'+result.data.myArrayList[i].map.device.deviceType.picData+'.png">\n\
+										<h3>'+result.data.myArrayList[i].map.device.name+'<p><b>'+result.data.myArrayList[i].map.device.description+'</b></p>\n\
+											<div align="right">\n\
+												<div id="'+result.data.myArrayList[i].map.device.deviceID+'" class="ui-flipswitch ui-shadow-inset ui-bar-inherit ui-corner-all" onclick="changeOnOff('+result.data.myArrayList[i].map.device.deviceID+', null)">\n\
+													<a class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</a>\n\
+													<span class="ui-flipswitch-off">Off</span>\n\
+													<input class="ui-flipswitch-input" tabindex="-1" data-role="flipswitch" name="flip-checkbox-1" type="checkbox">\n\
+													</div>\n\
+												<a class="ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button" onclick="loadDeviceOptions('+result.data.myArrayList[i].map.device.deviceID+')">\n\
+													<i class="zmdi zmdi-alarm-add ui-shadow"></i>\n\
+												</a>\n\
+											</div>\n\
+										</h3>\n\
+									</li></ul>');
+						changeOnOff(result.data.myArrayList[i].map.device.deviceID, result.data.myArrayList[i].map.currentPinState);
+					}
+				}
+			}
+			else
+			{
+				window.location = "UserHome.html";
 			}
 		},
-		error: function()
+
+		error: function(xhr, ajaxOptions, thrownError)
 		{
-			errorPopup("Connection Error");
-		},	
-	});
+			$.mobile.loading("hide");
+		}
+
+	});	
 }
 
 function loadDeviceOptions(tempDeviceID)
@@ -68,7 +81,7 @@ function loadDeviceOptions(tempDeviceID)
 	}
 	window.location = "DeviceOptions.html";
 }
-
+/*
 function loadDeviceCurrentStatus(deviceID)
 {
 	$.ajax({
@@ -97,7 +110,7 @@ function loadDeviceCurrentStatus(deviceID)
 	});
 }
 
-function getDevicesCurrentStatus(tempGroupID, port)
+function getDevicesCurrentStatus(tempDeviceID, port)
 {
 	$.ajax({
 		type: 'GET',
@@ -107,7 +120,7 @@ function getDevicesCurrentStatus(tempGroupID, port)
 		{
 			if (result.status === "ok")
 			{
-				changeOnOff(tempGroupID, result.data.map.currentPinState);
+				changeOnOff(tempDeviceID, result.data.map.currentPinState);
 			}
 		},
 		error: function()
@@ -115,18 +128,18 @@ function getDevicesCurrentStatus(tempGroupID, port)
 			errorPopup("Connection Error");
 		},		
 	});
-}
+}*/
 	
-function changeOnOff(tempGroupID, newstatus)
+function changeOnOff(tempDeviceID, newstatus)
 {
 	if (newstatus === null)
 	{		
 		if (lock === 0)
 		{
 			lock = 1;
-			$('#'+tempGroupID).addClass("ui-disabled");
-			globalGroupID = tempGroupID;
-			if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
+			$('#'+tempDeviceID).addClass("ui-disabled");
+			globalGroupID = tempDeviceID;
+			if ($('#'+tempDeviceID).hasClass("ui-flipswitch-active"))
 			{
 				globalAction = "OFF";
 			}
