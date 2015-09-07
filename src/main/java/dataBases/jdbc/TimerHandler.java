@@ -61,11 +61,11 @@ public class TimerHandler {
 					}
 				}
 				else{
-					throw new Exception("An error has occured while trying to create timer because TurnOnTime is after TurnOffTime");
+					throw new Exception("Cannot create a timer because the Turn On Time you entered is before the Turn Off Time");
 				}
 			}
 			else{
-				throw new Exception("An error has occured while trying to create timer because TurnOnTime is before the current time");
+				throw new Exception("Cannot create a timer because the Turn On Time already passed");
 			}
 		}
 		catch(SQLException ex){
