@@ -359,7 +359,7 @@ public class DeviceUsageHandler {
 		JSONArray groupDevicesConsumption = new JSONArray();
 		List<Device> groupDevices = null;
 		long deviceSumWorkTime, voltageSum = 0;
-		double hours;
+		double hours; 
 				
 		try{
 			if(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))
