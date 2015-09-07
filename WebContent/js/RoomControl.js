@@ -3,6 +3,8 @@ var globalDeviceID;
 var globalAction;
 var delay = 150;
 var lock = 0;
+var interval;
+var refreshRate = 5000;
 
 
 $('#RoomControl').on('pagebeforeshow', function()
@@ -15,6 +17,13 @@ function loadRoomControlPage()
 	$("#roomName").text(localStorage.roomcontrolName);
 	loadRoomDevices();
 	document.getElementById("RoomControl").style.display = "inline";
+	interval = window.setInterval(intervalFunction, refreshRate);
+}
+
+function intervalFunction()
+{
+	$("#listOfRoomDevices").empty();
+	loadRoomDevices();
 }
 
 function loadRoomDevices()
@@ -88,6 +97,7 @@ function changeOnOff(tempDeviceID, newstatus)
 	{		
 		if (lock === 0)
 		{
+			clearInterval(interval);
 			lock = 1;
 			$('#'+tempDeviceID).addClass("ui-disabled");
 			globalDeviceID = tempDeviceID;
@@ -152,6 +162,8 @@ function sendRequestToTurnOnOff()
 									$('#'+globalDeviceID).addClass("ui-flipswitch-active");
 								}
 								lock = 0;
+								
+								interval = window.setInterval(intervalFunction, refreshRate);
 						  }, delay);	
 				
 			}
