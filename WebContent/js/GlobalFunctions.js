@@ -147,16 +147,4 @@ function initMenu()
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="Faq.html"> <i class="zmdi zmdi-help zmd-fw"></i> FAQ</a></li>');
 	$("#menuitems").append('<li><a class="ui-btn ui-corner-all ui-shadow" data-icon="false" data-ajax="false" href="#" onclick="logout()"> <i class="zmdi zmdi-power-off zmd-fw"></i> Logout</a></li>');
 	$("#menuitems").append('<li> <img id="Logo" class="nd2-card card-media-right card-media-small card-media" src="../img/logo.png" alt="Our Logo"></li>');
-	/*$("#menuitems").append('<div><a class="ui-link" href="#" onclick="moveToHomePage()">Home</a></div>');
-	if (localStorage.type === "Admin")
-	{
-		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToUsersManagement()">Users Management</a></li>');
-		$("#menuitems").append('<li><a href="#" class="ui-link" onclick="moveToRoomsManagement()">Rooms Management</a></li>');
-		
-		
-	}
-	$("#menuitems").append('<li><a class="ui-link" href="Statistics.html" rel="external" data-ajax="false">Statistics</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="moveToChangePassword()">Change Password</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="Faq.html">FAQ</a></li>');
-	$("#menuitems").append('<li><a class="ui-link" href="#" onclick="logout()">Logout</a></li>');*/
 }
