@@ -268,7 +268,7 @@ public class DeviceUsageHandler {
 			deviceUsages =  getDeviceAllUsages(deviceID);
 			for (DeviceUsage deviceUsage : deviceUsages) {
 				Timestamp ts = new Timestamp(getCurrentTimeStamp().getTime() - timeFrameInMilliseconds.getTime());
-				if(deviceUsage.getTurnOnTime().compareTo(ts) >= 0 && deviceUsage.getTurnOffTime() != null){
+				if(deviceUsage.getTurnOnTime().after(ts) && deviceUsage.getTurnOffTime() != null){
 					diff= (long)deviceUsage.getTurnOffTime().getTime() - (long)deviceUsage.getTurnOnTime().getTime();
 					sum += diff;
 				}
@@ -285,11 +285,12 @@ public class DeviceUsageHandler {
 		List<DeviceUsage> deviceUsages;
 
 		Timestamp timeFrameInMilliseconds = new Timestamp(getTimeFrameInMilliseconds(timeFrame));
-		try{		
+		try{	
+			Timestamp ts = new Timestamp(getCurrentTimeStamp().getTime() - timeFrameInMilliseconds.getTime());
 			deviceUsages =  GetAllDevicesAllUsage();
 			for (DeviceUsage deviceUsage : deviceUsages) {
-				if(deviceUsage.getTurnOnTime().compareTo(timeFrameInMilliseconds) >= 0 ){
-					sum += deviceUsage.getTurnOffTime().getTime() - deviceUsage.getTurnOnTime().getTime();
+				if(deviceUsage.getTurnOnTime().after(ts) && deviceUsage.getTurnOffTime() != null){
+					sum += (long)deviceUsage.getTurnOffTime().getTime() - (long)deviceUsage.getTurnOnTime().getTime();
 				}
 			}
 		}
