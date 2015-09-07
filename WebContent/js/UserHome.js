@@ -18,7 +18,7 @@ $(function()
 function loadUserHomePage()
 {
 	loadUserRooms();
-	//loadTempAndHumidity(); //$DEBUG
+	loadTempAndHumidity(); //$DEBUG
 	document.getElementById("UserHome").style.display = "inline";
 }
 

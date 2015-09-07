@@ -1,5 +1,5 @@
 var listOfDevices;
-var globalGroupID;
+var globalDeviceID;
 var globalAction;
 var delay = 150;
 var lock = 0;
@@ -32,7 +32,7 @@ function loadRoomDevices()
 				for (var i = 0; i < result.data.myArrayList.length; i++)
 				{
 					
-					if(result.data.myArrayList[i].map.port !== -1)
+					if(result.data.myArrayList[i].map.port != -1)
 					{
 						$("#listOfRoomDevices").append('\n\
 								<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
@@ -81,54 +81,6 @@ function loadDeviceOptions(tempDeviceID)
 	}
 	window.location = "DeviceOptions.html";
 }
-/*
-function loadDeviceCurrentStatus(deviceID)
-{
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/device/get_relay_port/' + deviceID,
-	    dataType: 'json',
-		success: function(result)
-		{
-			if (result.status === "ok")
-			{
-				if (result.data === -1)
-				{
-					errorPopup("Device is not connected to port");	
-				}
-				else
-				{
-					getDevicesCurrentStatus(deviceID, result.data);
-				}
-
-			}
-		},
-		error: function()
-		{
-			errorPopup("Connection Error");	
-		},		
-	});
-}
-
-function getDevicesCurrentStatus(tempDeviceID, port)
-{
-	$.ajax({
-		type: 'GET',
-		url: '/HouseControl/api/device/relay/'+port+'/status',
-        dataType: 'json',
-		success: function(result)
-		{
-			if (result.status === "ok")
-			{
-				changeOnOff(tempDeviceID, result.data.map.currentPinState);
-			}
-		},
-		error: function()
-		{
-			errorPopup("Connection Error");
-		},		
-	});
-}*/
 	
 function changeOnOff(tempDeviceID, newstatus)
 {
@@ -138,7 +90,7 @@ function changeOnOff(tempDeviceID, newstatus)
 		{
 			lock = 1;
 			$('#'+tempDeviceID).addClass("ui-disabled");
-			globalGroupID = tempDeviceID;
+			globalDeviceID = tempDeviceID;
 			if ($('#'+tempDeviceID).hasClass("ui-flipswitch-active"))
 			{
 				globalAction = "OFF";
@@ -153,18 +105,18 @@ function changeOnOff(tempDeviceID, newstatus)
 	}
 	else
 	{
-		if ($('#'+tempGroupID).hasClass("ui-flipswitch-active"))
+		if ($('#'+tempDeviceID).hasClass("ui-flipswitch-active"))
 		{
 			if (newstatus === "LOW")
 			{
-				$('#'+tempGroupID).removeClass("ui-flipswitch-active");
+				$('#'+tempDeviceID).removeClass("ui-flipswitch-active");
 			}
 		}
 		else
 		{
 			if (newstatus === "HIGH")
 			{
-				$('#'+tempGroupID).addClass("ui-flipswitch-active");
+				$('#'+tempDeviceID).addClass("ui-flipswitch-active");
 			}
 		}
 	}
@@ -181,7 +133,7 @@ function sendRequestToTurnOnOff()
 	
 	$.ajax({
 		type: 'POST',
-		url: '/HouseControl/api/device/relay/'+globalGroupID+'/'+ actionInInt,
+		url: '/HouseControl/api/device/relay/'+globalDeviceID+'/'+ actionInInt,
         dataType: 'json',
 		success: function(result)
 		{
@@ -190,14 +142,14 @@ function sendRequestToTurnOnOff()
 				setTimeout(
 						  function() 
 						  {
-							    $('#'+globalGroupID).removeClass("ui-disabled");
+							    $('#'+globalDeviceID).removeClass("ui-disabled");
 								if (globalAction === "OFF")
 								{
-									$('#'+globalGroupID).removeClass("ui-flipswitch-active");
+									$('#'+globalDeviceID).removeClass("ui-flipswitch-active");
 								}
 								else
 								{
-									$('#'+globalGroupID).addClass("ui-flipswitch-active");
+									$('#'+globalDeviceID).addClass("ui-flipswitch-active");
 								}
 								lock = 0;
 						  }, delay);	
