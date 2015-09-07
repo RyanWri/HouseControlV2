@@ -312,7 +312,7 @@ public class PiGpio {
 	public static void  turnOffDisconnectedPin(int relayPort ) throws Exception {
 
 		try{
-			if(myPins[relayPort].isState(PinState.LOW)){
+			if(myPins[relayPort].isState(PinState.LOW)){ 
 				myPins[relayPort].setState(PinState.HIGH);
 			}
 		}
