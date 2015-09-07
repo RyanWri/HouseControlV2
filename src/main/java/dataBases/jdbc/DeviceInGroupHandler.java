@@ -144,16 +144,13 @@ public class DeviceInGroupHandler{
 		return devices;
 	}
 
-	public static JSONArray getAllDevicesOfDevicesGroupByIDAndPortsAndStatuses(int devicesGroupID) throws Exception {
+	public static synchronized JSONArray getAllDevicesOfDevicesGroupByIDAndPortsAndStatuses(int devicesGroupID) throws Exception {
 		JSONArray allGroupDevices = new JSONArray();
-		//JSONObject portState = new JSONObject();
 		List<Device> devices;
 		int port = -1;
 		try{
-			//devices = getAllDevicesOfDevicesGroupByID(devicesGroupID);
 			devices = getAllActiveDevicesOfDevicesGroupByID(devicesGroupID);
 			for (Device device : devices) {
-				//groupDevices.put(groupDevices);
 				JSONObject groupDevices = new JSONObject();
 				port = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(device.getDeviceID());
 				
@@ -165,9 +162,7 @@ public class DeviceInGroupHandler{
 					groupDevices.put("currentPinState", -1);
 					groupDevices.put("port", -1);
 					groupDevices.put("device", device);
-				}
-				
-				//groupDevices.put("portAndStatus", portState);
+				}				
 				allGroupDevices.put(groupDevices);
 			}
 		}
