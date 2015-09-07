@@ -121,17 +121,25 @@
 			</form>
 			</div>
 			<div><br>
-				<label>Disconnect Device</label>
+				<label>Disconnect Device (Disable the ability to control it)</label>
 				<button id="disconnectDevice" type="button" onclick="DisconnectDeviceFromRelayPort()"
 					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
 					<i class="zmdi zmdi-gps-off zmd-fw"></i> DisConnect Device
 				</button>
 			</div>
 			<div><br>
-				<label>Remove Device</label>
+				<label>Remove Device From Room</label>
 				<button id="removeDeviceFromGroup" type="button" onclick="removeDevice()"
 					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
 					<i class="zmdi zmdi-portable-wifi-off zmd-fw"></i> Remove Device
+				</button>
+			</div>
+			
+			<div><br>
+				<label>Delete Device</label>
+				<button id="DeleteDevice" type="button" onclick="DeleteDevice()"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a newfont">
+					<i class="zmdi zmdi-delete zmd-fw"></i> Delete Device
 				</button>
 			</div>
 			

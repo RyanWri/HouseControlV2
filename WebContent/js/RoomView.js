@@ -39,16 +39,19 @@ function ShowDevicesInGroup(groupID)
 				var deviceID, name, picData, description, port;
 				for (var i = 0; i < result.data.myArrayList.length; i++)
 				{
-					deviceID = result.data.myArrayList[i].map.device.deviceID;
-					name = result.data.myArrayList[i].map.device.name;
-					picData = result.data.myArrayList[i].map.device.deviceType.picData;
-					description = result.data.myArrayList[i].map.device.description;
-					port = result.data.myArrayList[i].map.port;
-					$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
-							<li class="ui-li-has-thumb ui-first-child ui-last-child"><a data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deviceOptionPopup('+deviceID+','+port+')" data-position-to="window" data-transition="pop">\n\
-					        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
-					        <h2>'+ name +'</h2><p>'+description +'</p>\n\
-					        </a></li></ul>');
+					if (result.data.myArrayList[i].map.device.state == "Active") //show device only if state is active
+					{
+						deviceID = result.data.myArrayList[i].map.device.deviceID;
+						name = result.data.myArrayList[i].map.device.name;
+						picData = result.data.myArrayList[i].map.device.deviceType.picData;
+						description = result.data.myArrayList[i].map.device.description;
+						port = result.data.myArrayList[i].map.port;
+						$("#ListAllDevices").append('<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-inset="true">\n\
+								<li class="ui-li-has-thumb ui-first-child ui-last-child"><a data-rel="popup" class="ui-btn ui-btn-icon-right ui-icon-carat-r" onclick="deviceOptionPopup('+deviceID+','+port+')" data-position-to="window" data-transition="pop">\n\
+						        <img src="../img/devicesTypes/'+picData +'.png" class="button">\n\
+						        <h2>'+ name +'</h2><p>'+description +'</p>\n\
+						        </a></li></ul>');
+					}
 				}
 				
 				CreateRelayPortsList();
@@ -381,3 +384,28 @@ function connectDeviceToRelayPort(deviceID, relayPort)
 	});	
 }
 
+
+function DeleteDevice()
+{
+	var deviceID = localStorage.tempDeviceID;
+	$.ajax({
+		type: 'DELETE',
+		url: '/HouseControl/api/device/delete_device/'+ deviceID,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			$.mobile.loading("show");
+		},
+		
+		error: function()
+		{
+			$.mobile.loading("hide");
+			errorPopup("Connection Error");
+		}
+	});
+	
+	setTimeout( function() {
+		location.reload();
+	},300);
+}	
