@@ -2,7 +2,7 @@
 	Author: ran yamin
 	date 18/08/2015 
 	javascript for Statistics main page (highcharts used)
-	Last Modification : 03/09/2015
+	Last Modification : 07/09/2015
  */
 
 $('#Statistics').on('pagebeforeshow', function()
@@ -184,3 +184,11 @@ function refreshPage()
 	SetDataForChart();
 }
 
+
+//Handle ajax loading icon
+$('#Statistics').on( "mobileinit", function() {
+	  $.mobile.loader.prototype.options.text = "loading";
+	  $.mobile.loader.prototype.options.textVisible = false;
+	  $.mobile.loader.prototype.options.theme = "a";
+	  $.mobile.loader.prototype.options.html = "";
+	});
