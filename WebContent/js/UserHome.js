@@ -19,7 +19,6 @@ function loadUserHomePage()
 {
 	loadUserRooms();
 	loadTempAndHumidity(); //$DEBUG
-	document.getElementById("UserHome").style.display = "inline";
 }
 
 function loadUserRooms()
@@ -71,6 +70,8 @@ function loadTempAndHumidity()
 				errorPopup(result.data);
 
 			}
+			
+			document.getElementById("UserHome").style.display = "inline";
 		},
 		error: function()
 		{

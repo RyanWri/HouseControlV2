@@ -4,7 +4,8 @@ var globalAction;
 var delay = 150;
 var lock = 0;
 var interval;
-var refreshRate = 20000;
+var refreshRate = 3000;
+var listOfDevicesID = [];
 
 
 $('#RoomControl').on('pagebeforeshow', function()
@@ -22,8 +23,7 @@ function loadRoomControlPage()
 
 function intervalFunction()
 {
-	$("#listOfRoomDevices").empty();
-	loadRoomDevices();
+	updateRoomDevices();
 }
 
 function loadRoomDevices()
@@ -36,16 +36,16 @@ function loadRoomDevices()
 		dataType: 'json',
 		success: function(result)
 		{
+			listOfDevices = result.data.myArrayList;
 			if (result.status === "ok")
 			{
-				listOfDevices = result.data.myArrayList;
+				var j = 0;
 				for (var i = 0; i < result.data.myArrayList.length; i++)
-				{
-					
+				{		
 					if(result.data.myArrayList[i].map.port != -1)
 					{
 						$("#listOfRoomDevices").append('\n\
-								<ul class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
+								<ul id="ul-'+result.data.myArrayList[i].map.device.deviceID+'" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" data-role="listview" data-icon="false">\n\
 									<li id="li-'+result.data.myArrayList[i].map.device.deviceID+'" class="ui-li-static ui-body-inherit ui-li-has-thumb">\n\
 										<img src="../img/devicesTypes/'+result.data.myArrayList[i].map.device.deviceType.picData+'.png">\n\
 										<h3>'+result.data.myArrayList[i].map.device.name+'<p><b>'+result.data.myArrayList[i].map.device.description+'</b></p>\n\
@@ -61,13 +61,18 @@ function loadRoomDevices()
 											</div>\n\
 										</h3>\n\
 									</li></ul>');
+						
+						listOfDevicesID[j] = {};
+						listOfDevicesID[j].deviceID = result.data.myArrayList[i].map.device.deviceID;
+						listOfDevicesID[j].exist = true;
+						j++;
 						changeOnOff(result.data.myArrayList[i].map.device.deviceID, result.data.myArrayList[i].map.currentPinState);
 					}
 				}
 			}
 			else
 			{
-				window.location = "UserHome.html";
+				window.location = "RoomControl.html";
 			}
 		},
 
@@ -79,8 +84,114 @@ function loadRoomDevices()
 	});	
 }
 
+function updateRoomDevices()
+{
+	for (var i = 0; i < listOfDevicesID.length; i++)
+	{
+		listOfDevicesID[i].exist = false;
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/devices_group/get_devices_extra/' + localStorage.roomcontrolGroupId,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			listOfDevices = result.data.myArrayList;
+			if (result.status === "ok")
+			{	
+				for (var i = 0; i < result.data.myArrayList.length; i++)
+				{
+					if (deviceExist(result.data.myArrayList[i].map.device.deviceID))
+					{
+						// device exist.
+						if(result.data.myArrayList[i].map.port != -1)
+						{
+							// device exist && should be appear. now we should check status.
+							setDeviceExistStatus(result.data.myArrayList[i].map.device.deviceID, true);
+							changeOnOff(result.data.myArrayList[i].map.device.deviceID, result.data.myArrayList[i].map.currentPinState);
+						}
+						else
+						{
+							// device exist && should not appear. we should remove it from the list.
+							$("#listOfRoomDevices").remove('#ul' + result.data.myArrayList[i].map.device.deviceID);
+							removeDeviceFromDeviceArrayList(result.data.myArrayList[i].map.device.deviceID);
+						}
+					}
+					else
+					{
+						// device don't exist.
+						if(result.data.myArrayList[i].map.port != -1)
+						{
+							// device don't exist and should appear on page.
+						}
+						else
+						{
+							// device don't exist and should no appear.
+						}
+					}
+				}	
+				
+			}
+			else
+			{
+				window.location = "RoomControl.html";
+			}
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			$.mobile.loading("hide");
+			window.location = "UserHome.html";
+ 		}
+ 
+ 	});	
+ }
+
+function removeDeviceFromDeviceArrayList(deviceID)
+{
+	for (var j = 0; j < listOfDevicesID.length; j++)
+	{
+		if (listOfDevicesID[j].deviceID === deviceID)
+		{
+			listOfDevicesID.splice(j,1);
+		}
+		break;
+	}
+}
+
+function setDeviceExistStatus(deviceID, flag)
+{
+	for (var j = 0; j < listOfDevicesID.length; j++)
+	{
+		if (listOfDevicesID[j].deviceID === deviceID)
+		{
+			listOfDevicesID[j].exist = flag;
+		}
+		break;
+	}
+}
+
+function deviceExist(deviceID)
+{
+	var answer = false;
+	
+	for (var j = 0; j < listOfDevicesID.length; j++)
+	{
+		if (listOfDevicesID[j].deviceID === deviceID)
+		{
+			answer = true;
+			break;
+		}
+	}
+	
+	return answer;
+}
+
 function loadDeviceOptions(tempDeviceID)
 {
+	clearInterval(interval);
 	localStorage.deviceoptionsDeviceID = tempDeviceID;
 	for (var i = 0; i < listOfDevices.length; i++)
 	{
@@ -167,6 +278,10 @@ function sendRequestToTurnOnOff()
 								interval = window.setInterval(intervalFunction, refreshRate);
 						  }, delay);	
 				
+			}
+			else
+			{
+				window.location = "RoomControl.html";
 			}
 		},
 		error: function()
