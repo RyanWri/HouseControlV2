@@ -77,7 +77,7 @@ function ShowDevicesInGroup(groupID)
 		var parameters = {}; //name, description, deviceType:{typeID} ,connectionType, Voltage
 		parameters.name = $('#deviceName').val();
 		parameters.description = $('#description').val();
-		var typeid= new Object(); typeid.typeID = $('#devicesTypes :selected').val();;
+		var typeid= new Object(); typeid.typeID = $('#devicesTypes :selected').val();
 		parameters.deviceType = typeid;
 		parameters.connectionType = 'Relay';
 		parameters.voltage = $('#deviceVoltage').val(); 
