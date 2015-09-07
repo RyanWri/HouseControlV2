@@ -309,15 +309,23 @@ public class PiGpio {
 		}
 		return totalConsumption; 
 	}
-	public static void  turnOffDisconnectedPin(int relayPort ) throws Exception {
+	public static void  turnOffDisconnectedPin(int relayPort, int deviceID ) throws Exception {
 
 		try{
-			if(myPins[relayPort].isState(PinState.LOW)){ 
-				myPins[relayPort].setState(PinState.HIGH);
+			if(myPins[relayPort] != null){
+				PinState currentPinState = myPins[relayPort].getState();
+				if(currentPinState.equals(PinState.LOW)){
+						myPins[relayPort].setState(PinState.HIGH);
+						DeviceUsageHandler.updateDeviceUsageTurnOffTimeStamp(deviceID, DeviceUsageHandler.getCurrentTimeStamp());
+				}
+			}
+			else{
+				throw new Exception("An error has occured while trying to turn off disconnected device!");
 			}
 		}
 		catch(Exception ex){
-			throw new Exception("An error has occured while trying to turn off disconnected device");
+			//throw new Exception("An error has occured while trying to turn off disconnected device");
+			throw ex;
 		}
 	}
 
