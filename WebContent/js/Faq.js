@@ -7,15 +7,18 @@
 
 //at the moment no javascript is needed here
 
-$(function() 
-{
-	$(document).ready(function()
-    {
-		authentication(loadFaqPage);
-    });
+$('#Faq').on('pagebeforeshow', function()
+{ 
+	authentication(loadRoomControlPage);		
 });
 
-function loadFaqPage(){}
+$(function() 
+{});
+
+function loadFaqPage()
+{
+	document.getElementById("Faq").style.display = "inline";
+}
 
 	
 
