@@ -5,6 +5,15 @@
 	Last Modification : 07/09/2015
  */
 
+//Handle ajax loading icon
+$(document).on( "mobileinit", function() {
+	  $.mobile.loader.prototype.options.text = "loading";
+	  $.mobile.loader.prototype.options.textVisible = false;
+	  $.mobile.loader.prototype.options.theme = "a";
+	  $.mobile.loader.prototype.options.html = "";
+	  
+	});
+
 $('#Statistics').on('pagebeforeshow', function()
 { 
 	authentication(loadStatisticsPage);
@@ -183,12 +192,3 @@ function refreshPage()
 	$.mobile.loading("show");
 	SetDataForChart();
 }
-
-
-//Handle ajax loading icon
-$('#Statistics').on( "mobileinit", function() {
-	  $.mobile.loader.prototype.options.text = "loading";
-	  $.mobile.loader.prototype.options.textVisible = false;
-	  $.mobile.loader.prototype.options.theme = "a";
-	  $.mobile.loader.prototype.options.html = "";
-	});
