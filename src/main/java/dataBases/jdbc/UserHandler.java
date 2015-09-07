@@ -2,8 +2,6 @@ package dataBases.jdbc;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import utils.SessionHandler;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelObjects.User;
-import modelObjects.User.UserType;
-
 
 public class UserHandler{
 	public static final String USER_UPDATE_SUCCESS_MESSAGE = "User details has been updated";
@@ -273,6 +269,15 @@ public class UserHandler{
 		}
 
 		try{
+			User user = getUserByUserID(userID);
+			if(user == null){
+				throw new Exception("Cannot delete a user which doesn't exist ");
+			}
+			else{
+				if(user.getUsername().equals("admin")){
+					throw new Exception("Cannot delete admin user");
+				}
+			}
 			conn = DBConn.getConnection();
 			String query = "DELETE FROM user "
 					+  "WHERE userID =" + userID;
