@@ -3,6 +3,7 @@ var globalDeviceID;
 var globalAction;
 var delay = 150;
 var lock = 0;
+var listOfDevicesID = [];
 var interval;
 var refreshRate = 5000;
 
@@ -13,7 +14,7 @@ $('#RoomControl').on('pagebeforeshow', function()
 });
 
 function loadRoomControlPage()
-{
+{	
 	$("#roomName").text(localStorage.roomcontrolName);
 	loadRoomDevices();
 	document.getElementById("RoomControl").style.display = "inline";
@@ -22,8 +23,9 @@ function loadRoomControlPage()
 
 function intervalFunction()
 {
-	$("#listOfRoomDevices").empty();
-	loadRoomDevices();
+	//$("#listOfRoomDevices").empty();
+	updateRoomDevices();
+	//loadRoomDevices();
 }
 
 function loadRoomDevices()
@@ -38,6 +40,7 @@ function loadRoomDevices()
 		{
 			if (result.status === "ok")
 			{
+				var j = 0;
 				for (var i = 0; i < result.data.myArrayList.length; i++)
 				{
 					
@@ -60,6 +63,10 @@ function loadRoomDevices()
 											</div>\n\
 										</h3>\n\
 									</li></ul>');
+						listOfDevicesID[j] = {};
+						listOfDevicesID[j].deviceID = result.data.myArrayList[i].map.device.deviceID;
+						listOfDevicesID[j].exist = true;
+						j++;
 						changeOnOff(result.data.myArrayList[i].map.device.deviceID, result.data.myArrayList[i].map.currentPinState);
 					}
 				}
@@ -73,9 +80,103 @@ function loadRoomDevices()
 		error: function(xhr, ajaxOptions, thrownError)
 		{
 			$.mobile.loading("hide");
+			window.location = "UserHome.html";
 		}
 
 	});	
+}
+
+function updateRoomDevices()
+{
+	for (var i = 0; i < listOfDevicesID.length; i++)
+	{
+		listOfDevicesID[i].exist = false;
+	}
+	
+	$.ajax({
+		type: 'GET',
+		url: '/HouseControl/api/devices_group/get_devices_extra/' + localStorage.roomcontrolGroupId,
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result)
+		{
+			if (result.status === "ok")
+			{
+				
+				for (var i = 0; i < result.data.myArrayList.length; i++)
+				{
+					if (deviceExist(result.data.myArrayList[i].map.device.deviceID))
+					{
+						// device exist.
+						if(result.data.myArrayList[i].map.port != -1)
+						{
+							// device exist && should be appear. now we should check status.
+							setDeviceExistStatus(result.data.myArrayList[i].map.device.deviceID, true);
+							changeOnOff(result.data.myArrayList[i].map.device.deviceID, result.data.myArrayList[i].map.currentPinState);
+						}
+						else
+						{
+							// device exist && should not appear. we should remove it from the list.
+						}
+					}
+					else
+					{
+						// device don't exist.
+						if(result.data.myArrayList[i].map.port != -1)
+						{
+							// device don't exist and should appear on page.
+						}
+						else
+						{
+							// device don't exist and should no appear.
+						}
+					}
+				}	
+				
+			}
+			else
+			{
+				alert(result.data);
+				window.location = "UserHome.html";
+			}
+		},
+
+		error: function(xhr, ajaxOptions, thrownError)
+		{
+			alert("update failed to conntect");
+			$.mobile.loading("hide");
+			window.location = "UserHome.html";
+		}
+
+	});	
+}
+
+function setDeviceExistStatus(deviceID, flag)
+{
+	for (var j = 0; j < listOfDevicesID.length; j++)
+	{
+		if (listOfDevicesID[j].deviceID === deviceID)
+		{
+			listOfDevicesID[j].exist = flag;
+		}
+		break;
+	}
+}
+
+function deviceExist(deviceID)
+{
+	var answer = false;
+	
+	for (var j = 0; j < listOfDevicesID.length; j++)
+	{
+		if (listOfDevicesID[j].deviceID === deviceID)
+		{
+			answer = true;
+			break;
+		}
+	}
+	
+	return answer;
 }
 
 function loadDeviceOptions(tempDeviceID)
@@ -152,7 +253,7 @@ function sendRequestToTurnOnOff()
 				setTimeout(
 						  function() 
 						  {
-							    $('#'+globalDeviceID).removeClass("ui-disabled");
+							   /* 
 								if (globalAction === "OFF")
 								{
 									$('#'+globalDeviceID).removeClass("ui-flipswitch-active");
@@ -160,16 +261,21 @@ function sendRequestToTurnOnOff()
 								else
 								{
 									$('#'+globalDeviceID).addClass("ui-flipswitch-active");
-								}
-								lock = 0;
-								
+								}*/
+								  $('#'+globalDeviceID).removeClass("ui-disabled");
+								  lock = 0;
 								interval = window.setInterval(intervalFunction, refreshRate);
 						  }, delay);	
 				
 			}
+			else
+			{
+				alert("request to update got error");
+			}
 		},
 		error: function()
 		{
+			alert("request to update connection failere");
 			errorPopup("Connection Error");
 		},		
 	});
