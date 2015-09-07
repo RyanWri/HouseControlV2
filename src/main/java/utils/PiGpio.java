@@ -29,7 +29,7 @@ public class PiGpio {
 	private static GpioPinDigitalOutput[] myPins;
 	private static GpioController gpio;
 
-	public static String controlGpioPin(int deviceID , int action) throws Exception{
+	public static synchronized String controlGpioPin(int deviceID , int action) throws Exception{
 		int pinNumber;
 		try{		
 			pinNumber = RelayConnectionHandler.getRelayPortOfConnectedDevicesOnRelay(deviceID);
