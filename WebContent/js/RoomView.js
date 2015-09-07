@@ -241,7 +241,7 @@ function IsDeviceInTheRoom(name)
 function removeDevice()
 {
 	var deviceID = localStorage.tempDeviceID;
-	DisconnectDeviceFromRelayPort();
+	//DisconnectDeviceFromRelayPort();
 	var dataRemove= "deviceID="+ deviceID + "&deviceGroupID=" + groupID;
 	$.ajax({
 		type: 'DELETE',
